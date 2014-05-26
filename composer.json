@@ -1,6 +1,8 @@
 {
     "name": "watson/bootstrap-form",
     "description": "Laravel 4.2+ form wrappers for Bootstrap 3.",
+    "keywords": ["laravel", "form", "bootstrap"],
+    "license": "MIT",
     "authors": [
         {
             "name": "Dwight Watson",
