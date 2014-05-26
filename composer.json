@@ -1,0 +1,23 @@
+{
+    "name": "watson/bootstrap-form",
+    "description": "Laravel 4.2+ form wrappers for Bootstrap 3.",
+    "authors": [
+        {
+            "name": "Dwight Watson",
+            "email": "dwightwatson@me.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/config": "4.2.x",
+        "illuminate/html": "4.2.x",
+        "illuminate/session": "4.2.x",
+        "illuminate/support": "4.2.x"
+    },
+    "autoload": {
+        "psr-0": {
+            "Watson\\BootstrapForm": "src/"
+        }
+    },
+    "minimum-stability": "beta"
+}
