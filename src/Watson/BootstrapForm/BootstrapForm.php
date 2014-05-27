@@ -44,6 +44,29 @@ class BootstrapForm
         $this->session = $session;
 	}
 
+    public function open(array $options = [])
+    {
+        // If the form is passed a model, we'll use the update route to update 
+        // the model using the PUT method.
+        if ($options['model'])
+        {
+            $options['route'] = [$options['update'], $model->getKey()];
+            $options['method'] = 'put';
+        }
+        // Otherwise, we're storing a brand new model using the POST method.
+        else
+        {
+            $options['route'] = $options['store'];
+            $options['method'] = 'post';
+        }
+
+        // Forget the routes provided to the input.
+        array_forget($options, 'update');
+        array_forget($options, 'create');
+
+        return $this->form->open($options);
+    }
+
     /**
      * Create a Bootstrap text field input.
      *
