@@ -44,6 +44,14 @@ class BootstrapForm
         $this->session = $session;
 	}
 
+    /**
+     * Open a form while passing a model and the routes for storing or updating 
+     * the model. This will set the correct route along with the correct 
+     * method.
+     *
+     * @param  array  $options
+     * @return string
+     */
     public function open(array $options = [])
     {
         // If the form is passed a model, we'll use the update route to update 
@@ -73,7 +81,7 @@ class BootstrapForm
      * @param  string  $name
      * @param  string  $label
      * @param  string  $value
-     * @param  array  $options
+     * @param  array   $options
      * @return string
      */
     public function text($name, $label = null, $value = null, $options = [])
@@ -87,7 +95,7 @@ class BootstrapForm
      * @param  string  $name
      * @param  string  $label
      * @param  string  $value
-     * @param  array  $options
+     * @param  array   $options
      * @return string
      */
     public function email($name = 'email', $label = null, $value = null, $options = [])
@@ -101,7 +109,7 @@ class BootstrapForm
      * @param  string  $name
      * @param  string  $label
      * @param  string  $value
-     * @param  array  $options
+     * @param  array   $options
      * @return string
      */
     public function textarea($name, $label = null, $value = null, $options = [])
@@ -114,7 +122,7 @@ class BootstrapForm
      *
      * @param  string  $name
      * @param  string  $label
-     * @param  array  $options
+     * @param  array   $options
      * @return string
      */
     public function password($name = 'password', $label = null, $options = [])
@@ -127,7 +135,7 @@ class BootstrapForm
      *
      * @param  string  $name
      * @param  string  $value
-     * @param  array  $options
+     * @param  array   $options
      * @return string
      */
     public function label($name, $value = null, $options = [])
@@ -138,13 +146,27 @@ class BootstrapForm
     }
 
     /**
+     * Create a Boostrap submit button.
+     *
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function submit($value = null, $options = [])
+    {
+        $options = array_merge(['class' => 'btn btn-primary'], $options);
+
+        return $this->form->submit($value, $options);
+    }
+
+    /**
      * Create the input group for an element with the correct classes for errors.
      *
      * @param  string  $type
      * @param  string  $name
      * @param  string  $label
      * @param  string  $value
-     * @param  array  $options
+     * @param  array   $options
      * @return string
      */
     protected function input($type, $name, $label = null, $value = null, $options = [])
@@ -154,9 +176,11 @@ class BootstrapForm
         $options = $this->getFieldOptions($options);
         $wrapperOptions = ['class' => $this->getRightColumnClass()];
 
-        $element = '<div '.$this->html->attributes($wrapperOptions).'>'.$this->form->{$type}($name, $value, $options).$this->getFieldError($name).'</div>';
+        $inputElement = $type == 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
 
-        return $this->getFormGroup($name, $label, $element);
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
     }
 
     /**
