@@ -67,7 +67,7 @@ class BootstrapForm
      * @param  array  $options
      * @return string
      */
-    public function email($name, $label = null, $value = null, $options = [])
+    public function email($name = 'email', $label = null, $value = null, $options = [])
     {
         return $this->input('email', $name, $label, $value, $options);
     }
@@ -94,7 +94,7 @@ class BootstrapForm
      * @param  array  $options
      * @return string
      */
-    public function password($name, $label = null, $options = [])
+    public function password($name = 'password', $label = null, $options = [])
     {
         return $this->input('password', $name, $label, null, $options);
     }
