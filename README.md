@@ -9,7 +9,7 @@ Simply pop this in your `composer.json` file and run `composer update` (however 
 
 	"watson/bootstrap-form": "0.8.*"
 
-_I won't hit version 1.0 until Laravel 4.2 is out or I have completed writing tests._
+_I won't hit version 1.0 until I have completed writing tests._
 
 Now, add the service provided to your `app/config/app.php` file.
 
