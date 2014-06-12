@@ -169,7 +169,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    protected function input($type, $name, $label = null, $value = null, $options = [])
+    public function input($type, $name, $label = null, $value = null, $options = [])
     {
         $label = $label ?: Str::title($name);
 
