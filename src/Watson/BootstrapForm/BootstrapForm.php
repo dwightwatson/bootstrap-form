@@ -52,13 +52,13 @@ class BootstrapForm
      * @param  array  $options
      * @return string
      */
-    public function open(array $options = [])
+    public function open(array $options = array())
     {
         // If the form is passed a model, we'll use the update route to update 
         // the model using the PUT method.
         if ($options['model'])
         {
-            $options['route'] = [$options['update'], $model->getKey()];
+            $options['route'] = array($options['update'], $model->getKey());
             $options['method'] = 'put';
         }
         // Otherwise, we're storing a brand new model using the POST method.
@@ -84,7 +84,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function text($name, $label = null, $value = null, $options = [])
+    public function text($name, $label = null, $value = null, $options = array())
     {
         return $this->input('text', $name, $label, $value, $options);
     }
@@ -98,7 +98,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function email($name = 'email', $label = null, $value = null, $options = [])
+    public function email($name = 'email', $label = null, $value = null, $options = array())
     {
         return $this->input('email', $name, $label, $value, $options);
     }
@@ -112,7 +112,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function textarea($name, $label = null, $value = null, $options = [])
+    public function textarea($name, $label = null, $value = null, $options = array())
     {
         return $this->input('textarea', $name, $label, $value, $options);
     }
@@ -125,7 +125,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function password($name = 'password', $label = null, $options = [])
+    public function password($name = 'password', $label = null, $options = array())
     {
         return $this->input('password', $name, $label, null, $options);
     }
@@ -138,7 +138,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function label($name, $value = null, $options = [])
+    public function label($name, $value = null, $options = array())
     {
         $options = $this->getLabelOptions($options);
 
@@ -152,9 +152,9 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function submit($value = null, $options = [])
+    public function submit($value = null, $options = array())
     {
-        $options = array_merge(['class' => 'btn btn-primary'], $options);
+        $options = array_merge(array('class' => 'btn btn-primary'), $options);
 
         return $this->form->submit($value, $options);
     }
@@ -169,12 +169,12 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function input($type, $name, $label = null, $value = null, $options = [])
+    public function input($type, $name, $label = null, $value = null, $options = array())
     {
         $label = $label ?: Str::title($name);
 
         $options = $this->getFieldOptions($options);
-        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        $wrapperOptions = array('class' => $this->getRightColumnClass());
 
         $inputElement = $type == 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
 
@@ -206,11 +206,11 @@ class BootstrapForm
      * @param  array  $options
      * @return array
      */
-    protected function getFormGroupOptions($name, $options = [])
+    protected function getFormGroupOptions($name, $options = array())
     {
         $class = trim('form-group ' . $this->getFieldErrorClass($name));
 
-        return array_merge(['class' => $class], $options);
+        return array_merge(array('class' => $class), $options);
     }
 
     /**
@@ -220,9 +220,9 @@ class BootstrapForm
      * @param  array  $options
      * @return array
      */
-    protected function getFieldOptions($options = [])
+    protected function getFieldOptions($options = array())
     {
-        return array_merge(['class' => 'form-control'], $options);
+        return array_merge(array('class' => 'form-control'), $options);
     }
 
     /**
@@ -232,11 +232,11 @@ class BootstrapForm
      * @param  array  $options
      * @return array
      */
-    protected function getLabelOptions($options = [])
+    protected function getLabelOptions($options = array())
     {
         $class = trim('control-label ' . $this->getLeftColumnClass());
 
-        return array_merge(['class' => $class], $options);
+        return array_merge(array('class' => $class), $options);
     }
 
     /**
