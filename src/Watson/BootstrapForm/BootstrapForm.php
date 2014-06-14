@@ -54,6 +54,38 @@ class BootstrapForm
      */
     public function open(array $options = array())
     {
+        $options = $this->parseModelBinding($options);
+
+        // Set the HTML5 role.
+        $options['role'] = 'form';
+
+        // If the class hasn't been set, set the default style.
+        if ( ! isset($options['class']))
+        {
+            $defaultForm = $this->getDefaultForm();
+
+            if ($defaultForm === 'horizontal')
+            {
+                $options['class'] = 'form-horizontal';
+            }
+            else if ($defaultForm === 'inline')
+            {
+                $options['class'] = 'form-inline';
+            }
+        }
+
+        return $this->form->open($options);
+    }
+
+    /**
+     * Parse the model binding and set the appropriate keys for
+     * routing.
+     *
+     * @param  array  $options
+     * @return array
+     */
+    protected function parseModelBinding($options)
+    {
         // If the form is passed a model, we'll use the update route to update 
         // the model using the PUT method.
         if (isset($options['model']) && $options['model']->getKey())
@@ -72,16 +104,7 @@ class BootstrapForm
         array_forget($options, 'update');
         array_forget($options, 'create');
 
-        // Set the HTML5 role.
-        $options['role'] = 'form';
-
-        // If the class hasn't been set, set the default style.
-        if ( ! isset($options['class']))
-        {
-            $options['class'] = $this->getDefaultFormClass();
-        }
-
-        return $this->form->open($options);
+        return $options;
     }
 
     public function openStandard(array $options = array())
@@ -394,9 +417,10 @@ class BootstrapForm
      *
      * @return string
      */
-    protected function getDefaultFormClass()
+    protected function getDefaultForm()
     {
-        return $this->config->get('bootstrap-form::default_class');
+        $defaultForm = $this->config->get('bootstrap-form::default_class');
+
     }
 
     /**

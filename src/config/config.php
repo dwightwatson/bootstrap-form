@@ -4,15 +4,14 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Default form class
+	| Default form
 	|--------------------------------------------------------------------------
 	|
 	| Here you may specify the default style for the form open method. You can 
-	| set it to null for a standard form, otherwise 'form-horizontal' or 
-	| 'form-inline'.
+	| set it to null for a standard form, otherwise 'horizontal' or 'inline'.
 	|
 	*/
-	'default_class' => null,
+	'default_form' => null,
 
 	/*
 	|--------------------------------------------------------------------------

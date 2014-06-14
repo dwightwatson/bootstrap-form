@@ -154,8 +154,3 @@ By simply passing an array of value/label pairs you can generate a group of chec
 
 	// Pretty simple.
 	BootstrapForm::submit('Login');
-
-## Todo
-
-- [ ] Text inputs without columns
-- [ ] Checkbox/radio inputs with columns
