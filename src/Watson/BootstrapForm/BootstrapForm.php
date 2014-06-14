@@ -56,13 +56,13 @@ class BootstrapForm
     {
         // If the form is passed a model, we'll use the update route to update 
         // the model using the PUT method.
-        if ($options['model'])
+        if (isset($options['model']) && $options['model']->getKey())
         {
-            $options['route'] = array($options['update'], $model->getKey());
+            $options['route'] = array($options['update'], $options['model']->getKey());
             $options['method'] = 'put';
         }
         // Otherwise, we're storing a brand new model using the POST method.
-        else
+        else if (isset($options['store']))
         {
             $options['route'] = $options['store'];
             $options['method'] = 'post';
@@ -72,7 +72,49 @@ class BootstrapForm
         array_forget($options, 'update');
         array_forget($options, 'create');
 
+        // Set the HTML5 role.
+        $options['role'] = 'form';
+
+        // If the class hasn't been set, set the default style.
+        if ( ! isset($options['class']))
+        {
+            $options['class'] = $this->getDefaultFormClass();
+        }
+
         return $this->form->open($options);
+    }
+
+    public function openStandard(array $options = array())
+    {
+        $options = array_merge(array('class' => ''), $options);
+
+        return $this->open($options);
+    }
+
+    /**
+     * Open an inline Bootstrap form.
+     *
+     * @param  array  $options
+     * @return string
+     */
+    public function openInline(array $options = array())
+    {
+        $options = array_merge(array('class' => 'form-inline'), $options);
+
+        return $this->open($options);
+    }
+
+    /**
+     * Open a horizontal Bootstrap form.
+     *
+     * @param  array  $options
+     * @return string
+     */
+    public function openHorizontal(array $options = array())
+    {
+        $options = array_merge(array('class' => 'form-horizontal'), $options);
+
+        return $this->open($options);
     }
 
     /**
@@ -131,6 +173,99 @@ class BootstrapForm
     }
 
     /**
+     * Create a Bootstrap checkbox input.
+     *
+     * @param  string   $name
+     * @param  string   $label
+     * @param  string   $value
+     * @param  boolean  $checked
+     * @param  boolean  $inline
+     * @param  boolean  $wrapper
+     * @param  array    $options
+     * @return string
+     */
+    public function checkbox($name, $label, $value, $checked = null, $inline = false, $options = array())
+    {
+        $labelOptions = $inline ? array('class' => 'checkbox-inline') : array();
+
+        $inputElement = $this->form->checkbox($name, $value, $checked, $options);
+        $labelElement = '<label '.$this->html->attributes($labelOptions).'>'.$inputElement.$label.'</label>';
+
+        return $inline ? $labelElement : '<div class="checkbox">'.$labelElement.'</div>';
+    }
+
+    /**
+     * Create a collection of Bootstrap checkboxes.
+     *
+     * @param  string   $name
+     * @param  array    $choices
+     * @param  array    $values
+     * @param  array    $checkedValues
+     * @param  boolean  $inline
+     * @param  array    $options
+     */
+    public function checkboxes($name, $choices = array(), $checkedValues = array(), $inline = false, $options = array())
+    {
+        $response = '';
+
+        foreach ($choices as $value => $label)
+        {
+            $checked = in_array($value, (array) $checkedValues);
+
+            $response .= $this->checkbox($name, $label, $value, $checked, $inline, $options);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Create a Bootstrap radio input.
+     *
+     * @param  string   $name
+     * @param  string   $label
+     * @param  string   $value
+     * @param  boolean  $checked
+     * @param  boolean  $inline
+     * @param  boolean  $wrapper
+     * @param  array    $options
+     * @return string
+     */
+    public function radio($name, $label, $value, $checked = null, $inline = false, $options = array())
+    {
+        $labelOptions = $inline ? array('class' => 'radio-inline') : array();
+
+        $inputElement = $this->form->radio($name, $value, $checked, $options);
+        $labelElement = '<label '.$this->html->attributes($labelOptions).'>'.$inputElement.$label.'</label>';
+
+        return $inline ? $labelElement : '<div class="radio">'.$labelElement.'</div>';
+    }
+
+    /**
+     * Create a collection of Bootstrap radio inputs.
+     *
+     * @param  string   $name
+     * @param  array    $choices
+     * @param  array    $values
+     * @param  string   $checkedValue
+     * @param  boolean  $inline
+     * @param  array    $options
+     * @return string
+     */
+    public function radios($name, $choices = array(), $checkedValue = null, $inline = false, $options = array())
+    {
+        $response = '';
+
+        foreach ($choices as $value => $label)
+        {
+            $checked = $value === $checkedValue;
+
+            $response .= $this->radio($name, $label, $value, $checked, $inline, $options);
+        }
+
+        return $response;
+    }
+
+    /**
      * Create a Bootstrap label.
      *
      * @param  string  $name
@@ -171,7 +306,7 @@ class BootstrapForm
      */
     public function input($type, $name, $label = null, $value = null, $options = array())
     {
-        $label = $label ?: Str::title($name);
+        $label = $this->getLabelTitle($label, $name);
 
         $options = $this->getFieldOptions($options);
         $wrapperOptions = array('class' => $this->getRightColumnClass());
@@ -181,6 +316,19 @@ class BootstrapForm
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
+    }
+
+    /**
+     * Get the label title for a form field, first by using the provided one
+     * or titleizing the field name.
+     *
+     * @param  string  $label
+     * @param  string  $name
+     * @return string
+     */
+    protected function getLabelTitle($label, $name)
+    {
+        return $label ?: Str::title($name);
     }
 
     /**
@@ -240,6 +388,16 @@ class BootstrapForm
     }
 
     /**
+     * Get the default form style.
+     *
+     * @return string
+     */
+    protected function getDefaultFormClass()
+    {
+        return $this->config->get('bootstrap-form::default_class');
+    }
+
+    /**
      * Get the column class for the left class of a horizontal form.
      *
      * @return string
@@ -281,6 +439,13 @@ class BootstrapForm
     protected function getFieldError($field, $format = '<span class="help-block">:message</span>')
     {
         if ( ! $this->getErrors()) return;
+
+        $allErrors = $this->config->get('bootstrap-form::all_errors');
+
+        if ($allErrors)
+        {
+            return $this->getErrors()->get($field, $format);
+        }
 
         return $this->getErrors()->first($field, $format);
     }

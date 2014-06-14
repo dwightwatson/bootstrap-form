@@ -4,6 +4,18 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Default form class
+	|--------------------------------------------------------------------------
+	|
+	| Here you may specify the default style for the form open method. You can 
+	| set it to null for a standard form, otherwise 'form-horizontal' or 
+	| 'form-inline'.
+	|
+	*/
+	'default_class' => null,
+
+	/*
+	|--------------------------------------------------------------------------
 	| Horizontal form default sizing
 	|--------------------------------------------------------------------------
 	|
@@ -13,6 +25,18 @@ return array(
 	*/
 	
 	'left_column'  => 'col-md-2',
-	'right_column' => 'col-md-10'
+	'right_column' => 'col-md-10',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Error output
+	|--------------------------------------------------------------------------
+	|
+	| Here you may specify the whether all the errors of an input should be
+	| displayed or just the first one.
+	|
+	*/
+
+	'all_errors' => false
 
 );
