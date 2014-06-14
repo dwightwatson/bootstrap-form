@@ -198,24 +198,25 @@ class BootstrapForm
      * Create a collection of Bootstrap checkboxes.
      *
      * @param  string   $name
+     * @param  string   $label
      * @param  array    $choices
      * @param  array    $values
      * @param  array    $checkedValues
      * @param  boolean  $inline
      * @param  array    $options
      */
-    public function checkboxes($name, $choices = array(), $checkedValues = array(), $inline = false, $options = array())
+    public function checkboxes($name, $label = null, $choices = array(), $checkedValues = array(), $inline = false, $options = array())
     {
-        $response = '';
+        $elements = '';
 
-        foreach ($choices as $value => $label)
+        foreach ($choices as $value => $choiceLabel)
         {
             $checked = in_array($value, (array) $checkedValues);
 
-            $response .= $this->checkbox($name, $label, $value, $checked, $inline, $options);
+            $elements .= $this->checkbox($name, $choiceLabel, $value, $checked, $inline, $options);
         }
 
-        return $response;
+        return $this->getFormGroup($name, $label, $elements);
     }
 
     /**
@@ -244,6 +245,7 @@ class BootstrapForm
      * Create a collection of Bootstrap radio inputs.
      *
      * @param  string   $name
+     * @param  string   $label
      * @param  array    $choices
      * @param  array    $values
      * @param  string   $checkedValue
@@ -251,18 +253,18 @@ class BootstrapForm
      * @param  array    $options
      * @return string
      */
-    public function radios($name, $choices = array(), $checkedValue = null, $inline = false, $options = array())
+    public function radios($name, $label = null, $choices = array(), $checkedValue = null, $inline = false, $options = array())
     {
-        $response = '';
+        $elements = '';
 
-        foreach ($choices as $value => $label)
+        foreach ($choices as $value => $choiceLabel)
         {
             $checked = $value === $checkedValue;
 
-            $response .= $this->radio($name, $label, $value, $checked, $inline, $options);
+            $elements .= $this->radio($name, $choiceLabel, $value, $checked, $inline, $options);
         }
 
-        return $response;
+        return $this->getFormGroup($name, $label, $elements);
     }
 
     /**

@@ -144,11 +144,11 @@ By simply passing an array of value/label pairs you can generate a group of chec
 		'female' => 'Female'
 	);
 
-	// Gender inputs inline.
-	BootstrapForm::radios('gender', $genders, null, true);
+	// Gender inputs inline, 'Gender' label inferred.
+	BootstrapForm::radios('gender', null, $genders, null, true);
 
 	// Gender inputs with female selected.
-	BootstrapForm::radios('gender', $genders, 'female');
+	BootstrapForm::radios('gender', 'Gender', $genders, 'female');
 
 ### Submit button
 
