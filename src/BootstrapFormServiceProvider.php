@@ -36,7 +36,7 @@ class BootstrapFormServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('watson/bootstrap-form');
+		$this->package('watson/bootstrap-form', null, __DIR__);
 	}
 
 	/**
