@@ -140,6 +140,13 @@ class BootstrapForm
         return $this->open($options);
     }
 
+    public function staticField($name, $label = null, $value = null, $options = array())
+    {
+        $options = array_merge(['class' => 'form-control-static'], $options);
+
+        return $this->text($name, $label, $value, $options);
+    }
+
     /**
      * Create a Bootstrap text field input.
      *
