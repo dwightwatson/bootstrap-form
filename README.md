@@ -38,7 +38,7 @@ _I won't hit version 1.0 until I have completed writing tests._
 
 Now, add the service provided to your `app/config/app.php` file.
 
-	'Watsons\BootstrapForm\BootstrapFormServiceProvider'
+	'Watson\BootstrapForm\BootstrapFormServiceProvider'
 
 And finally add this to the aliases array.
 
