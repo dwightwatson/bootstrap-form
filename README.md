@@ -130,6 +130,8 @@ Same goes for radio inputs.
 
 By simply passing an array of value/label pairs you can generate a group of checkboxes or radio buttons easily.
 
+	$label = 'this is just a label';
+
 	$interests = array(
 		'laravel' => 'Laravel',
 		'rails'   => 'Rails',
@@ -137,7 +139,7 @@ By simply passing an array of value/label pairs you can generate a group of chec
 	);
 
 	// Checkbox inputs with Laravel and Rails selected.
-	BootstrapForm::checkboxes('interests', $interests, array('laravel', 'rails'));
+	BootstrapForm::checkboxes('interests', $label, $interests, array('laravel', 'rails'));
 
 	$genders = array(
 		'male'   => 'Male',
