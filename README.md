@@ -42,7 +42,7 @@ Now, add the service provided to your `app/config/app.php` file.
 
 And finally add this to the aliases array.
 
-	'BootstrapForm' => 'Watson\BootstrapForm\Facades\BootstrapForm
+	'BootstrapForm' => 'Watson\BootstrapForm\Facades\BootstrapForm'
 
 Feel free to use a different alias if you'd prefer something shorter.
 
