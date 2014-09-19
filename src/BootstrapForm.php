@@ -74,6 +74,11 @@ class BootstrapForm
             }
         }
 
+        if (isset($options['model']))
+        {
+            return $this->form->model($options['model'], $options);
+        }
+
         return $this->form->open($options);
     }
 
@@ -102,7 +107,7 @@ class BootstrapForm
 
         // Forget the routes provided to the input.
         array_forget($options, 'update');
-        array_forget($options, 'create');
+        array_forget($options, 'store');
 
         return $options;
     }
