@@ -77,6 +77,7 @@ class BootstrapForm
         if (isset($options['model']))
         {
             return $this->form->model($options['model'], $options);
+            array_forget($options, 'model');
         }
 
         return $this->form->open($options);
