@@ -104,6 +104,10 @@ class BootstrapForm
             $options['route'] = $options['store'];
             $options['method'] = 'post';
         }
+	
+	//bind the model to the form and remove it from the options
+	$this->form->model($options['model']);
+        array_forget($options, 'model');
 
         // Forget the routes provided to the input.
         array_forget($options, 'update');
