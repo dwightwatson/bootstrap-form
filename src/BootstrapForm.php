@@ -45,8 +45,8 @@ class BootstrapForm
 	}
 
     /**
-     * Open a form while passing a model and the routes for storing or updating 
-     * the model. This will set the correct route along with the correct 
+     * Open a form while passing a model and the routes for storing or updating
+     * the model. This will set the correct route along with the correct
      * method.
      *
      * @param  array  $options
@@ -83,6 +83,19 @@ class BootstrapForm
         return $this->form->open($options);
     }
 
+
+    /**
+     * Close the form
+     *
+     * @return mixed
+     */
+    public function close()
+    {
+        return $this->form->close();
+    }
+
+
+
     /**
      * Parse the model binding and set the appropriate keys for
      * routing.
@@ -92,7 +105,7 @@ class BootstrapForm
      */
     protected function parseModelBinding($options)
     {
-        // If the form is passed a model, we'll use the update route to update 
+        // If the form is passed a model, we'll use the update route to update
         // the model using the PUT method.
         if (isset($options['model']) && $options['model']->getKey())
         {
