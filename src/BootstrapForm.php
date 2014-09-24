@@ -36,13 +36,22 @@ class BootstrapForm
      */
     protected $session;
 
-	public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config, Session $session)
+
+    /**
+     * @param HtmlBuilder $html
+     * @param FormBuilder $form
+     * @param Config $config
+     * @param Session $session
+     */
+    public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config, Session $session)
 	{
         $this->html = $html;
 		$this->form = $form;
         $this->config = $config;
         $this->session = $session;
 	}
+
+
 
     /**
      * Open a form while passing a model and the routes for storing or updating
@@ -126,6 +135,8 @@ class BootstrapForm
         return $options;
     }
 
+
+
     /**
      * @param array $options
      * @return string
@@ -136,6 +147,8 @@ class BootstrapForm
 
         return $this->open($options);
     }
+
+
 
     /**
      * Open an inline Bootstrap form.
@@ -150,6 +163,8 @@ class BootstrapForm
         return $this->open($options);
     }
 
+
+
     /**
      * Open a horizontal Bootstrap form.
      *
@@ -162,6 +177,8 @@ class BootstrapForm
 
         return $this->open($options);
     }
+
+
 
     /**
      * @param $name
@@ -183,6 +200,8 @@ class BootstrapForm
         return $this->getFormGroup($name, $label, $groupElement);
     }
 
+
+
     /**
      * Create a Bootstrap text field input.
      *
@@ -196,6 +215,8 @@ class BootstrapForm
     {
         return $this->input('text', $name, $label, $value, $options);
     }
+
+
 
     /**
      * Create a Bootstrap email field input.
@@ -211,6 +232,8 @@ class BootstrapForm
         return $this->input('email', $name, $label, $value, $options);
     }
 
+
+
     /**
      * Create a Bootstrap textarea field input.
      *
@@ -225,6 +248,8 @@ class BootstrapForm
         return $this->input('textarea', $name, $label, $value, $options);
     }
 
+
+
     /**
      * Create a Bootstrap password field input.
      *
@@ -238,6 +263,8 @@ class BootstrapForm
         return $this->input('password', $name, $label, null, $options);
     }
 
+
+
     /**
      * Create a Bootstrap checkbox input.
      *
@@ -246,7 +273,6 @@ class BootstrapForm
      * @param  string   $value
      * @param  boolean  $checked
      * @param  boolean  $inline
-     * @param  boolean  $wrapper
      * @param  array    $options
      * @return string
      */
@@ -260,16 +286,18 @@ class BootstrapForm
         return $inline ? $labelElement : '<div class="checkbox">'.$labelElement.'</div>';
     }
 
+
+
     /**
      * Create a collection of Bootstrap checkboxes.
      *
-     * @param  string   $name
-     * @param  string   $label
-     * @param  array    $choices
-     * @param  array    $values
-     * @param  array    $checkedValues
-     * @param  boolean  $inline
-     * @param  array    $options
+     * @param  string $name
+     * @param  string $label
+     * @param  array $choices
+     * @param  array $checkedValues
+     * @param  boolean $inline
+     * @param  array $options
+     * @return string
      */
     public function checkboxes($name, $label = null, $choices = array(), $checkedValues = array(), $inline = false, $options = array())
     {
@@ -285,6 +313,8 @@ class BootstrapForm
         return $this->getFormGroup($name, $label, $elements);
     }
 
+
+
     /**
      * Create a Bootstrap radio input.
      *
@@ -293,7 +323,6 @@ class BootstrapForm
      * @param  string   $value
      * @param  boolean  $checked
      * @param  boolean  $inline
-     * @param  boolean  $wrapper
      * @param  array    $options
      * @return string
      */
@@ -307,13 +336,14 @@ class BootstrapForm
         return $inline ? $labelElement : '<div class="radio">'.$labelElement.'</div>';
     }
 
+
+
     /**
      * Create a collection of Bootstrap radio inputs.
      *
      * @param  string   $name
      * @param  string   $label
      * @param  array    $choices
-     * @param  array    $values
      * @param  string   $checkedValue
      * @param  boolean  $inline
      * @param  array    $options
@@ -333,6 +363,8 @@ class BootstrapForm
         return $this->getFormGroup($name, $label, $elements);
     }
 
+
+
     /**
      * Create a Bootstrap label.
      *
@@ -348,6 +380,8 @@ class BootstrapForm
         return $this->form->label($name, $value, $options);
     }
 
+
+
     /**
      * Create a Boostrap submit button.
      *
@@ -361,6 +395,8 @@ class BootstrapForm
 
         return $this->form->submit($value, $options);
     }
+
+
 
     /**
      * Create the input group for an element with the correct classes for errors.
@@ -386,6 +422,8 @@ class BootstrapForm
         return $this->getFormGroup($name, $label, $groupElement);
     }
 
+
+
     /**
      * Get the label title for a form field, first by using the provided one
      * or titleizing the field name.
@@ -398,6 +436,8 @@ class BootstrapForm
     {
         return $label ?: Str::title($name);
     }
+
+
 
     /**
      * Get a form group comprised of a label, form element and errors.
@@ -414,6 +454,8 @@ class BootstrapForm
         return '<div '.$this->html->attributes($options).'>'.$this->label($name, $value).$element.'</div>';
     }
 
+
+
     /**
      * Merge the options provided for a form group with the default options
      * required for Bootstrap styling.
@@ -429,6 +471,8 @@ class BootstrapForm
         return array_merge(array('class' => $class), $options);
     }
 
+
+
     /**
      * Merge the options provided for a field with the default options
      * required for Bootstrap styling.
@@ -440,6 +484,8 @@ class BootstrapForm
     {
         return array_merge(array('class' => 'form-control'), $options);
     }
+
+
 
     /**
      * Merge the options provided for a label with the default options
@@ -455,6 +501,8 @@ class BootstrapForm
         return array_merge(array('class' => $class), $options);
     }
 
+
+
     /**
      * Get the default form style.
      *
@@ -462,9 +510,10 @@ class BootstrapForm
      */
     protected function getDefaultForm()
     {
-        $defaultForm = $this->config->get('bootstrap-form::default_class');
-
+        return $this->config->get('bootstrap-form::default_class');
     }
+
+
 
     /**
      * Get the column class for the left class of a horizontal form.
@@ -476,6 +525,8 @@ class BootstrapForm
         return $this->config->get('bootstrap-form::left_column');
     }
 
+
+
     /**
      * Get the column class for the right class of a horizontal form.
      *
@@ -485,6 +536,8 @@ class BootstrapForm
     {
         return $this->config->get('bootstrap-form::right_column');
     }
+
+
 
     /**
      * Get the MessageBag of errors that is populated by the
@@ -496,6 +549,8 @@ class BootstrapForm
     {
         return $this->session->get('errors');
     }
+
+
 
     /**
      * Get the first error for a given field, using the provided
@@ -518,6 +573,8 @@ class BootstrapForm
 
         return $this->getErrors()->first($field, $format);
     }
+
+
 
     /**
      * Return the error class if the given field has associated
