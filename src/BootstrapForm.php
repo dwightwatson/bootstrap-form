@@ -126,6 +126,10 @@ class BootstrapForm
         return $options;
     }
 
+    /**
+     * @param array $options
+     * @return string
+     */
     public function openStandard(array $options = array())
     {
         $options = array_merge(array('class' => ''), $options);
@@ -159,11 +163,24 @@ class BootstrapForm
         return $this->open($options);
     }
 
+    /**
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
     public function staticField($name, $label = null, $value = null, $options = array())
     {
         $options = array_merge(['class' => 'form-control-static'], $options);
 
-        return $this->text($name, $label, $value, $options);
+        $label = $this->getLabelTitle($label, $name);
+        $inputElement = '<p'.$this->html->attributes($options).'>'.e($value).'</p>';
+
+        $wrapperOptions = array('class' => $this->getRightColumnClass());
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
     }
 
     /**
