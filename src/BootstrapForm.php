@@ -482,7 +482,25 @@ class BootstrapForm
      */
     protected function getFieldOptions($options = array())
     {
-        return array_merge(array('class' => 'form-control'), $options);
+        $options['class'] = trim('form-control ' . $this->getFieldOptionsClass($options));
+
+        return $options;
+    }
+
+
+    /**
+     * Returns the class property from the options, or the empty string
+     *
+     * @param $options
+     * @return string
+     */
+    protected function getFieldOptionsClass($options)
+    {
+        if (array_key_exists('class', $options)) {
+            return $options['class'];
+        }
+
+        return '';
     }
 
 
