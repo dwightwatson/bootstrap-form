@@ -1,7 +1,7 @@
-BootstrapForm, forms for Laravel 4
+BootstrapForm, forms for Laravel 5
 ==================================
 
-This is a package for simply creating Bootstrap 3 styled form groups in Laravel 4. It extends the normal form builder to provide you with horizontal form groups completed with labels, error messages and appropriate class usage.
+This is a package for simply creating Bootstrap 3 styled form groups in Laravel 5. It extends the normal form builder to provide you with horizontal form groups completed with labels, error messages and appropriate class usage.
 
 ## Introduction
 
@@ -156,3 +156,8 @@ By simply passing an array of value/label pairs you can generate a group of chec
 
 	// Pretty simple.
 	BootstrapForm::submit('Login');
+
+### Closing the form
+
+	// Pretty simple.
+	BootstrapForm::close();
