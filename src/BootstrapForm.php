@@ -168,6 +168,8 @@ class BootstrapForm
     }
 
     /**
+     * Create a bootstrap static field
+     * 
      * @param $name
      * @param null $label
      * @param null $value
@@ -535,7 +537,7 @@ class BootstrapForm
 
         return $this->getErrors()->first($field, $format);
     }
-    
+
     /**
      * Return the error class if the given field has associated
      * errors, defaulting to the normal Bootstrap 3 error class.
