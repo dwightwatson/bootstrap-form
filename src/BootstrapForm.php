@@ -38,10 +38,10 @@ class BootstrapForm
 
 
     /**
-     * @param HtmlBuilder $html
-     * @param FormBuilder $form
-     * @param Config $config
-     * @param Session $session
+     * @param HtmlBuilder   $html
+     * @param FormBuilder   $form
+     * @param Config        $config
+     * @param Session       $session
      */
     public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config, Session $session)
 	{
@@ -50,8 +50,6 @@ class BootstrapForm
         $this->config = $config;
         $this->session = $session;
 	}
-
-
 
     /**
      * Open a form while passing a model and the routes for storing or updating
@@ -92,7 +90,6 @@ class BootstrapForm
         return $this->form->open($options);
     }
 
-
     /**
      * Close the form
      *
@@ -102,8 +99,6 @@ class BootstrapForm
     {
         return $this->form->close();
     }
-
-
 
     /**
      * Parse the model binding and set the appropriate keys for
@@ -135,8 +130,6 @@ class BootstrapForm
         return $options;
     }
 
-
-
     /**
      * @param array $options
      * @return string
@@ -147,8 +140,6 @@ class BootstrapForm
 
         return $this->open($options);
     }
-
-
 
     /**
      * Open an inline Bootstrap form.
@@ -163,8 +154,6 @@ class BootstrapForm
         return $this->open($options);
     }
 
-
-
     /**
      * Open a horizontal Bootstrap form.
      *
@@ -177,8 +166,6 @@ class BootstrapForm
 
         return $this->open($options);
     }
-
-
 
     /**
      * @param $name
@@ -200,8 +187,6 @@ class BootstrapForm
         return $this->getFormGroup($name, $label, $groupElement);
     }
 
-
-
     /**
      * Create a Bootstrap text field input.
      *
@@ -215,8 +200,6 @@ class BootstrapForm
     {
         return $this->input('text', $name, $label, $value, $options);
     }
-
-
 
     /**
      * Create a Bootstrap email field input.
@@ -232,8 +215,6 @@ class BootstrapForm
         return $this->input('email', $name, $label, $value, $options);
     }
 
-
-
     /**
      * Create a Bootstrap textarea field input.
      *
@@ -248,8 +229,6 @@ class BootstrapForm
         return $this->input('textarea', $name, $label, $value, $options);
     }
 
-
-
     /**
      * Create a Bootstrap password field input.
      *
@@ -262,8 +241,6 @@ class BootstrapForm
     {
         return $this->input('password', $name, $label, null, $options);
     }
-
-
 
     /**
      * Create a Bootstrap checkbox input.
@@ -285,8 +262,6 @@ class BootstrapForm
 
         return $inline ? $labelElement : '<div class="checkbox">'.$labelElement.'</div>';
     }
-
-
 
     /**
      * Create a collection of Bootstrap checkboxes.
@@ -313,8 +288,6 @@ class BootstrapForm
         return $this->getFormGroup($name, $label, $elements);
     }
 
-
-
     /**
      * Create a Bootstrap radio input.
      *
@@ -335,8 +308,6 @@ class BootstrapForm
 
         return $inline ? $labelElement : '<div class="radio">'.$labelElement.'</div>';
     }
-
-
 
     /**
      * Create a collection of Bootstrap radio inputs.
@@ -363,8 +334,6 @@ class BootstrapForm
         return $this->getFormGroup($name, $label, $elements);
     }
 
-
-
     /**
      * Create a Bootstrap label.
      *
@@ -380,8 +349,6 @@ class BootstrapForm
         return $this->form->label($name, $value, $options);
     }
 
-
-
     /**
      * Create a Boostrap submit button.
      *
@@ -395,8 +362,6 @@ class BootstrapForm
 
         return $this->form->submit($value, $options);
     }
-
-
 
     /**
      * Create the input group for an element with the correct classes for errors.
@@ -422,8 +387,6 @@ class BootstrapForm
         return $this->getFormGroup($name, $label, $groupElement);
     }
 
-
-
     /**
      * Get the label title for a form field, first by using the provided one
      * or titleizing the field name.
@@ -436,8 +399,6 @@ class BootstrapForm
     {
         return $label ?: Str::title($name);
     }
-
-
 
     /**
      * Get a form group comprised of a label, form element and errors.
@@ -454,8 +415,6 @@ class BootstrapForm
         return '<div '.$this->html->attributes($options).'>'.$this->label($name, $value).$element.'</div>';
     }
 
-
-
     /**
      * Merge the options provided for a form group with the default options
      * required for Bootstrap styling.
@@ -471,8 +430,6 @@ class BootstrapForm
         return array_merge(array('class' => $class), $options);
     }
 
-
-
     /**
      * Merge the options provided for a field with the default options
      * required for Bootstrap styling.
@@ -487,12 +444,11 @@ class BootstrapForm
         return $options;
     }
 
-
     /**
      * Returns the class property from the options, or the empty string
      *
-     * @param $options
-     * @return string
+     * @param   $options
+     * @return  string
      */
     protected function getFieldOptionsClass($options)
     {
@@ -502,8 +458,6 @@ class BootstrapForm
 
         return '';
     }
-
-
 
     /**
      * Merge the options provided for a label with the default options
@@ -519,8 +473,6 @@ class BootstrapForm
         return array_merge(array('class' => $class), $options);
     }
 
-
-
     /**
      * Get the default form style.
      *
@@ -530,8 +482,6 @@ class BootstrapForm
     {
         return $this->config->get('bootstrap-form::default_class');
     }
-
-
 
     /**
      * Get the column class for the left class of a horizontal form.
@@ -543,8 +493,6 @@ class BootstrapForm
         return $this->config->get('bootstrap-form::left_column');
     }
 
-
-
     /**
      * Get the column class for the right class of a horizontal form.
      *
@@ -554,8 +502,6 @@ class BootstrapForm
     {
         return $this->config->get('bootstrap-form::right_column');
     }
-
-
 
     /**
      * Get the MessageBag of errors that is populated by the
@@ -567,8 +513,6 @@ class BootstrapForm
     {
         return $this->session->get('errors');
     }
-
-
 
     /**
      * Get the first error for a given field, using the provided
@@ -591,9 +535,7 @@ class BootstrapForm
 
         return $this->getErrors()->first($field, $format);
     }
-
-
-
+    
     /**
      * Return the error class if the given field has associated
      * errors, defaulting to the normal Bootstrap 3 error class.
