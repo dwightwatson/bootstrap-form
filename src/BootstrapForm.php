@@ -36,7 +36,14 @@ class BootstrapForm
      */
     protected $session;
 
-	public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config, Session $session)
+
+    /**
+     * @param HtmlBuilder   $html
+     * @param FormBuilder   $form
+     * @param Config        $config
+     * @param Session       $session
+     */
+    public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config, Session $session)
 	{
         $this->html = $html;
 		$this->form = $form;
@@ -45,8 +52,8 @@ class BootstrapForm
 	}
 
     /**
-     * Open a form while passing a model and the routes for storing or updating 
-     * the model. This will set the correct route along with the correct 
+     * Open a form while passing a model and the routes for storing or updating
+     * the model. This will set the correct route along with the correct
      * method.
      *
      * @param  array  $options
@@ -84,6 +91,16 @@ class BootstrapForm
     }
 
     /**
+     * Close the form
+     *
+     * @return mixed
+     */
+    public function close()
+    {
+        return $this->form->close();
+    }
+
+    /**
      * Parse the model binding and set the appropriate keys for
      * routing.
      *
@@ -92,7 +109,7 @@ class BootstrapForm
      */
     protected function parseModelBinding($options)
     {
-        // If the form is passed a model, we'll use the update route to update 
+        // If the form is passed a model, we'll use the update route to update
         // the model using the PUT method.
         if (isset($options['model']) && $options['model']->getKey())
         {
@@ -113,6 +130,10 @@ class BootstrapForm
         return $options;
     }
 
+    /**
+     * @param array $options
+     * @return string
+     */
     public function openStandard(array $options = array())
     {
         $options = array_merge(array('class' => ''), $options);
@@ -146,11 +167,26 @@ class BootstrapForm
         return $this->open($options);
     }
 
+    /**
+     * Create a bootstrap static field
+     * 
+     * @param $name
+     * @param null $label
+     * @param null $value
+     * @param array $options
+     * @return string
+     */
     public function staticField($name, $label = null, $value = null, $options = array())
     {
         $options = array_merge(['class' => 'form-control-static'], $options);
 
-        return $this->text($name, $label, $value, $options);
+        $label = $this->getLabelTitle($label, $name);
+        $inputElement = '<p'.$this->html->attributes($options).'>'.e($value).'</p>';
+
+        $wrapperOptions = array('class' => $this->getRightColumnClass());
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
     }
 
     /**
@@ -216,7 +252,6 @@ class BootstrapForm
      * @param  string   $value
      * @param  boolean  $checked
      * @param  boolean  $inline
-     * @param  boolean  $wrapper
      * @param  array    $options
      * @return string
      */
@@ -233,13 +268,13 @@ class BootstrapForm
     /**
      * Create a collection of Bootstrap checkboxes.
      *
-     * @param  string   $name
-     * @param  string   $label
-     * @param  array    $choices
-     * @param  array    $values
-     * @param  array    $checkedValues
-     * @param  boolean  $inline
-     * @param  array    $options
+     * @param  string $name
+     * @param  string $label
+     * @param  array $choices
+     * @param  array $checkedValues
+     * @param  boolean $inline
+     * @param  array $options
+     * @return string
      */
     public function checkboxes($name, $label = null, $choices = array(), $checkedValues = array(), $inline = false, $options = array())
     {
@@ -263,7 +298,6 @@ class BootstrapForm
      * @param  string   $value
      * @param  boolean  $checked
      * @param  boolean  $inline
-     * @param  boolean  $wrapper
      * @param  array    $options
      * @return string
      */
@@ -283,7 +317,6 @@ class BootstrapForm
      * @param  string   $name
      * @param  string   $label
      * @param  array    $choices
-     * @param  array    $values
      * @param  string   $checkedValue
      * @param  boolean  $inline
      * @param  array    $options
@@ -408,7 +441,24 @@ class BootstrapForm
      */
     protected function getFieldOptions($options = array())
     {
-        return array_merge(array('class' => 'form-control'), $options);
+        $options['class'] = trim('form-control ' . $this->getFieldOptionsClass($options));
+
+        return $options;
+    }
+
+    /**
+     * Returns the class property from the options, or the empty string
+     *
+     * @param   $options
+     * @return  string
+     */
+    protected function getFieldOptionsClass($options)
+    {
+        if (array_key_exists('class', $options)) {
+            return $options['class'];
+        }
+
+        return '';
     }
 
     /**
@@ -432,8 +482,7 @@ class BootstrapForm
      */
     protected function getDefaultForm()
     {
-        $defaultForm = $this->config->get('bootstrap-form::default_class');
-
+        return $this->config->get('bootstrap-form::default_class');
     }
 
     /**
