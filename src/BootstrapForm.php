@@ -482,7 +482,7 @@ class BootstrapForm
      */
     protected function getDefaultForm()
     {
-        return $this->config->get('bootstrap-form::default_class');
+        return $this->config->get('bootstrap-form::default_form');
     }
 
     /**
