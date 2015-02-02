@@ -1,6 +1,6 @@
 {
     "name": "watson/bootstrap-form",
-    "description": "Laravel 4.2+ form wrappers for Bootstrap 3.",
+    "description": "Laravel 5 form wrappers for Bootstrap 3.",
     "keywords": ["laravel", "form", "bootstrap"],
     "license": "MIT",
     "authors": [
@@ -25,5 +25,5 @@
             "Watson\\BootstrapForm\\": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "dev"
 }

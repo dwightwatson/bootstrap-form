@@ -10,7 +10,7 @@ class BootstrapFormServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = false;
+    protected $defer = true;
 
     /**
      * Register the service provider.
@@ -19,6 +19,8 @@ class BootstrapFormServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__.'/config/config.php', 'bootstrap-form');
+
         $this->app->bind('bootstrap-form', function ($app) {
             return new \Watson\BootstrapForm\BootstrapForm(
                 $app['html'],
@@ -36,7 +38,9 @@ class BootstrapFormServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('watson/bootstrap-form', null, __DIR__);
+        $this->publishes([
+            __DIR__.'/config/config.php' => config_path('bootstrap-form.php')
+        ]);
     }
 
     /**
