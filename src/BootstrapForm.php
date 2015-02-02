@@ -1,4 +1,5 @@
-<?php namespace Watson\BootstrapForm;
+<?php
+namespace Watson\BootstrapForm;
 
 use Illuminate\Config\Repository as Config;
 use Illuminate\Html\HtmlBuilder;
@@ -20,7 +21,7 @@ class BootstrapForm
      *
      * @var \Illuminate\Html\FormBuilder
      */
-	protected $form;
+    protected $form;
 
     /**
      * Illuminate Repository instance.
@@ -44,12 +45,12 @@ class BootstrapForm
      * @param Session       $session
      */
     public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config, Session $session)
-	{
+    {
         $this->html = $html;
-		$this->form = $form;
+        $this->form = $form;
         $this->config = $config;
         $this->session = $session;
-	}
+    }
 
     /**
      * Open a form while passing a model and the routes for storing or updating
@@ -67,22 +68,17 @@ class BootstrapForm
         $options['role'] = 'form';
 
         // If the class hasn't been set, set the default style.
-        if ( ! isset($options['class']))
-        {
+        if ( ! isset($options['class'])) {
             $defaultForm = $this->getDefaultForm();
 
-            if ($defaultForm === 'horizontal')
-            {
+            if ($defaultForm === 'horizontal') {
                 $options['class'] = 'form-horizontal';
-            }
-            else if ($defaultForm === 'inline')
-            {
+            } elseif ($defaultForm === 'inline') {
                 $options['class'] = 'form-inline';
             }
         }
 
-        if (isset($options['model']))
-        {
+        if (isset($options['model'])) {
             return $this->form->model($options['model'], $options);
             array_forget($options, 'model');
         }
@@ -111,14 +107,12 @@ class BootstrapForm
     {
         // If the form is passed a model, we'll use the update route to update
         // the model using the PUT method.
-        if (isset($options['model']) && $options['model']->getKey())
-        {
+        if (isset($options['model']) && $options['model']->getKey()) {
             $options['route'] = array($options['update'], $options['model']->getKey());
             $options['method'] = 'put';
         }
         // Otherwise, we're storing a brand new model using the POST method.
-        else if (isset($options['store']))
-        {
+        elseif (isset($options['store'])) {
             $options['route'] = $options['store'];
             $options['method'] = 'post';
         }
@@ -169,7 +163,7 @@ class BootstrapForm
 
     /**
      * Create a bootstrap static field
-     * 
+     *
      * @param $name
      * @param null $label
      * @param null $value
@@ -280,8 +274,7 @@ class BootstrapForm
     {
         $elements = '';
 
-        foreach ($choices as $value => $choiceLabel)
-        {
+        foreach ($choices as $value => $choiceLabel) {
             $checked = in_array($value, (array) $checkedValues);
 
             $elements .= $this->checkbox($name, $choiceLabel, $value, $checked, $inline, $options);
@@ -326,8 +319,7 @@ class BootstrapForm
     {
         $elements = '';
 
-        foreach ($choices as $value => $choiceLabel)
-        {
+        foreach ($choices as $value => $choiceLabel) {
             $checked = $value === $checkedValue;
 
             $elements .= $this->radio($name, $choiceLabel, $value, $checked, $inline, $options);
@@ -530,8 +522,7 @@ class BootstrapForm
 
         $allErrors = $this->config->get('bootstrap-form::all_errors');
 
-        if ($allErrors)
-        {
+        if ($allErrors) {
             return $this->getErrors()->get($field, $format);
         }
 

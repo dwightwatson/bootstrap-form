@@ -2,18 +2,18 @@
 
 return array(
 
-	/*
+    /*
 	|--------------------------------------------------------------------------
 	| Default form
 	|--------------------------------------------------------------------------
 	|
-	| Here you may specify the default style for the form open method. You can 
+	| Here you may specify the default style for the form open method. You can
 	| set it to null for a standard form, otherwise 'horizontal' or 'inline'.
 	|
 	*/
-	'default_form' => null,
+    'default_form' => null,
 
-	/*
+    /*
 	|--------------------------------------------------------------------------
 	| Horizontal form default sizing
 	|--------------------------------------------------------------------------
@@ -22,11 +22,11 @@ return array(
 	| the horizontal form type.
 	|
 	*/
-	
-	'left_column'  => 'col-md-2',
-	'right_column' => 'col-md-10',
 
-	/*
+    'left_column'  => 'col-md-2',
+    'right_column' => 'col-md-10',
+
+    /*
 	|--------------------------------------------------------------------------
 	| Error output
 	|--------------------------------------------------------------------------
@@ -36,6 +36,6 @@ return array(
 	|
 	*/
 
-	'all_errors' => false
+    'all_errors' => false
 
 );
