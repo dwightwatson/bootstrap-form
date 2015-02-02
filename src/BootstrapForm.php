@@ -1,7 +1,7 @@
 <?php
 namespace Watson\BootstrapForm;
 
-use Illuminate\Config\Repository as Config;
+use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Html\HtmlBuilder;
 use Illuminate\Html\FormBuilder;
 use Illuminate\Session\SessionManager as Session;
