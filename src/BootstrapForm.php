@@ -1,7 +1,7 @@
 <?php
 namespace Watson\BootstrapForm;
 
-use Illuminate\Contracts\Config\Repository as Config;
+use Illuminate\Config\Repository as Config;
 use Illuminate\Html\HtmlBuilder;
 use Illuminate\Html\FormBuilder;
 use Illuminate\Session\SessionManager as Session;
@@ -12,7 +12,7 @@ class BootstrapForm
     /**
      * Illuminate HtmlBuilder instance.
      *
-     * @var \Illuminate\Html\FHtmlBuilder
+     * @var \Illuminate\Html\HtmlBuilder
      */
     protected $html;
 
@@ -173,7 +173,7 @@ class BootstrapForm
         $label = $this->getLabelTitle($label, $name);
         $inputElement = '<p'.$this->html->attributes($options).'>'.e($value).'</p>';
 
-        $wrapperOptions = array('class' => $this->getRightColumnClass());
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
         $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
@@ -247,7 +247,7 @@ class BootstrapForm
      */
     public function checkbox($name, $label, $value, $checked = null, $inline = false, $options = array())
     {
-        $labelOptions = $inline ? array('class' => 'checkbox-inline') : array();
+        $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
 
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
         $labelElement = '<label '.$this->html->attributes($labelOptions).'>'.$inputElement.$label.'</label>';
@@ -292,7 +292,7 @@ class BootstrapForm
      */
     public function radio($name, $label, $value, $checked = null, $inline = false, $options = array())
     {
-        $labelOptions = $inline ? array('class' => 'radio-inline') : array();
+        $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
 
         $inputElement = $this->form->radio($name, $value, $checked, $options);
         $labelElement = '<label '.$this->html->attributes($labelOptions).'>'.$inputElement.$label.'</label>';
@@ -348,7 +348,7 @@ class BootstrapForm
      */
     public function submit($value = null, $options = array())
     {
-        $options = array_merge(array('class' => 'btn btn-primary'), $options);
+        $options = array_merge(['class' => 'btn btn-primary'], $options);
 
         return $this->form->submit($value, $options);
     }
@@ -368,7 +368,7 @@ class BootstrapForm
         $label = $this->getLabelTitle($label, $name);
 
         $options = $this->getFieldOptions($options);
-        $wrapperOptions = array('class' => $this->getRightColumnClass());
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
 
         $inputElement = $type == 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
 
@@ -417,7 +417,7 @@ class BootstrapForm
     {
         $class = trim('form-group ' . $this->getFieldErrorClass($name));
 
-        return array_merge(array('class' => $class), $options);
+        return array_merge(['class' => $class], $options);
     }
 
     /**
@@ -442,11 +442,7 @@ class BootstrapForm
      */
     protected function getFieldOptionsClass($options)
     {
-        if (array_key_exists('class', $options)) {
-            return $options['class'];
-        }
-
-        return '';
+        return array_get($options, 'class');
     }
 
     /**
@@ -460,7 +456,7 @@ class BootstrapForm
     {
         $class = trim('control-label ' . $this->getLeftColumnClass());
 
-        return array_merge(array('class' => $class), $options);
+        return array_merge(['class' => $class], $options);
     }
 
     /**
@@ -510,19 +506,19 @@ class BootstrapForm
      *
      * @param  string  $field
      * @param  string  $format
-     * @return string
+     * @return mixed
      */
     protected function getFieldError($field, $format = '<span class="help-block">:message</span>')
     {
-        if ( ! $this->getErrors()) return;
+        if ($this->getErrors()) {
+            $allErrors = $this->config->get('bootstrap-form::all_errors');
 
-        $allErrors = $this->config->get('bootstrap-form::all_errors');
+            if ($allErrors) {
+                return $this->getErrors()->get($field, $format);
+            }
 
-        if ($allErrors) {
-            return $this->getErrors()->get($field, $format);
+            return $this->getErrors()->first($field, $format);
         }
-
-        return $this->getErrors()->first($field, $format);
     }
 
     /**
