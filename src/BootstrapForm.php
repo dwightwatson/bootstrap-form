@@ -62,8 +62,6 @@ class BootstrapForm
      */
     public function open(array $options = array())
     {
-        $options = $this->parseModelBinding($options);
-
         // Set the HTML5 role.
         $options['role'] = 'form';
 
@@ -79,8 +77,7 @@ class BootstrapForm
         }
 
         if (isset($options['model'])) {
-            return $this->form->model($options['model'], $options);
-            array_forget($options, 'model');
+            return $this->model($options);
         }
 
         return $this->form->open($options);
@@ -97,31 +94,30 @@ class BootstrapForm
     }
 
     /**
-     * Parse the model binding and set the appropriate keys for
-     * routing.
+     * Open a form configured for model binding.
      *
      * @param  array  $options
-     * @return array
+     * @return string
      */
-    protected function parseModelBinding($options)
+    protected function model($options)
     {
+        $model = $options['model'];
+
         // If the form is passed a model, we'll use the update route to update
         // the model using the PUT method.
-        if (isset($options['model']) && $options['model']->getKey()) {
-            $options['route'] = array($options['update'], $options['model']->getKey());
-            $options['method'] = 'put';
-        }
-        // Otherwise, we're storing a brand new model using the POST method.
-        elseif (isset($options['store'])) {
+        if ($options['model']->exists) {
+            $options['route'] = [$options['update'], $options['model']->getKey()];
+            $options['method'] = 'PUT';
+        } else {
+            // Otherwise, we're storing a brand new model using the POST method.
             $options['route'] = $options['store'];
-            $options['method'] = 'post';
+            $options['method'] = 'POST';
         }
 
         // Forget the routes provided to the input.
-        array_forget($options, 'update');
-        array_forget($options, 'store');
+        array_forget($options, ['model', 'update', 'store']);
 
-        return $options;
+        return $this->form->model($model, $options);
     }
 
     /**
@@ -130,7 +126,7 @@ class BootstrapForm
      */
     public function openStandard(array $options = array())
     {
-        $options = array_merge(array('class' => ''), $options);
+        $options = array_merge(['class' => null], $options);
 
         return $this->open($options);
     }
@@ -143,7 +139,7 @@ class BootstrapForm
      */
     public function openInline(array $options = array())
     {
-        $options = array_merge(array('class' => 'form-inline'), $options);
+        $options = array_merge(['class' => 'form-inline'], $options);
 
         return $this->open($options);
     }
@@ -156,7 +152,7 @@ class BootstrapForm
      */
     public function openHorizontal(array $options = array())
     {
-        $options = array_merge(array('class' => 'form-horizontal'), $options);
+        $options = array_merge(['class' => 'form-horizontal'], $options);
 
         return $this->open($options);
     }
