@@ -32,7 +32,7 @@ Of course, if there are errors for that field it will even populate them.
 
 Simply pop this in your `composer.json` file and run `composer update` (however your Composer is installed).
 
-	"watson/bootstrap-form": "0.8.*"
+	"watson/bootstrap-form": "0.9.*"
 
 _I won't hit version 1.0 until I have completed writing tests._
 
