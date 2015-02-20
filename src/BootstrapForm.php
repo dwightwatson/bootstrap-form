@@ -466,7 +466,7 @@ class BootstrapForm
      */
     protected function getDefaultForm()
     {
-        return $this->config->get('bootstrap-form::default_form');
+        return $this->config->get('bootstrap-form.default_form');
     }
 
     /**
@@ -476,7 +476,7 @@ class BootstrapForm
      */
     protected function getLeftColumnClass()
     {
-        return $this->config->get('bootstrap-form::left_column');
+        return $this->config->get('bootstrap-form.left_column');
     }
 
     /**
@@ -486,7 +486,7 @@ class BootstrapForm
      */
     protected function getRightColumnClass()
     {
-        return $this->config->get('bootstrap-form::right_column');
+        return $this->config->get('bootstrap-form.right_column');
     }
 
     /**
@@ -511,7 +511,7 @@ class BootstrapForm
     protected function getFieldError($field, $format = '<span class="help-block">:message</span>')
     {
         if ($this->getErrors()) {
-            $allErrors = $this->config->get('bootstrap-form::all_errors');
+            $allErrors = $this->config->get('bootstrap-form.all_errors');
 
             if ($allErrors) {
                 return $this->getErrors()->get($field, $format);
