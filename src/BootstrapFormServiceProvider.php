@@ -22,13 +22,17 @@ class BootstrapFormServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/config/config.php', 'bootstrap-form');
 
         $this->app->bind('bootstrap-form', function ($app) {
-            return new \Watson\BootstrapForm\BootstrapForm(
+            return new BootstrapForm(
                 $app['html'],
                 $app['form'],
                 $app['config'],
                 $app['session']
             );
         });
+
+        $this->app->booting(function ($app) {
+                $app['bootstrap-form']->register();
+            });
     }
 
     /**

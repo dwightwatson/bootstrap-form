@@ -32,25 +32,30 @@ Of course, if there are errors for that field it will even populate them.
 
 Simply pop this in your `composer.json` file and run `composer update` (however your Composer is installed).
 
-	"watson/bootstrap-form": "0.9.*"
+	"watson/bootstrap-form": "dev-master"
+
+_For L5, you need to use dev-master until a new release of the master branch has been made._
 
 _I won't hit version 1.0 until I have completed writing tests._
 
-Now, add the service provided to your `app/config/app.php` file.
+Now, add these service providers to your `app/config/app.php` file.
 
-	'Watson\BootstrapForm\BootstrapFormServiceProvider'
+        'Illuminate\Html\HtmlServiceProvider',
+        'Watson\BootstrapForm\BootstrapFormServiceProvider',
 
-And finally add this to the aliases array.
+And finally add these to the aliases array (note: Form and Html must be listed before BootstrapForm):
 
-	'BootstrapForm' => 'Watson\BootstrapForm\Facades\BootstrapForm'
+        'Form'=> 'Illuminate\Html\FormFacade',
+        'HTML'=> 'Illuminate\Html\HtmlFacade',
+        'BootstrapForm' => 'Watson\BootstrapForm\Facades\BootstrapForm',
 
-Feel free to use a different alias if you'd prefer something shorter.
+Feel free to use a different alias for BootstrapForm if you'd prefer something shorter.
 
 ## Configuration
 
-There are a number of configuration options available for BootstrapForm. Run the following Artisan command to publish the configuration option to your `config` directory.
+There are a number of configuration options available for BootstrapForm. Run the following Artisan command to publish the configuration option to your `config` directory:
 
-	php artisan config:publish watson/bootstrap-form
+	php artisan vendor:publish
 
 ### Horizontal form sizes
 
