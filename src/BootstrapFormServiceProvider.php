@@ -29,6 +29,10 @@ class BootstrapFormServiceProvider extends ServiceProvider
                 $app['session']
             );
         });
+
+        $this->app->booting(function ($app) {
+                $app['bootstrap-form']->register();
+            });        
     }
 
     /**
