@@ -32,7 +32,7 @@ class BootstrapFormServiceProvider extends ServiceProvider
 
         $this->app->booting(function ($app) {
                 $app['bootstrap-form']->register();
-            });        
+            });
     }
 
     /**
