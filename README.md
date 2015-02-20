@@ -32,7 +32,9 @@ Of course, if there are errors for that field it will even populate them.
 
 Simply pop this in your `composer.json` file and run `composer update` (however your Composer is installed).
 
-	"watson/bootstrap-form": "0.9.*"
+	"watson/bootstrap-form": "dev-master"
+
+_For L5, you need to use dev-master until a new release of the master branch has been made._
 
 _I won't hit version 1.0 until I have completed writing tests._
 
@@ -50,7 +52,7 @@ Feel free to use a different alias if you'd prefer something shorter.
 
 There are a number of configuration options available for BootstrapForm. Run the following Artisan command to publish the configuration option to your `config` directory.
 
-	php artisan config:publish watson/bootstrap-form
+	php artisan vendor:publish --provider="watson/bootstrap-form"
 
 ### Horizontal form sizes
 
