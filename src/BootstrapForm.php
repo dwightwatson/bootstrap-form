@@ -354,6 +354,31 @@ class BootstrapForm
     }
 
     /**
+     * Create a Boostrap file upload button.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  array   $options
+     * @return string
+     */
+    public function file($name, $label = null, $options = array())
+    {
+        $label = $this->getLabelTitle($label, $name);
+
+        $options = array_merge(['class' => 'filestyle', 'data-buttonBefore' => 'true'], $options);
+
+        $options = $this->getFieldOptions($options);
+
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+
+        $inputElement = $this->form->input('file', $name, null, $options);
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
+    }
+
+    /**
      * Create the input group for an element with the correct classes for errors.
      *
      * @param  string  $type
