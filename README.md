@@ -40,13 +40,13 @@ _I won't hit version 1.0 until I have completed writing tests._
 
 Now, add these service providers to your `app/config/app.php` file.
 
-        'Illuminate\Html\HtmlServiceProvider',
+        'Collective\Html\HtmlServiceProvider',
         'Watson\BootstrapForm\BootstrapFormServiceProvider',
 
 And finally add these to the aliases array (note: Form and Html must be listed before BootstrapForm):
 
-        'Form'=> 'Illuminate\Html\FormFacade',
-        'HTML'=> 'Illuminate\Html\HtmlFacade',
+        'Form'=> 'Collective\Html\FormFacade',
+        'HTML'=> 'Collective\Html\HtmlFacade',
         'BootstrapForm' => 'Watson\BootstrapForm\Facades\BootstrapForm',
 
 Feel free to use a different alias for BootstrapForm if you'd prefer something shorter.
