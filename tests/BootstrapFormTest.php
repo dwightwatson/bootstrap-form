@@ -16,8 +16,8 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->htmlBuilderMock = Mockery::mock('Illuminate\Html\HtmlBuilder');
-        $this->formBuidlerMock = Mockery::mock('Illuminate\Html\FormBuilder');
+        $this->htmlBuilderMock = Mockery::mock('Collective\Html\HtmlBuilder');
+        $this->formBuidlerMock = Mockery::mock('Collective\Html\FormBuilder');
         $this->configMock = Mockery::mock('Illuminate\Config\Repository')->shouldDeferMissing();
         $this->sessionMock = Mockery::mock('Illuminate\Session\SessionManager')->shouldDeferMissing();
 

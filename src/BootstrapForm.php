@@ -2,8 +2,8 @@
 namespace Watson\BootstrapForm;
 
 use Illuminate\Config\Repository as Config;
-use Illuminate\Html\HtmlBuilder;
-use Illuminate\Html\FormBuilder;
+use Collective\Html\HtmlBuilder;
+use Collective\Html\FormBuilder;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Support\Str;
 
@@ -12,14 +12,14 @@ class BootstrapForm
     /**
      * Illuminate HtmlBuilder instance.
      *
-     * @var \Illuminate\Html\HtmlBuilder
+     * @var \Collective\Html\HtmlBuilder
      */
     protected $html;
 
     /**
      * Illuminate FormBuilder instance.
      *
-     * @var \Illuminate\Html\FormBuilder
+     * @var \Collective\Html\FormBuilder
      */
     protected $form;
 
