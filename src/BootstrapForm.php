@@ -276,7 +276,11 @@ class BootstrapForm
             $elements .= $this->checkbox($name, $choiceLabel, $value, $checked, $inline, $options);
         }
 
-        return $this->getFormGroup($name, $label, $elements);
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$elements.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
     }
 
     /**
@@ -321,7 +325,11 @@ class BootstrapForm
             $elements .= $this->radio($name, $choiceLabel, $value, $checked, $inline, $options);
         }
 
-        return $this->getFormGroup($name, $label, $elements);
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$elements.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
     }
 
     /**
