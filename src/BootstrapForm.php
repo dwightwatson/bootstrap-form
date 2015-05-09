@@ -414,12 +414,13 @@ class BootstrapForm
 	 * Create a select box field.
 	 *
 	 * @param  string  $name
+	 * @param  string  $label
 	 * @param  array   $list
 	 * @param  string  $selected
 	 * @param  array   $options
 	 * @return string
 	 */
-    public function select($name, $list = array(), $selected = null, $options = array())
+    public function select($name, $label = null, $list = array(), $selected = null, $options = array())
     {
         $label = $this->getLabelTitle($label, $name);
 
