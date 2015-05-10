@@ -409,6 +409,30 @@ class BootstrapForm
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
+	
+	/**
+	 * Create a select box field.
+	 *
+	 * @param  string  $name
+	 * @param  string  $label
+	 * @param  array   $list
+	 * @param  string  $selected
+	 * @param  array   $options
+	 * @return string
+	 */
+    public function select($name, $label = null, $list = array(), $selected = null, $options = array())
+    {
+        $label = $this->getLabelTitle($label, $name);
+
+        $options = $this->getFieldOptions($options);
+        $wrapperOptions = ['class' => $this->getRightColumnClass()];
+
+        $inputElement = $this->form->select($name, $list, $selected, $options);
+
+        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+
+        return $this->getFormGroup($name, $label, $groupElement);
+    }
 
     /**
      * Get the label title for a form field, first by using the provided one
