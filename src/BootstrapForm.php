@@ -1,5 +1,4 @@
-<?php
-namespace Watson\BootstrapForm;
+<?php namespace Watson\BootstrapForm;
 
 use Illuminate\Config\Repository as Config;
 use Collective\Html\HtmlBuilder;
@@ -9,6 +8,7 @@ use Illuminate\Support\Str;
 
 class BootstrapForm
 {
+
     /**
      * Illuminate HtmlBuilder instance.
      *
@@ -36,14 +36,13 @@ class BootstrapForm
      * @var \Illuminate\Session\Store
      */
     protected $session;
-	
+
     /**
      * Set to true for horizontal form.
      *
-     * @bool
+     * @var bool
      */
-    protected $use_column_classes = false;
-
+    protected $horizontalForm = false;
 
     /**
      * @param HtmlBuilder   $html
@@ -73,12 +72,12 @@ class BootstrapForm
         $options['role'] = 'form';
 
         // If the class hasn't been set, set the default style.
-        if ( ! isset($options['class'])) {
+        if (!isset($options['class'])) {
             $defaultForm = $this->getDefaultForm();
 
             if ($defaultForm === 'horizontal') {
                 $options['class'] = 'form-horizontal';
-				$this->use_column_classes = true;
+                $this->horizontalForm = true;
             } elseif ($defaultForm === 'inline') {
                 $options['class'] = 'form-inline';
             }
@@ -114,7 +113,8 @@ class BootstrapForm
         // If the form is passed a model, we'll use the update route to update
         // the model using the PUT method.
         if ($options['model']->exists) {
-            $options['route'] = [$options['update'], $options['model']->getKey()];
+            $options['route'] = [$options['update'],
+                $options['model']->getKey()];
             $options['method'] = 'PUT';
         } else {
             // Otherwise, we're storing a brand new model using the POST method.
@@ -123,7 +123,9 @@ class BootstrapForm
         }
 
         // Forget the routes provided to the input.
-        array_forget($options, ['model', 'update', 'store']);
+        array_forget($options, ['model',
+            'update',
+            'store']);
 
         return $this->form->model($model, $options);
     }
@@ -161,8 +163,8 @@ class BootstrapForm
     public function openHorizontal(array $options = array())
     {
         $options = array_merge(['class' => 'form-horizontal'], $options);
-		$this->use_column_classes = true;
-		
+        $this->horizontalForm = true;
+
         return $this->open($options);
     }
 
@@ -180,14 +182,14 @@ class BootstrapForm
         $options = array_merge(['class' => 'form-control-static'], $options);
 
         $label = $this->getLabelTitle($label, $name);
-        $inputElement = '<p'.$this->html->attributes($options).'>'.e($value).'</p>';
-		
-		$wrapperOptions = [];
-		if($this->use_column_classes){
-			$wrapperOptions = ['class' => $this->getRightColumnClass()];
-		}
-		
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+        $inputElement = '<p' . $this->html->attributes($options) . '>' . e($value) . '</p>';
+
+        $wrapperOptions = [];
+        if ($this->horizontalForm) {
+            $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        }
+
+        $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
@@ -263,9 +265,9 @@ class BootstrapForm
         $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
 
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
-        $labelElement = '<label '.$this->html->attributes($labelOptions).'>'.$inputElement.$label.'</label>';
+        $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
 
-        return $inline ? $labelElement : '<div class="checkbox">'.$labelElement.'</div>';
+        return $inline ? $labelElement : '<div class="checkbox">' . $labelElement . '</div>';
     }
 
     /**
@@ -288,13 +290,13 @@ class BootstrapForm
 
             $elements .= $this->checkbox($name, $choiceLabel, $value, $checked, $inline, $options);
         }
-		
-		$wrapperOptions = [];
-		if($this->use_column_classes){
-			$wrapperOptions = ['class' => $this->getRightColumnClass()];
-		}
-        
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$elements.$this->getFieldError($name).'</div>';
+
+        $wrapperOptions = [];
+        if ($this->horizontalForm) {
+            $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        }
+
+        $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
@@ -315,9 +317,9 @@ class BootstrapForm
         $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
 
         $inputElement = $this->form->radio($name, $value, $checked, $options);
-        $labelElement = '<label '.$this->html->attributes($labelOptions).'>'.$inputElement.$label.'</label>';
+        $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
 
-        return $inline ? $labelElement : '<div class="radio">'.$labelElement.'</div>';
+        return $inline ? $labelElement : '<div class="radio">' . $labelElement . '</div>';
     }
 
     /**
@@ -340,12 +342,12 @@ class BootstrapForm
 
             $elements .= $this->radio($name, $choiceLabel, $value, $checked, $inline, $options);
         }
-		$wrapperOptions = [];
-		if($this->use_column_classes){
-			$wrapperOptions = ['class' => $this->getRightColumnClass()];
-		}
-        
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$elements.$this->getFieldError($name).'</div>';
+        $wrapperOptions = [];
+        if ($this->horizontalForm) {
+            $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        }
+
+        $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
@@ -391,17 +393,18 @@ class BootstrapForm
     {
         $label = $this->getLabelTitle($label, $name);
 
-        $options = array_merge(['class' => 'filestyle', 'data-buttonBefore' => 'true'], $options);
+        $options = array_merge(['class' => 'filestyle',
+            'data-buttonBefore' => 'true'], $options);
 
         $options = $this->getFieldOptions($options);
-		$wrapperOptions = [];
-		if($this->use_column_classes){
-			$wrapperOptions = ['class' => $this->getRightColumnClass()];
-		}
+        $wrapperOptions = [];
+        if ($this->horizontalForm) {
+            $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        }
 
         $inputElement = $this->form->input('file', $name, null, $options);
 
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+        $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
@@ -422,41 +425,41 @@ class BootstrapForm
 
         $options = $this->getFieldOptions($options);
         $wrapperOptions = [];
-		if($this->use_column_classes){
-			$wrapperOptions = ['class' => $this->getRightColumnClass()];
-		}
+        if ($this->horizontalForm) {
+            $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        }
 
         $inputElement = $type == 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
 
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+        $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
-	
-	/**
-	 * Create a select box field.
-	 *
-	 * @param  string  $name
-	 * @param  string  $label
-	 * @param  array   $list
-	 * @param  string  $selected
-	 * @param  array   $options
-	 * @return string
-	 */
+
+    /**
+     * Create a select box field.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  array   $list
+     * @param  string  $selected
+     * @param  array   $options
+     * @return string
+     */
     public function select($name, $label = null, $list = array(), $selected = null, $options = array())
     {
         $label = $this->getLabelTitle($label, $name);
 
         $options = $this->getFieldOptions($options);
-		
+
         $wrapperOptions = [];
-		if($this->use_column_classes){
-			$wrapperOptions = ['class' => $this->getRightColumnClass()];
-		}
+        if ($this->horizontalForm) {
+            $wrapperOptions = ['class' => $this->getRightColumnClass()];
+        }
 
         $inputElement = $this->form->select($name, $list, $selected, $options);
 
-        $groupElement = '<div '.$this->html->attributes($wrapperOptions).'>'.$inputElement.$this->getFieldError($name).'</div>';
+        $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroup($name, $label, $groupElement);
     }
@@ -471,7 +474,7 @@ class BootstrapForm
      */
     protected function getLabelTitle($label, $name)
     {
-        return $label ?: Str::title($name);
+        return $label ? : Str::title($name);
     }
 
     /**
@@ -486,7 +489,7 @@ class BootstrapForm
     {
         $options = $this->getFormGroupOptions($name);
 
-        return '<div '.$this->html->attributes($options).'>'.$this->label($name, $value).$element.'</div>';
+        return '<div ' . $this->html->attributes($options) . '>' . $this->label($name, $value) . $element . '</div>';
     }
 
     /**
@@ -539,9 +542,9 @@ class BootstrapForm
     protected function getLabelOptions($options = array())
     {
         $class = 'control-label';
-		if($this->use_column_classes){
-			$class .= ' '.$this->getLeftColumnClass();
-		}
+        if ($this->horizontalForm) {
+            $class .= ' ' . $this->getLeftColumnClass();
+        }
 
         return array_merge(['class' => trim($class)], $options);
     }
