@@ -1,5 +1,4 @@
-<?php
-namespace Watson\BootstrapForm;
+<?php namespace Watson\BootstrapForm;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -31,8 +30,8 @@ class BootstrapFormServiceProvider extends ServiceProvider
         });
 
         $this->app->booting(function ($app) {
-                $app['bootstrap-form']->register();
-            });
+            $app['bootstrap-form']->register();
+        });
     }
 
     /**

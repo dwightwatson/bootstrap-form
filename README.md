@@ -77,7 +77,7 @@ BoostrapForm has improved the process of opening forms, both in terms of providi
 	// binded form.
 	$user = User::whereEmail('example@example.com')->first();
 
-	BootstrapForm::open(array('model' => $user, 'store' => 'users.store', 'update' => 'users.update'));
+	BootstrapForm::open(['model' => $user, 'store' => 'users.store', 'update' => 'users.update']);
 
 If a model is passed to the open method, it will be configured to use the `update` route with the `PUT` method. Otherwise it will point to the `store` method as a `POST` request. This way you can use the same opening tag for a form that handles creating and saving.
 
@@ -137,19 +137,19 @@ By simply passing an array of value/label pairs you can generate a group of chec
 
 	$label = 'this is just a label';
 
-	$interests = array(
+	$interests = [
 		'laravel' => 'Laravel',
 		'rails'   => 'Rails',
 		'ie6'     => 'Internet Explorer 6'
-	);
+	];
 
 	// Checkbox inputs with Laravel and Rails selected.
-	BootstrapForm::checkboxes('interests', $label, $interests, array('laravel', 'rails'));
+	BootstrapForm::checkboxes('interests', $label, $interests, ['laravel', 'rails']);
 
-	$genders = array(
+	$genders = [
 		'male'   => 'Male',
 		'female' => 'Female'
-	);
+	];
 
 	// Gender inputs inline, 'Gender' label inferred.
 	BootstrapForm::radios('gender', null, $genders, null, true);
