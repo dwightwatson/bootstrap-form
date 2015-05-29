@@ -87,14 +87,18 @@ If a model is passed to the open method, it will be configured to use the `updat
 
 There are a few helpers for opening the different kinds of Bootstrap forms. By default, `open()` will use the the form style that you have set in the configuration file. These helpers take the same input as the `open()` method.
 
-    // Open a plain Bootstrap form.
-    BootstrapForm::openStandard();
+    // Open a vertical Bootstrap form.
+    BootstrapForm::openVertical();
 
     // Open an inline Bootstrap form.
     BootstrapForm::openInline();
 
     // Open a horizontal Bootstrap form.
     BootstrapForm::openHorizontal();
+
+If you want to change the columns for a form for a deviation from the settings in your configuration file, you can also set them through the `$options` array.
+
+    BootstrapForm::open(['left_column_class' => 'col-md-2', 'left_column_offset_clsas' => 'col-md-offset-2', 'right_column_class' => 'col-md-10'])
 
 ### Text inputs
 

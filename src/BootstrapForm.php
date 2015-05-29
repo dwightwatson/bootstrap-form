@@ -94,13 +94,19 @@ class BootstrapForm
             $this->setLeftColumnClass($options['left_column_class']);
         }
 
+        if (isset($options['left_column_offset_class'])) {
+            $this->setLeftColumnOffsetClass($options['left_column_offset_class']);
+        }
+
         if (isset($options['right_column_class'])) {
             $this->setRightColumnClass($options['right_column_class']);
         }
 
-        if (isset($options['left_column_offset_class'])) {
-            $this->setLeftColumnOffsetClass($options['left_column_offset_class']);
-        }
+        array_forget($options, [
+            'left_column_class', 
+            'left_column_offset_class', 
+            'right_column_class'
+        ]);
 
         if (isset($options['model'])) {
             return $this->model($options);
