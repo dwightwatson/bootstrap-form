@@ -79,7 +79,11 @@ BoostrapForm has improved the process of opening forms, both in terms of providi
     // binded form.
     $user = User::whereEmail('example@example.com')->first();
 
+    // Named routes
     BootstrapForm::open(['model' => $user, 'store' => 'users.store', 'update' => 'users.update']);
+
+    // COntroller actions
+    BootstrapForm::open(['model' => $user, 'store' => 'UsersController@store', 'update' => 'UsersController@update']);
 
 If a model is passed to the open method, it will be configured to use the `update` route with the `PUT` method. Otherwise it will point to the `store` method as a `POST` request. This way you can use the same opening tag for a form that handles creating and saving.
 
