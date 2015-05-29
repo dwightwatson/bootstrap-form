@@ -98,6 +98,10 @@ class BootstrapForm
             $this->setRightColumnClass($options['right_column_class']);
         }
 
+        if (isset($options['left_column_offset_class'])) {
+            $this->setLeftColumnOffsetClass($options['left_column_offset_class']);
+        }
+
         if (isset($options['model'])) {
             return $this->model($options);
         }

@@ -117,15 +117,10 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
         $this->formBuidlerMock->shouldReceive('open')
             ->with([
                 'role' => 'form',
-                'class' => 'form-horizontal',
+                'class' => '',
             ])
             ->once()
             ->andReturn('foo');
-
-        $this->configMock->shouldReceive('get')
-            ->with('bootstrap_form.type')
-            ->once()
-            ->andReturn('form-horizontal');
 
         $result = $this->bootstrapForm->openVertical();
 
