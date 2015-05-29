@@ -1,6 +1,12 @@
 BootstrapForm, forms for Laravel 5
 ==================================
 
+[![Total Downloads](https://poser.pugx.org/watson/bootstrap-form/downloads.svg)](https://packagist.org/packages/watson/bootstrap-form)
+[![Latest Stable Version](https://poser.pugx.org/watson/bootstrap-form/v/stable.svg)](https://packagist.org/packages/watson/bootstrap-form)
+[![Latest Unstable Version](https://poser.pugx.org/watson/bootstrap-form/v/unstable.svg)](https://packagist.org/packages/watson/bootstrap-form)
+[![License](https://poser.pugx.org/watson/bootstrap-form/license.svg)](https://packagist.org/packages/watson/bootstrap-form)
+
+
 This is a package for simply creating Bootstrap 3 styled form groups in Laravel 5. It extends the normal form builder to provide you with horizontal form groups completed with labels, error messages and appropriate class usage.
 
 ## Introduction
@@ -32,7 +38,7 @@ Of course, if there are errors for that field it will even populate them.
 
 Simply pop this in your `composer.json` file and run `composer update` (however your Composer is installed).
 
-    "watson/bootstrap-form": "~1.0"
+    "watson/bootstrap-form": "dev-master"
 
 Now, add these service providers to your `app/config/app.php` file.
 
