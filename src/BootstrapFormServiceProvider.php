@@ -18,19 +18,10 @@ class BootstrapFormServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/config.php', 'bootstrap-form');
+        $this->mergeConfigFrom(__DIR__.'/config/config.php', 'bootstrap_form');
 
-        $this->app->bind('bootstrap-form', function ($app) {
-            return new BootstrapForm(
-                $app['html'],
-                $app['form'],
-                $app['config'],
-                $app['session']
-            );
-        });
-
-        $this->app->booting(function ($app) {
-            $app['bootstrap-form']->register();
+        $this->app->bindShared('bootstrap_form', function($app) {
+            return new BootstrapForm($app['html'], $app['form'], $app['config']);
         });
     }
 
@@ -42,8 +33,8 @@ class BootstrapFormServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/config.php' => config_path('bootstrap-form.php')
-        ]);
+            __DIR__.'/config/config.php' => config_path('bootstrap_form.php')
+        ], 'config');
     }
 
     /**
@@ -53,6 +44,6 @@ class BootstrapFormServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['bootstrap-form'];
+        return ['bootstrap_form'];
     }
 }

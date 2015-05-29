@@ -1,8 +1,8 @@
 <?php namespace Watson\BootstrapForm;
 
-use Illuminate\Config\Repository as Config;
-use Collective\Html\HtmlBuilder;
 use Collective\Html\FormBuilder;
+use Collective\Html\HtmlBuilder;
+use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Support\Str;
 
@@ -30,31 +30,46 @@ class BootstrapForm
     protected $config;
 
     /**
-     * Illuminate SessionManager instance.
+     * Bootstrap form type class.
      *
-     * @var \Illuminate\Session\Store
+     * @var string
      */
-    protected $session;
+    protected $type;
 
     /**
-     * Set to true for horizontal form.
+     * Bootstrap form left column class.
      *
-     * @var bool
+     * @var string
      */
-    protected $horizontalForm = false;
+    protected $leftColumnClass;
 
     /**
-     * @param HtmlBuilder   $html
-     * @param FormBuilder   $form
-     * @param Config        $config
-     * @param Session       $session
+     * Bootstrap form left column offset class.
+     *
+     * @var string
      */
-    public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config, Session $session)
+    protected $leftColumnOffsetClass;
+
+    /**
+     * Bootstrap form right column class.
+     *
+     * @var string
+     */
+    protected $rightColumnClass;
+
+    /**
+     * Construct the class.
+     *
+     * @param  \Collective\Html\HtmlBuilder             $html
+     * @param  \Collective\Html\FormBuilder             $form
+     * @param  \Illuminate\Contracts\Config\Repository  $config
+     * @return void
+     */
+    public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config)
     {
         $this->html = $html;
         $this->form = $form;
         $this->config = $config;
-        $this->session = $session;
     }
 
     /**
@@ -70,16 +85,17 @@ class BootstrapForm
         // Set the HTML5 role.
         $options['role'] = 'form';
 
-        // If the class hasn't been set, set the default style.
-        if (!isset($options['class'])) {
-            $defaultForm = $this->getDefaultForm();
+        // Set the class for the form type.
+        if (!isset($options['type'])) {
+            $options['class'] = $this->getType();
+        }
 
-            if ($defaultForm === 'horizontal') {
-                $options['class'] = 'form-horizontal';
-                $this->horizontalForm = true;
-            } elseif ($defaultForm === 'inline') {
-                $options['class'] = 'form-inline';
-            }
+        if (isset($options['left_column_class'])) {
+            $this->setLeftColumnClass($options['left_column_class']);
+        }
+
+        if (isset($options['right_column_class'])) {
+            $this->setRightColumnClass($options['right_column_class']);
         }
 
         if (isset($options['model'])) {
@@ -90,12 +106,16 @@ class BootstrapForm
     }
 
     /**
-     * Close the form
+     * Reset and close the form.
      *
-     * @return mixed
+     * @return string
      */
     public function close()
     {
+        $this->type = null;
+
+        $this->leftColumnClass = $this->rightColumnClass = null;
+
         return $this->form->close();
     }
 
@@ -127,14 +147,28 @@ class BootstrapForm
     }
 
     /**
-     * @param array $options
+     * Open a vertical (standard) Bootstrap form.
+     *
+     * @param  array  $options
+     * @return string
+     */
+    public function openVertical(array $options = [])
+    {
+        $this->setType(Type::VERTICAL);
+
+        return $this->open($options);
+    }
+
+    /**
+     * Legacy wrapper for openVertical().
+     *
+     * @deprecated
+     * @param  array  $options
      * @return string
      */
     public function openStandard(array $options = [])
     {
-        $options = array_merge(['class' => null], $options);
-
-        return $this->open($options);
+        return $this->openVertical($options);
     }
 
     /**
@@ -145,7 +179,7 @@ class BootstrapForm
      */
     public function openInline(array $options = [])
     {
-        $options = array_merge(['class' => 'form-inline'], $options);
+        $this->setType(Type::INLINE);
 
         return $this->open($options);
     }
@@ -158,8 +192,7 @@ class BootstrapForm
      */
     public function openHorizontal(array $options = [])
     {
-        $options = array_merge(['class' => 'form-horizontal'], $options);
-        $this->horizontalForm = true;
+        $this->setType(Type::HORIZONTAL);
 
         return $this->open($options);
     }
@@ -167,13 +200,13 @@ class BootstrapForm
     /**
      * Create a bootstrap static field
      *
-     * @param $name
-     * @param null $label
-     * @param null $value
-     * @param array $options
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $value
+     * @param  array   $options
      * @return string
      */
-    public function staticField($name, $label = null, $value = null, $options = [])
+    public function staticField($name, $label = null, $value = null, array $options = [])
     {
         $options = array_merge(['class' => 'form-control-static'], $options);
 
@@ -181,13 +214,13 @@ class BootstrapForm
         $inputElement = '<p' . $this->html->attributes($options) . '>' . e($value) . '</p>';
 
         $wrapperOptions = [];
-        if ($this->horizontalForm) {
+        if ($this->getForm() === Form::HORIZONTAL) {
             $wrapperOptions = ['class' => $this->getRightColumnClass()];
         }
 
         $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
-        return $this->getFormGroup($name, $label, $groupElement);
+        return $this->getFormGroupWithLabel($name, $label, $groupElement);
     }
 
     /**
@@ -199,7 +232,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function text($name, $label = null, $value = null, $options = [])
+    public function text($name, $label = null, $value = null, array $options = [])
     {
         return $this->input('text', $name, $label, $value, $options);
     }
@@ -213,7 +246,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function email($name = 'email', $label = null, $value = null, $options = [])
+    public function email($name = 'email', $label = null, $value = null, array $options = [])
     {
         return $this->input('email', $name, $label, $value, $options);
     }
@@ -227,7 +260,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function textarea($name, $label = null, $value = null, $options = [])
+    public function textarea($name, $label = null, $value = null, array $options = [])
     {
         return $this->input('textarea', $name, $label, $value, $options);
     }
@@ -240,7 +273,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function password($name = 'password', $label = null, $options = [])
+    public function password($name = 'password', $label = null, array $options = [])
     {
         return $this->input('password', $name, $label, null, $options);
     }
@@ -251,12 +284,12 @@ class BootstrapForm
      * @param  string   $name
      * @param  string   $label
      * @param  string   $value
-     * @param  boolean  $checked
-     * @param  boolean  $inline
+     * @param  bool     $checked
+     * @param  bool     $inline
      * @param  array    $options
      * @return string
      */
-    public function checkbox($name, $label, $value, $checked = null, $inline = false, $options = [])
+    public function checkbox($name, $label, $value, $checked = null, $inline = false, array $options = [])
     {
         $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
 
@@ -269,15 +302,15 @@ class BootstrapForm
     /**
      * Create a collection of Bootstrap checkboxes.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  array $choices
-     * @param  array $checkedValues
-     * @param  boolean $inline
-     * @param  array $options
+     * @param  string  $name
+     * @param  string  $label
+     * @param  array   $choices
+     * @param  array   $checkedValues
+     * @param  bool    $inline
+     * @param  array   $options
      * @return string
      */
-    public function checkboxes($name, $label = null, $choices = [], $checkedValues = [], $inline = false, $options = [])
+    public function checkboxes($name, $label = null, $choices = [], $checkedValues = [], $inline = false, array $options = [])
     {
         $elements = '';
 
@@ -288,13 +321,13 @@ class BootstrapForm
         }
 
         $wrapperOptions = [];
-        if ($this->horizontalForm) {
+        if ($this->getType() === Type::HORIZONTAL) {
             $wrapperOptions = ['class' => $this->getRightColumnClass()];
         }
 
         $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . '</div>';
 
-        return $this->getFormGroup($name, $label, $groupElement);
+        return $this->getFormGroupWithLabel($name, $label, $groupElement);
     }
 
     /**
@@ -303,12 +336,12 @@ class BootstrapForm
      * @param  string   $name
      * @param  string   $label
      * @param  string   $value
-     * @param  boolean  $checked
-     * @param  boolean  $inline
+     * @param  bool     $checked
+     * @param  bool     $inline
      * @param  array    $options
      * @return string
      */
-    public function radio($name, $label, $value, $checked = null, $inline = false, $options = [])
+    public function radio($name, $label, $value, $checked = null, $inline = false, array $options = [])
     {
         $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
 
@@ -321,15 +354,15 @@ class BootstrapForm
     /**
      * Create a collection of Bootstrap radio inputs.
      *
-     * @param  string   $name
-     * @param  string   $label
-     * @param  array    $choices
-     * @param  string   $checkedValue
-     * @param  boolean  $inline
-     * @param  array    $options
+     * @param  string  $name
+     * @param  string  $label
+     * @param  array   $choices
+     * @param  string  $checkedValue
+     * @param  bool    $inline
+     * @param  array   $options
      * @return string
      */
-    public function radios($name, $label = null, $choices = [], $checkedValue = null, $inline = false, $options = [])
+    public function radios($name, $label = null, $choices = [], $checkedValue = null, $inline = false, array $options = [])
     {
         $elements = '';
 
@@ -339,13 +372,13 @@ class BootstrapForm
             $elements .= $this->radio($name, $choiceLabel, $value, $checked, $inline, $options);
         }
         $wrapperOptions = [];
-        if ($this->horizontalForm) {
+        if ($this->getType() === Type::HORIZONTAL) {
             $wrapperOptions = ['class' => $this->getRightColumnClass()];
         }
 
         $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . '</div>';
 
-        return $this->getFormGroup($name, $label, $groupElement);
+        return $this->getFormGroupWithLabel($name, $label, $groupElement);
     }
 
     /**
@@ -356,7 +389,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function label($name, $value = null, $options = [])
+    public function label($name, $value = null, array $options = [])
     {
         $options = $this->getLabelOptions($options);
 
@@ -370,11 +403,20 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function submit($value = null, $options = [])
+    public function submit($value = null, array $options = [])
     {
         $options = array_merge(['class' => 'btn btn-primary'], $options);
 
-        return $this->form->submit($value, $options);
+        $wrapperOptions = [];
+        if ($this->getType() === Type::HORIZONTAL) {
+            $wrapperOptions = ['class' => $this->getLeftColumnOffsetClass() . ' ' . $this->getRightColumnClass()];
+        }
+
+        $inputElement = $this->form->submit($value, $options);
+
+        $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>'. $inputElement . '</div>';
+
+        return $this->getFormGroup(null, $groupElement);
     }
 
     /**
@@ -385,7 +427,7 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function file($name, $label = null, $options = [])
+    public function file($name, $label = null, array $options = [])
     {
         $label = $this->getLabelTitle($label, $name);
 
@@ -393,7 +435,7 @@ class BootstrapForm
 
         $options = $this->getFieldOptions($options);
         $wrapperOptions = [];
-        if ($this->horizontalForm) {
+        if ($this->getType() === Type::HORIZONTAL) {
             $wrapperOptions = ['class' => $this->getRightColumnClass()];
         }
 
@@ -401,7 +443,7 @@ class BootstrapForm
 
         $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
-        return $this->getFormGroup($name, $label, $groupElement);
+        return $this->getFormGroupWithLabel($name, $label, $groupElement);
     }
 
     /**
@@ -414,13 +456,13 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function input($type, $name, $label = null, $value = null, $options = [])
+    public function input($type, $name, $label = null, $value = null, array $options = [])
     {
         $label = $this->getLabelTitle($label, $name);
 
         $options = $this->getFieldOptions($options);
         $wrapperOptions = [];
-        if ($this->horizontalForm) {
+        if ($this->getType() === Type::HORIZONTAL) {
             $wrapperOptions = ['class' => $this->getRightColumnClass()];
         }
 
@@ -428,7 +470,7 @@ class BootstrapForm
 
         $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
-        return $this->getFormGroup($name, $label, $groupElement);
+        return $this->getFormGroupWithLabel($name, $label, $groupElement);
     }
 
     /**
@@ -441,14 +483,14 @@ class BootstrapForm
      * @param  array   $options
      * @return string
      */
-    public function select($name, $label = null, $list = [], $selected = null, $options = [])
+    public function select($name, $label = null, $list = [], $selected = null, array $options = [])
     {
         $label = $this->getLabelTitle($label, $name);
 
         $options = $this->getFieldOptions($options);
 
         $wrapperOptions = [];
-        if ($this->horizontalForm) {
+        if ($this->getType() === Type::HORIZONTAL) {
             $wrapperOptions = ['class' => $this->getRightColumnClass()];
         }
 
@@ -456,7 +498,7 @@ class BootstrapForm
 
         $groupElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
-        return $this->getFormGroup($name, $label, $groupElement);
+        return $this->getFormGroupWithLabel($name, $label, $groupElement);
     }
 
     /**
@@ -480,11 +522,25 @@ class BootstrapForm
      * @param  string  $element
      * @return string
      */
-    protected function getFormGroup($name, $value, $element)
+    protected function getFormGroupWithLabel($name, $value, $element)
     {
         $options = $this->getFormGroupOptions($name);
 
         return '<div ' . $this->html->attributes($options) . '>' . $this->label($name, $value) . $element . '</div>';
+    }
+
+    /**
+     * Get a form group.
+     *
+     * @param  string  $name
+     * @param  string  $element
+     * @return string
+     */
+    public function getFormGroup($name = null, $element)
+    {
+        $options = $this->getFormGroupOptions($name);
+
+        return '<div ' . $this->html->attributes($options) . '>' . $element . '</div>';
     }
 
     /**
@@ -495,9 +551,13 @@ class BootstrapForm
      * @param  array  $options
      * @return array
      */
-    protected function getFormGroupOptions($name, $options = [])
+    protected function getFormGroupOptions($name = null, array $options = [])
     {
-        $class = trim('form-group ' . $this->getFieldErrorClass($name));
+        $class = 'form-group';
+
+        if ($name) {
+            $class .= ' ' . $this->getFieldErrorClass($name);
+        }
 
         return array_merge(['class' => $class], $options);
     }
@@ -509,7 +569,7 @@ class BootstrapForm
      * @param  array  $options
      * @return array
      */
-    protected function getFieldOptions($options = [])
+    protected function getFieldOptions(array $options = [])
     {
         $options['class'] = trim('form-control ' . $this->getFieldOptionsClass($options));
 
@@ -519,10 +579,10 @@ class BootstrapForm
     /**
      * Returns the class property from the options, or the empty string
      *
-     * @param   $options
+     * @param   array  $options
      * @return  string
      */
-    protected function getFieldOptionsClass($options)
+    protected function getFieldOptionsClass(array $options = [])
     {
         return array_get($options, 'class');
     }
@@ -534,44 +594,98 @@ class BootstrapForm
      * @param  array  $options
      * @return array
      */
-    protected function getLabelOptions($options = [])
+    protected function getLabelOptions(array $options = [])
     {
         $class = 'control-label';
-        if ($this->horizontalForm) {
+        if ($this->getType() === Type::HORIZONTAL) {
             $class .= ' ' . $this->getLeftColumnClass();
         }
 
         return array_merge(['class' => trim($class)], $options);
     }
 
-    /**
-     * Get the default form style.
+    /** 
+     * Get the form type.
      *
      * @return string
      */
-    protected function getDefaultForm()
+    public function getType()
     {
-        return $this->config->get('bootstrap-form.default_form');
+        return $this->type ?: $this->config->get('bootstrap_form.type');
+    }
+
+    /** 
+     * Set the form type.
+     *
+     * @param  string  $type
+     * @return void
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 
     /**
-     * Get the column class for the left class of a horizontal form.
+     * Get the column class for the left column of a horizontal form.
      *
      * @return string
      */
-    protected function getLeftColumnClass()
+    public function getLeftColumnClass()
     {
-        return $this->config->get('bootstrap-form.left_column');
+        return $this->leftColumnClass ?: $this->config->get('bootstrap_form.left_column_class');
     }
 
     /**
-     * Get the column class for the right class of a horizontal form.
+     * Set the column class for the left column of a horizontal form.
+     *
+     * @param  string  $class
+     * @return void
+     */
+    public function setLeftColumnClass($class)
+    {
+        $this->leftColumnClass = $class;
+    }
+
+    /**
+     * Get the column class for the left column offset of a horizontal form.
      *
      * @return string
      */
-    protected function getRightColumnClass()
+    public function getLeftColumnOffsetClass()
     {
-        return $this->config->get('bootstrap-form.right_column');
+        return $this->leftColumnOffsetClass ?: $this->config->get('bootstrap_form.left_column_offset_class');
+    }
+
+    /**
+     * Set the column class for the left column offset of a horizontal form.
+     *
+     * @param  string  $class
+     * @return void
+     */
+    public function setLeftColumnOffsetClass($class)
+    {
+        $this->leftColumnOffsetClass = $class;
+    }
+
+    /**
+     * Get the column class for the right column of a horizontal form.
+     *
+     * @return string
+     */
+    public function getRightColumnClass()
+    {
+        return $this->rightColumnClass ?: $this->config->get('bootstrap_form.right_column_class');
+    }
+
+    /**
+     * Set the column class for the right column of a horizontal form.
+     *
+     * @param  string  $lcass
+     * @return void
+     */
+    public function setRightColumnClass($class)
+    {
+        $this->rightColumnClass = $class;
     }
 
     /**
@@ -582,7 +696,7 @@ class BootstrapForm
      */
     protected function getErrors()
     {
-        return $this->session->get('errors');
+        return $this->form->getSessionStore()->get('errors');
     }
 
     /**
@@ -596,7 +710,7 @@ class BootstrapForm
     protected function getFieldError($field, $format = '<span class="help-block">:message</span>')
     {
         if ($this->getErrors()) {
-            $allErrors = $this->config->get('bootstrap-form.all_errors');
+            $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
             if ($allErrors) {
                 return $this->getErrors()->get($field, $format);
@@ -617,5 +731,17 @@ class BootstrapForm
     protected function getFieldErrorClass($field, $class = 'has-error')
     {
         return $this->getFieldError($field) ? $class : null;
+    }
+
+    /**
+     * Let method calls fall through to the form builder.
+     *
+     * @param  string  $name
+     * @param  array   $arguments
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array([$this->form, $method], $arguments);
     }
 }

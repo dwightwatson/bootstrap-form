@@ -18,7 +18,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
     {
         $this->htmlBuilderMock = Mockery::mock('Collective\Html\HtmlBuilder');
         $this->formBuidlerMock = Mockery::mock('Collective\Html\FormBuilder');
-        $this->configMock = Mockery::mock('Illuminate\Config\Repository')->shouldDeferMissing();
+        $this->configMock = Mockery::mock('Illuminate\Contracts\Config\Repository')->shouldDeferMissing();
         $this->sessionMock = Mockery::mock('Illuminate\Session\SessionManager')->shouldDeferMissing();
 
         $this->bootstrapForm = new BootstrapForm(
@@ -33,13 +33,14 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
     public function it_opens_default_form()
     {
         $this->formBuidlerMock->shouldReceive('open')->once()->with([
-            'role' => 'form'
+            'role' => 'form',
+            'class' => 'form-horizontal'
         ])->andReturn('foo');
 
         $this->configMock->shouldReceive('get')
-            ->with('bootstrap-form::default_form')
+            ->with('bootstrap_form.type')
             ->once()
-            ->andReturn(null);
+            ->andReturn('form-horizontal');
 
         $result = $this->bootstrapForm->open();
 
@@ -57,9 +58,15 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
             ->with($model, [
                 'role' => 'form',
                 'route' => 'bar',
-                'method' => 'POST'
+                'method' => 'POST',
+                'class' => 'form-horizontal',
             ])
             ->andReturn('foo');
+
+        $this->configMock->shouldReceive('get')
+            ->with('bootstrap_form.type')
+            ->once()
+            ->andReturn('form-horizontal');
 
         $result = $this->bootstrapForm->open([
             'model' => $model,
@@ -85,9 +92,15 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
             ->with($model, [
                 'role' => 'form',
                 'route' => ['baz', 1],
-                'method' => 'PUT'
+                'method' => 'PUT',
+                'class' => 'form-horizontal',
             ])
             ->andReturn('foo');
+
+        $this->configMock->shouldReceive('get')
+            ->with('bootstrap_form.type')
+            ->once()
+            ->andReturn('form-horizontal');
 
         $result = $this->bootstrapForm->open([
             'model' => $model,
@@ -99,17 +112,22 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_opens_a_standard_form()
+    public function it_opens_a_vertical_form()
     {
         $this->formBuidlerMock->shouldReceive('open')
             ->with([
-                'class' => '',
-                'role' => 'form'
+                'role' => 'form',
+                'class' => 'form-horizontal',
             ])
             ->once()
             ->andReturn('foo');
 
-        $result = $this->bootstrapForm->openStandard();
+        $this->configMock->shouldReceive('get')
+            ->with('bootstrap_form.type')
+            ->once()
+            ->andReturn('form-horizontal');
+
+        $result = $this->bootstrapForm->openVertical();
 
         $this->assertEquals('foo', $result);
     }
