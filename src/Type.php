@@ -5,9 +5,9 @@ class Type
     /**
      * Vertical form class.
      *
-     * @var null
+     * @var string
      */
-    const VERTICAL = null;
+    const VERTICAL = '';
 
     /**
      * Horizontal form class.

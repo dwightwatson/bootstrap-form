@@ -86,7 +86,7 @@ class BootstrapForm
         $options['role'] = 'form';
 
         // Set the class for the form type.
-        if (!isset($options['type'])) {
+        if (!isset($options['class'])) {
             $options['class'] = $this->getType();
         }
 
@@ -611,7 +611,7 @@ class BootstrapForm
      */
     public function getType()
     {
-        return $this->type ?: $this->config->get('bootstrap_form.type');
+        return isset($this->type) ? $this->type : $this->config->get('bootstrap_form.type');
     }
 
     /** 
