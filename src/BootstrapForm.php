@@ -723,7 +723,7 @@ class BootstrapForm
             $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
             if ($allErrors) {
-                return $this->getErrors()->get($field, $format);
+                return implode('', $this->getErrors()->get($field, $format));
             }
 
             return $this->getErrors()->first($field, $format);
