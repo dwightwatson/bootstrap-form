@@ -142,11 +142,15 @@ class BootstrapForm
         // If the form is passed a model, we'll use the update route to update
         // the model using the PUT method.
         if ($options['model']->exists) {
-            $options['route'] = [$options['update'], $options['model']->getKey()];
+            $route = Str::contains($options['update'], '@') ? 'action' : 'route';
+
+            $options[$route] = [$options['update'], $options['model']->getKey()];
             $options['method'] = 'PUT';
         } else {
             // Otherwise, we're storing a brand new model using the POST method.
-            $options['route'] = $options['store'];
+            $route = Str::contains($options['store'], '@') ? 'action' : 'route';
+
+            $options[$route] = $options['store'];
             $options['method'] = 'POST';
         }
 
@@ -741,17 +745,5 @@ class BootstrapForm
     protected function getFieldErrorClass($field, $class = 'has-error')
     {
         return $this->getFieldError($field) ? $class : null;
-    }
-
-    /**
-     * Let method calls fall through to the form builder.
-     *
-     * @param  string  $name
-     * @param  array   $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments)
-    {
-        return call_user_func_array([$this->form, $method], $arguments);
     }
 }
