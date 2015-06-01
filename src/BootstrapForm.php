@@ -303,14 +303,27 @@ class BootstrapForm
      * @param  array    $options
      * @return string
      */
-    public function checkbox($name, $label, $value, $checked = null, $inline = false, array $options = [])
+    public function checkbox($name, $label, $value, $checked = null, $inline = false, $options = [])
     {
-        $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
-
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
-        $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
+        
+        if ($this->horizontalForm) {
+            $checkboxGroupElement = '<div class="checkbox">' . '<label>' . $inputElement . $label . '</label>' . '</div>';
 
-        return $inline ? $labelElement : '<div class="checkbox">' . $labelElement . '</div>';
+            $groupElementOptions = $this->html->attributes([
+                'class' => $this->getRightColumnClass() . ' ' . $this->offsetClass($this->getLeftColumnClass())
+            ]);
+            $groupElement = '<div ' . $groupElementOptions . '>' . $checkboxGroupElement . '</div>';
+
+            $formGroupOptions = $this->html->attributes(
+                $this->getFormGroupOptions($name)
+            );
+            return '<div ' . $formGroupOptions . '>' . $groupElement . '</div>';
+        } elseif ($inline) {
+            return '<label ' . $this->html->attributes(['class' => 'checkbox-inline']) . '>' . $inputElement . $label . '</label>';
+        } else {
+            return '<div class="checkbox">' . '<label>' . $inputElement . $label . '</label>' . '</div>';
+        }
     }
 
     /**
