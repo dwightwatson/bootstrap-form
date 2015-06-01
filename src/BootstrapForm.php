@@ -746,4 +746,20 @@ class BootstrapForm
     {
         return $this->getFieldError($field) ? $class : null;
     }
+
+    /**
+     * Convert column class to its offset.
+     *
+     * @param  string  $class
+     * @return string
+     */
+    protected function offsetClass($class) {
+        $explodedClass = explode('-', $class);
+        $offsetClass = array_merge(
+            array_slice($explodedClass, 0, 2), 
+            array('offset'), 
+            array_slice($explodedClass, 2)
+        );
+        return implode('-', $offsetClass);
+    }
 }
