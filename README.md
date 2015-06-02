@@ -92,7 +92,7 @@ If a model is passed to the open method, it will be configured to use the `updat
     // model value will trigger a `store` form.
     $user = new User;
 
-    BoostrapForm::open()
+    BootForm::open()
 
 ### Form variations
 
