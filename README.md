@@ -39,7 +39,7 @@ Of course, if there are errors for that field it will even populate them.
 
 Simply pop this in your `composer.json` file and run `composer update` (however your Composer is installed).
 
-    "watson/bootstrap-form": "dev-master"
+    "watson/bootstrap-form": "~1.0"
 
 Now, add these service providers to your `app/config/app.php` file.
 
