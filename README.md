@@ -13,7 +13,7 @@ This is a package for simply creating Bootstrap 3 styled form groups in Laravel 
 
 Simply use the `BootstrapForm` facade in the place of the `Form` facade when you want to generate a Bootstrap 3 form group.
 
-    BootstrapForm::text('username');
+    BootForm::text('username');
 
 And you'll get back the following:
 
@@ -49,7 +49,7 @@ And finally add these to the aliases array (note: Form and Html must be listed b
 
     'Form'=> 'Collective\Html\FormFacade',
     'HTML'=> 'Collective\Html\HtmlFacade',
-    'BootstrapForm' => 'Watson\BootstrapForm\Facades\BootstrapForm',
+    'BootForm' => 'Watson\BootstrapForm\Facades\BootstrapForm',
 
 Feel free to use a different alias for BootstrapForm if you'd prefer something shorter.
 
@@ -80,10 +80,10 @@ BoostrapForm has improved the process of opening forms, both in terms of providi
     $user = User::whereEmail('example@example.com')->first();
 
     // Named routes
-    BootstrapForm::open(['model' => $user, 'store' => 'users.store', 'update' => 'users.update']);
+    BootForm::open(['model' => $user, 'store' => 'users.store', 'update' => 'users.update']);
 
     // COntroller actions
-    BootstrapForm::open(['model' => $user, 'store' => 'UsersController@store', 'update' => 'UsersController@update']);
+    BootForm::open(['model' => $user, 'store' => 'UsersController@store', 'update' => 'UsersController@update']);
 
 If a model is passed to the open method, it will be configured to use the `update` route with the `PUT` method. Otherwise it will point to the `store` method as a `POST` request. This way you can use the same opening tag for a form that handles creating and saving.
 
@@ -98,48 +98,45 @@ If a model is passed to the open method, it will be configured to use the `updat
 There are a few helpers for opening the different kinds of Bootstrap forms. By default, `open()` will use the the form style that you have set in the configuration file. These helpers take the same input as the `open()` method.
 
     // Open a vertical Bootstrap form.
-    BootstrapForm::openVertical();
+    BootForm::vertical();
 
     // Open an inline Bootstrap form.
-    BootstrapForm::openInline();
+    BootForm::inline();
 
     // Open a horizontal Bootstrap form.
-    BootstrapForm::openHorizontal();
+    BootForm::horizontal();
 
 If you want to change the columns for a form for a deviation from the settings in your configuration file, you can also set them through the `$options` array.
 
-    BootstrapForm::open(['left_column_class' => 'col-md-2', 'left_column_offset_clsas' => 'col-md-offset-2', 'right_column_class' => 'col-md-10'])
+    BootForm::open(['left_column_class' => 'col-md-2', 'left_column_offset_clsas' => 'col-md-offset-2', 'right_column_class' => 'col-md-10'])
 
 ### Text inputs
 
 Here are the various methods for text inputs. Note that the method signatures are relatively close to those provided by the Laravel form builder but take a parameter for the form label.
 
     // The label will be inferred as 'Username'.
-    BootstrapForm::text('username');
+    BootForm::text('username');
 
     // The field name by default is 'email'.
-    BootstrapForm::email();
+    BootForm::email();
 
-    BootstrapForm::textarea('profile');
+    BootForm::textarea('profile');
 
     // The field name by default is 'password'.
-    BootstrapForm::password();
+    BootForm::password();
 
 ### Checkbox and radio button inputs
 
-Checkboxes and radio buttons are a little bit different and generate different markup. They support both the horizontal and inline layout of the inputs.
+Checkboxes and radio buttons are a little bit different and generate different markup.
 
 View the method signature for configuration options.
 
     // A checked checkbox.
-    BootstrapForm::checkbox('interests', 'Laravel', 'laravel', true);
-
-    // An unchecked, but inline checkbox.
-    BootstrapForm::checkbox('interests', 'Rails', 'rails', null, true);
+    BootForm::checkbox('interests', 'Laravel', 'laravel', true);
 
 Same goes for radio inputs.
 
-    BootstrapForm::radio('gender', 'Male', 'male');
+    BootForm::radio('gender', 'Male', 'male');
 
 #### Multiple checkboxes and radio buttons
 
@@ -154,7 +151,7 @@ By simply passing an array of value/label pairs you can generate a group of chec
     ];
 
     // Checkbox inputs with Laravel and Rails selected.
-    BootstrapForm::checkboxes('interests', $label, $interests, ['laravel', 'rails']);
+    BootForm::checkboxes('interests', $label, $interests, ['laravel', 'rails']);
 
     $genders = [
         'male'   => 'Male',
@@ -162,17 +159,17 @@ By simply passing an array of value/label pairs you can generate a group of chec
     ];
 
     // Gender inputs inline, 'Gender' label inferred.
-    BootstrapForm::radios('gender', null, $genders, null, true);
+    BootForm::radios('gender', null, $genders, null, true);
 
     // Gender inputs with female selected.
-    BootstrapForm::radios('gender', 'Gender', $genders, 'female');
+    BootForm::radios('gender', 'Gender', $genders, 'female');
 
 ### Submit button
 
     // Pretty simple.
-    BootstrapForm::submit('Login');
+    BootForm::submit('Login');
 
 ### Closing the form
 
     // Pretty simple.
-    BootstrapForm::close();
+    BootForm::close();
