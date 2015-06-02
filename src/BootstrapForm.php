@@ -282,20 +282,17 @@ class BootstrapForm
      * @param  string   $label
      * @param  string   $value
      * @param  bool     $checked
-     * @param  bool     $inline
      * @param  array    $options
      * @return string
      */
-    public function checkbox($name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
+    public function checkbox($name, $label = null, $value = 1, $checked = null, array $options = [])
     {
         $label = $this->getLabelTitle($label, $name);
 
-        $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
-
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
-        $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
+        $labelElement = '<label>' . $inputElement . $label . '</label>';
 
-        $inputElement = $inline ? $labelElement : '<div class="checkbox">' . $labelElement . '</div>';
+        $inputElement = '<div class="checkbox">' . $labelElement . '</div>';
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
@@ -337,21 +334,18 @@ class BootstrapForm
      * @param  string   $label
      * @param  string   $value
      * @param  bool     $checked
-     * @param  bool     $inline
      * @param  array    $options
      * @return string
      */
-    public function radio($name, $label = null, $value = null, $checked = null, $inline = false, array $options = [])
+    public function radio($name, $label = null, $value = null, $checked = null, array $options = [])
     {
         $label = $this->getLabelTitle($label, $name);
         $Value = $value ?: $label;
 
-        $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
-
         $inputElement = $this->form->radio($name, $value, $checked, $options);
-        $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
+        $labelElement = '<label>' . $inputElement . $label . '</label>';
 
-        $inputElement = $inline ? $labelElement : '<div class="radio">' . $labelElement . '</div>';
+        $inputElement = '<div class="radio">' . $labelElement . '</div>';
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
