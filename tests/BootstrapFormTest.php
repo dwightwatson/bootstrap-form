@@ -122,7 +122,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
             ->once()
             ->andReturn('foo');
 
-        $result = $this->bootstrapForm->openVertical();
+        $result = $this->bootstrapForm->vertical();
 
         $this->assertEquals('foo', $result);
     }
@@ -138,7 +138,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
             ->once()
             ->andReturn('foo');
 
-        $result = $this->bootstrapForm->openInline();
+        $result = $this->bootstrapForm->inline();
 
         $this->assertEquals('foo', $result);
     }
@@ -154,7 +154,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
             ->once()
             ->andReturn('foo');
 
-        $result = $this->bootstrapForm->openHorizontal();
+        $result = $this->bootstrapForm->horizontal();
 
         $this->assertEquals('foo', $result);
     }
