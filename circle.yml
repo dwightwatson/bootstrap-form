@@ -1,0 +1,7 @@
+machine:
+  php:
+    version: 5.6.5
+
+test:
+  override:
+    - phpunit --coverage-html $CIRCLE_ARTIFACTS
