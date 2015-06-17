@@ -141,7 +141,7 @@ class BootstrapForm
 
         // If the form is passed a model, we'll use the update route to update
         // the model using the PUT method.
-        if ($options['model']->exists) {
+        if (!is_null($options['model']) && $options['model']->exists) {
             $route = Str::contains($options['update'], '@') ? 'action' : 'route';
 
             $options[$route] = [$options['update'], $options['model']->getKey()];
