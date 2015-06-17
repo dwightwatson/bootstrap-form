@@ -86,19 +86,19 @@ class BootstrapForm
         $options['role'] = 'form';
 
         // Set the class for the form type.
-        if (!isset($options['class'])) {
+        if (!array_key_exists('class', $options)) {
             $options['class'] = $this->getType();
         }
 
-        if (isset($options['left_column_class'])) {
+        if (array_key_exists('left_column_class', $options)) {
             $this->setLeftColumnClass($options['left_column_class']);
         }
 
-        if (isset($options['left_column_offset_class'])) {
+        if (array_key_exists('left_column_offset_class', $options)) {
             $this->setLeftColumnOffsetClass($options['left_column_offset_class']);
         }
 
-        if (isset($options['right_column_class'])) {
+        if (array_key_exists('right_column_class', $options)) {
             $this->setRightColumnClass($options['right_column_class']);
         }
 
@@ -108,7 +108,7 @@ class BootstrapForm
             'right_column_class'
         ]);
 
-        if (isset($options['model'])) {
+        if (array_key_exists('model', $options)) {
             return $this->model($options);
         }
 
