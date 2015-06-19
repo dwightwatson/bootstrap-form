@@ -215,7 +215,7 @@ class BootstrapForm
         $inputElement = '<p' . $this->html->attributes($options) . '>' . e($value) . '</p>';
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : []; 
-        $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
@@ -290,7 +290,7 @@ class BootstrapForm
         $inputElement = $this->checkboxElement($name, $label, $value, $checked, false, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
-        $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
         return $this->getFormGroup(null, $wrapperElement);
     }
@@ -340,7 +340,7 @@ class BootstrapForm
         }
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
@@ -360,7 +360,7 @@ class BootstrapForm
         $inputElement = $this->radioElement($name, $label, $value, $checked, false, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
-        $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
         return $this->getFormGroup(null, $wrapperElement);
     }
@@ -411,7 +411,7 @@ class BootstrapForm
         }
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
@@ -445,7 +445,7 @@ class BootstrapForm
         $inputElement = $this->form->submit($value, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
-        $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>'. $inputElement . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>'. $inputElement . '</div>';
 
         return $this->getFormGroup(null, $wrapperElement);
     }
@@ -468,7 +468,7 @@ class BootstrapForm
         $inputElement = $this->form->input('file', $name, null, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
@@ -491,7 +491,7 @@ class BootstrapForm
         $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
         
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
@@ -514,7 +514,7 @@ class BootstrapForm
         $inputElement = $this->form->select($name, $list, $selected, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div ' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
