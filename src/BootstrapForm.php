@@ -235,6 +235,56 @@ class BootstrapForm
     }
 
     /**
+     * Create a text field with a prepended glyphicon
+     * @param string $name
+     * @param string $icon
+     * @param string $label
+     * @param string $value
+     * @param array $options
+     * @return string
+     */
+    public function textWithPrepend($name, $icon, $label = null, $value = null, array $options = []) {
+        $label = $this->getLabelTitle($label, $name);
+
+        $options = $this->getFieldOptions($options);
+        $inputElement = $this->form->text($name, $value, $options);
+
+        $inputGroup = '<div class="input-group"><span class="input-group-addon">'.
+            '<span class="glyphicon glyphicon-' . $icon .
+            '" aria-hidden="true"></span></span>'. $inputElement .'</div>';
+
+        $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputGroup . $this->getFieldError($name) . '</div>';
+
+        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+    }
+
+    /**
+     * Create a text field with an appended glyphicon
+     * @param string $name
+     * @param string $icon
+     * @param string $label
+     * @param string $value
+     * @param array $options
+     * @return string
+     */
+    public function textWithAppend($name, $icon, $label = null, $value = null, array $options = []) {
+        $label = $this->getLabelTitle($label, $name);
+
+        $options = $this->getFieldOptions($options);
+        $inputElement = $this->form->text($name, $value, $options);
+
+        $inputGroup = '<div class="input-group">'. $inputElement .'<span class="input-group-addon">'.
+            '<span class="glyphicon glyphicon-' . $icon .
+            '" aria-hidden="true"></span></span></div>';
+
+        $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputGroup . $this->getFieldError($name) . '</div>';
+
+        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+    }
+
+    /**
      * Create a Bootstrap email field input.
      *
      * @param  string  $name
