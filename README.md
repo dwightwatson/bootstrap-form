@@ -74,7 +74,7 @@ By default this package will only display the first validation error for each fi
 
 ### Opening a form
 
-BoostrapForm has improved the process of opening forms, both in terms of providing Bootstrap classes as well as managing models for model-based forms.
+BootstrapForm has improved the process of opening forms, both in terms of providing Bootstrap classes as well as managing models for model-based forms.
 
     // Passing an existing, persisted model will trigger a model
     // binded form.
@@ -92,7 +92,7 @@ If a model is passed to the open method, it will be configured to use the `updat
     // model value will trigger a `store` form.
     $user = new User;
 
-    BoostrapForm::open()
+    BootForm::open()
 
 ### Form variations
 
