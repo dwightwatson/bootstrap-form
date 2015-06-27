@@ -144,7 +144,7 @@ class BootstrapForm
         if ($options['model']->exists) {
             $route = Str::contains($options['update'], '@') ? 'action' : 'route';
 
-            $options[$route] = [$options['update'], $options['model']->getKey()];
+            $options[$route] = [$options['update'], $options['model']->getRouteKey()];
             $options['method'] = 'PUT';
         } else {
             // Otherwise, we're storing a brand new model using the POST method.
