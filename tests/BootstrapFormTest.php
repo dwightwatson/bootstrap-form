@@ -83,7 +83,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
         $model = Mockery::mock('Illuminate\Database\Eloquent\Model');
         $model->exists = true;
 
-        $model->shouldReceive('getKey')
+        $model->shouldReceive('getRouteKey')
             ->once()
             ->andReturn(1);
 
