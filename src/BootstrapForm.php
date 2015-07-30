@@ -5,6 +5,7 @@ use Collective\Html\HtmlBuilder;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Lang;
 
 class BootstrapForm
 {
@@ -529,10 +530,10 @@ class BootstrapForm
      */
     protected function getLabelTitle($label, $name)
     {
-        if (\Illuminate\Support\Facades\Lang::has('messages.'.$name) && $label==null)
-        {
-            return \Illuminate\Support\Facades\Lang::get('messages.'.$name);
+        if (is_null($label) && $translation = Lang::get("forms.{$name}")) {
+            return $translation;
         }
+
         return $label ?: Str::title($name);
     }
 
