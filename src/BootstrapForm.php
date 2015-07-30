@@ -529,6 +529,10 @@ class BootstrapForm
      */
     protected function getLabelTitle($label, $name)
     {
+        if (\Illuminate\Support\Facades\Lang::has('messages.'.$name) && $label==null)
+        {
+            return \Illuminate\Support\Facades\Lang::get('messages.'.$name);
+        }
         return $label ?: Str::title($name);
     }
 
