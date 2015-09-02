@@ -530,8 +530,8 @@ class BootstrapForm
      */
     protected function getLabelTitle($label, $name)
     {
-        if (is_null($label) && $translation = Lang::get("forms.{$name}")) {
-            return $translation;
+        if (is_null($label) && Lang::has("forms.{$name}")) {
+            return Lang::get("forms.{$name}");
         }
 
         return $label ?: Str::title($name);
