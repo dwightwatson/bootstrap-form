@@ -496,6 +496,13 @@ class BootstrapForm
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
+    
+    /**
+     * Create a hidden field
+     */
+    public function hidden($name, $value = null, $options = []){
+        return $this->form->hidden($name, $value, $options);
+    }
 
     /**
      * Create a select box field.
