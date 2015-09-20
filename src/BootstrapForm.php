@@ -498,15 +498,9 @@ class BootstrapForm
     }
     
     /**
-     * Create a hidden field.
-     * 
-     * @param  string  $name
-     * @param  string  $value
-     * @param  array   $options
-     * @return string
+     * Create a hidden field
      */
-    public function hidden($name, $value = null, $options = [])
-    {
+    public function hidden($name, $value = null, $options = []){
         return $this->form->hidden($name, $value, $options);
     }
 
@@ -759,10 +753,10 @@ class BootstrapForm
             $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
             if ($allErrors) {
-                return implode('', $this->getErrors()->get($field, $format));
+                return implode('', $this->getErrors()->get(str_replace('[]','', $field), $format));
             }
 
-            return $this->getErrors()->first($field, $format);
+            return $this->getErrors()->first(str_replace('[]','', $field), $format);
         }
     }
 
@@ -776,6 +770,6 @@ class BootstrapForm
      */
     protected function getFieldErrorClass($field, $class = 'has-error')
     {
-        return $this->getFieldError($field) ? $class : null;
+        return $this->getFieldError(str_replace('[]','', $field)) ? $class : null;
     }
 }
