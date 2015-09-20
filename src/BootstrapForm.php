@@ -776,6 +776,6 @@ class BootstrapForm
      */
     protected function getFieldErrorClass($field, $class = 'has-error')
     {
-        return $this->getFieldError(str_replace('[]','', $field)) ? $class : null;
+        return $this->getFieldError($field) ? $class : null;
     }
 }
