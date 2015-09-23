@@ -250,6 +250,62 @@ class BootstrapForm
     }
 
     /**
+     * Create a Bootstrap URL field input.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function url($name, $label = null, $value = null, array $options = [])
+    {
+        return $this->input('url', $name, $label, $value, $options);
+    }
+
+    /**
+     * Create a Bootstrap tel field input.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function tel($name, $label = null, $value = null, array $options = [])
+    {
+        return $this->input('tel', $name, $label, $value, $options);
+    }
+
+    /**
+     * Create a Bootstrap number field input.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function number($name, $label = null, $value = null, array $options = [])
+    {
+        return $this->input('number', $name, $label, $value, $options);
+    }
+
+    /**
+     * Create a Bootstrap date field input.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function date($name, $label = null, $value = null, array $options = [])
+    {
+        return $this->input('date', $name, $label, $value, $options);
+    }
+
+    /**
      * Create a Bootstrap textarea field input.
      *
      * @param  string  $name
