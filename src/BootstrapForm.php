@@ -791,6 +791,22 @@ class BootstrapForm
     }
 
     /**
+     * Flatten arrayed field names to work with the validator, including removing "[]", 
+     * and converting nested arrays like "foo[bar][baz]" to "foo.bar.baz".
+     *
+     * @param  string  $field
+     * @return string
+     */
+    public function flattenFieldName($field)
+    {
+        return preg_replace_callback("/\[(.*)\\]/U", function ($matches) {
+            if (!empty($matches[1])) {
+                return "." . $matches[1];
+            }
+        }, $field);
+    }
+
+    /**
      * Get the MessageBag of errors that is populated by the
      * validator.
      *
@@ -811,14 +827,16 @@ class BootstrapForm
      */
     protected function getFieldError($field, $format = '<span class="help-block">:message</span>')
     {
+        $field = $this->flattenFieldName($field);
+
         if ($this->getErrors()) {
             $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
             if ($allErrors) {
-                return implode('', $this->getErrors()->get(str_replace('[]','', $field), $format));
+                return implode('', $this->getErrors()->get($field, $format));
             }
 
-            return $this->getErrors()->first(str_replace('[]','', $field), $format);
+            return $this->getErrors()->first($field, $format);
         }
     }
 

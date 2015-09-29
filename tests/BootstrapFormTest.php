@@ -168,4 +168,36 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('foo', $result);
     }
+
+    /** @test */
+    public function it_returns_normal_field_names()
+    {
+        $result = $this->bootstrapForm->flattenFieldName('foo');
+
+        $this->assertEquals('foo', $result);
+    }
+
+    /** @test */
+    public function it_removes_empty_array_from_field_name()
+    {
+        $result = $this->bootstrapForm->flattenFieldName('foo[]');
+
+        $this->assertEquals('foo', $result);
+    }
+
+    /** @test */
+    public function it_flattens_array_from_field_name()
+    {
+        $result = $this->bootstrapForm->flattenFieldName('foo[bar]');
+
+        $this->assertEquals('foo.bar', $result);
+    }
+
+    /** @test */
+    public function it_flattens_nested_array_from_field_name()
+    {
+        $result = $this->bootstrapForm->flattenFieldName('foo[bar][baz]');
+
+        $this->assertEquals('foo.bar.baz', $result);
+    }
 }
