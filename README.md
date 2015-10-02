@@ -43,14 +43,29 @@ Simply pop this in your `composer.json` file and run `composer update` (however 
 
 Now, add these service providers to your `app/config/app.php` file.
 
+For Laravel < 5.1 
+
     'Collective\Html\HtmlServiceProvider',
     'Watson\BootstrapForm\BootstrapFormServiceProvider',
 
+For Laravel >= 5.1 
+Add to providers array
+
+    Collective\Html\HtmlServiceProvider::class,
+    Watson\BootstrapForm\BootstrapFormServiceProvider::class,
+
 And finally add these to the aliases array (note: Form and Html must be listed before BootstrapForm):
+
 
     'Form'=> 'Collective\Html\FormFacade',
     'HTML'=> 'Collective\Html\HtmlFacade',
     'BootForm' => 'Watson\BootstrapForm\Facades\BootstrapForm',
+    
+For Laravel >= 5.1 
+
+    'Form' => Collective\Html\FormFacade::class,
+    'Html' => Collective\Html\HtmlFacade::class,
+    'BootForm' => Watson\BootstrapForm\Facades\BootstrapForm::class,
 
 Feel free to use a different alias for BootstrapForm if you'd prefer something shorter.
 
