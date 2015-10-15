@@ -37,20 +37,20 @@ Of course, if there are errors for that field it will even populate them.
 
 ## Installation
 
-Simply pop this in your `composer.json` file and run `composer update` (however your Composer is installed).
+First, require the package using Composer.
 
-    "watson/bootstrap-form": "~1.0"
+    composer require watson/bootstrap-form
 
-Now, add these service providers to your `app/config/app.php` file.
+Now, add these service providers to your `config/app.php` file (don't add the `HtmlServiceProvider` if you already have it).
 
-    'Collective\Html\HtmlServiceProvider',
-    'Watson\BootstrapForm\BootstrapFormServiceProvider',
+    Collective\Html\HtmlServiceProvider::class,
+    Watson\BootstrapForm\BootstrapFormServiceProvider::class,
 
 And finally add these to the aliases array (note: Form and Html must be listed before BootstrapForm):
 
-    'Form'=> 'Collective\Html\FormFacade',
-    'HTML'=> 'Collective\Html\HtmlFacade',
-    'BootForm' => 'Watson\BootstrapForm\Facades\BootstrapForm',
+    'Form'     => Collective\Html\FormFacade::class,
+    'HTML'     => Collective\Html\HtmlFacade::class,
+    'BootForm' => Watson\BootstrapForm\Facades\BootstrapForm::class,
 
 Feel free to use a different alias for BootstrapForm if you'd prefer something shorter.
 
