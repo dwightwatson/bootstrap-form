@@ -20,7 +20,7 @@ class BootstrapFormServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/config/config.php', 'bootstrap_form');
 
-        $this->app->bindShared('bootstrap_form', function($app) {
+        $this->app->singleton('bootstrap_form', function($app) {
             return new BootstrapForm($app['html'], $app['form'], $app['config']);
         });
     }
