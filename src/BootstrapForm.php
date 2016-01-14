@@ -521,7 +521,7 @@ class BootstrapForm
 
         $options = array_merge(['class' => 'filestyle', 'data-buttonBefore' => 'true'], $options);
 
-        $options = $this->getFieldOptions($options);
+        $options = $this->getFieldOptions($options, $name);
         $inputElement = $this->form->input('file', $name, null, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
@@ -544,7 +544,7 @@ class BootstrapForm
     {
         $label = $this->getLabelTitle($label, $name);
 
-        $options = $this->getFieldOptions($options);
+        $options = $this->getFieldOptions($options, $name);
         $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
         
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
@@ -580,7 +580,7 @@ class BootstrapForm
     {
         $label = $this->getLabelTitle($label, $name);
 
-        $options = $this->getFieldOptions($options);
+        $options = $this->getFieldOptions($options, $name);
         $inputElement = $this->form->select($name, $list, $selected, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
@@ -659,11 +659,18 @@ class BootstrapForm
      * required for Bootstrap styling.
      *
      * @param  array  $options
+     * @param  string $name
      * @return array
      */
-    protected function getFieldOptions(array $options = [])
+    protected function getFieldOptions(array $options = [], $name = null)
     {
         $options['class'] = trim('form-control ' . $this->getFieldOptionsClass($options));
+
+        // If we've been provided the input name and the ID has not been set in the options,
+        // we'll use the name as the ID to hook it up with the label.
+        if ($name && ! array_key_exists('id', $options)) {
+            $options['id'] = $name;
+        }
 
         return $options;
     }
