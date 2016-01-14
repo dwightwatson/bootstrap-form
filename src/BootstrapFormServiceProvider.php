@@ -1,4 +1,6 @@
-<?php namespace Watson\BootstrapForm;
+<?php 
+
+namespace Watson\BootstrapForm;
 
 use Illuminate\Support\ServiceProvider;
 
