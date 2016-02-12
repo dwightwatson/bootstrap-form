@@ -146,11 +146,7 @@ class BootstrapForm
             $update = is_array($options['update']) ? $options['update'][0] : $options['update'];
             $route = Str::contains($update, '@') ? 'action' : 'route';
             
-            if (is_array($options['update'])) {
-                $options[$route] = array_merge($options['update'], [$options['model']->getRouteKey()]);
-            } else {
-                $options[$route] = [$options['update'], $options['model']->getRouteKey()];
-            }
+            $options[$route] = array_merge((array) $options['update'], [$options['model']->getRouteKey()]);
             $options['method'] = 'PUT';
         } else {
             // Otherwise, we're storing a brand new model using the POST method.
