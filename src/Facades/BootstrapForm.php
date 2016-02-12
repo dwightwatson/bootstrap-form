@@ -1,4 +1,6 @@
-<?php namespace Watson\BootstrapForm\Facades;
+<?php 
+
+namespace Watson\BootstrapForm\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
