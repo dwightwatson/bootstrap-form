@@ -192,6 +192,14 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('foo.bar', $result);
     }
+    
+    /** @test */
+    public function in_allows_zero_in_field_name()
+    {
+        $result = $this->bootstrapForm->flattenFieldName('foo[0]');
+
+        $this->assertEquals('foo.0', $result);
+    }
 
     /** @test */
     public function it_flattens_nested_array_from_field_name()
