@@ -809,7 +809,7 @@ class BootstrapForm
     public function flattenFieldName($field)
     {
         return preg_replace_callback("/\[(.*)\\]/U", function ($matches) {
-            if (isset($matches[1])) {
+            if (!empty($matches[1]) || $matches[1] === '0') {
                 return "." . $matches[1];
             }
         }, $field);
