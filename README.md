@@ -45,7 +45,7 @@ Now, add these service providers to your `config/app.php` file (don't add the `H
 
 ```php
 Collective\Html\HtmlServiceProvider::class,
-Watson\BootstrapForm\BootstrapFormServiceProvider::class,
+Bnb\BootstrapForm\BootstrapFormServiceProvider::class,
 ```
 
 And finally add these to the aliases array (note: Form and Html must be listed before BootstrapForm):
@@ -53,7 +53,7 @@ And finally add these to the aliases array (note: Form and Html must be listed b
 ```php
 'Form'     => Collective\Html\FormFacade::class,
 'HTML'     => Collective\Html\HtmlFacade::class,
-'BootForm' => Watson\BootstrapForm\Facades\BootstrapForm::class,
+'BootForm' => Bnb\BootstrapForm\Facades\BootstrapForm::class,
 ```
 
 Feel free to use a different alias for BootstrapForm if you'd prefer something shorter.
