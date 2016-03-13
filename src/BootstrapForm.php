@@ -1,6 +1,6 @@
 <?php 
 
-namespace Watson\BootstrapForm;
+namespace Bnb\BootstrapForm;
 
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
@@ -502,6 +502,25 @@ class BootstrapForm
         $options = array_merge(['class' => 'btn btn-primary'], $options);
 
         $inputElement = $this->form->submit($value, $options);
+
+        $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>'. $inputElement . '</div>';
+
+        return $this->getFormGroup(null, $wrapperElement);
+    }
+
+    /**
+     * Create a Boostrap submit button.
+     *
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function button($value = null, array $options = [])
+    {
+        $options = array_merge(['class' => 'btn btn-primary'], $options);
+
+        $inputElement = $this->form->button($value, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>'. $inputElement . '</div>';

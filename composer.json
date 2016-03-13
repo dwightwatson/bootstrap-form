@@ -1,5 +1,5 @@
 {
-    "name": "watson/bootstrap-form",
+    "name": "bnbwebexpertise/laravel-bootstrap-form",
     "description": "Laravel 5 form wrappers for Bootstrap 3.",
     "keywords": ["laravel", "form", "bootstrap"],
     "license": "MIT",
@@ -7,6 +7,10 @@
         {
             "name": "Dwight Watson",
             "email": "dwightwatson@me.com"
+        },
+        {
+            "name": "Jérémy Gaulin",
+            "email": "jeremy@bnb.re"
         }
     ],
     "require": {
@@ -22,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Watson\\BootstrapForm\\": "src/"
+            "Bnb\\BootstrapForm\\": "src/"
         }
     },
     "minimum-stability": "dev"

@@ -1,6 +1,6 @@
 <?php 
 
-namespace Watson\BootstrapForm;
+namespace Bnb\BootstrapForm;
 
 class Type
 {

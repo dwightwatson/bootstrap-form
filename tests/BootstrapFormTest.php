@@ -1,6 +1,6 @@
 <?php
 
-use Watson\BootstrapForm\BootstrapForm;
+use Bnb\BootstrapForm\BootstrapForm;
 
 class BootstrapFormTest extends PHPUnit_Framework_TestCase
 {

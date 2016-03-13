@@ -1,5 +1,6 @@
 The MIT License (MIT)
 
+Copyright (c) 2016 B&B Web Expertise
 Copyright (c) 2014 Dwight Watson
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

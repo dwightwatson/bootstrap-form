@@ -1,6 +1,6 @@
 <?php 
 
-namespace Watson\BootstrapForm\Facades;
+namespace Bnb\BootstrapForm\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
