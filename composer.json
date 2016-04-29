@@ -1,6 +1,6 @@
 {
     "name": "bnbwebexpertise/laravel-bootstrap-form",
-    "description": "Laravel 5 form wrappers for Bootstrap 3.",
+    "description": "Laravel 5 form wrappers for Bootstrap 3. Based on Dwight Watson version and tuned for personal requirements.",
     "keywords": ["laravel", "form", "bootstrap"],
     "license": "MIT",
     "authors": [
