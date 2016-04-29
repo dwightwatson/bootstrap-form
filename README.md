@@ -80,6 +80,8 @@ By default this package will only display the first validation error for each fi
 
 ## Usage
 
+When used in a blade template enclose the helper methods inside an unescaped block: `{!! !!}`
+
 ### Opening a form
 
 BootstrapForm has improved the process of opening forms, both in terms of providing Bootstrap classes as well as managing models for model-based forms.
@@ -196,9 +198,35 @@ BootForm::radios('gender', 'Gender', $genders, 'female');
 BootForm::submit('Login');
 ```
 
+### Custom button
+
+```php
+// Pretty simple.
+BootForm::button('Activate', [ 'data-trigger' => 'foo' ]);
+```
+
 ### Closing the form
 
 ```php
 // Pretty simple.
 BootForm::close();
+```
+
+### Form group comment
+
+```php
+// The label will be inferred as 'Username'.
+BootForm::text('username', null, null, [ 'comment' => 'Please use only letters and numbers' ]);
+```
+
+displays a comment line with bootstrap `help-block` class :
+
+```html
+<div class="form-group">
+    <label for="username" class="control-label col-md-2">Username</label>
+    <div class="col-md-10">
+        <input type="text" name="username" class="form-control">
+    </div>
+    <p class="help-block">Please use only letters and numbers</p>
+</div>
 ```
