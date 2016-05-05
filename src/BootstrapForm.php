@@ -559,12 +559,16 @@ class BootstrapForm
         $inline = false,
         array $options = []
     ) {
-        $elements = '';
+        $elements     = '';
+        $label        = $this->getLabelTitle($label, $name, $options);
+        $radioOptions = array_merge([], $options);
+
+        array_forget($radioOptions, 'required');
 
         foreach ($choices as $value => $choiceLabel) {
             $checked = $value === $checkedValue;
 
-            $elements .= $this->radioElement($name, $choiceLabel, $value, $checked, $inline, $options);
+            $elements .= $this->radioElement($name, $choiceLabel, $value, $checked, $inline, $radioOptions);
         }
 
         $comment        = $this->getComment($options);
