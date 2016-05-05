@@ -78,6 +78,14 @@ col-md-3 col-sm-6 col-xs-12
 
 By default this package will only display the first validation error for each field. If you'd instead like to list out all the validation errors for a field, simply set this configuration option to true.
 
+### Required fields
+
+By default this package will append an asterisk `*` to the label of required fields. It will also add the `required` CSS class to the form group. You may override these values in the configuration file or by passing the values to the `open` method : 
+
+```
+BootFormm:open([ 'label_required_mark' => '(required)', 'group_required_class' => 'field-required' ])
+```
+
 ## Usage
 
 When used in a blade template enclose the helper methods inside an unescaped block: `{!! !!}`

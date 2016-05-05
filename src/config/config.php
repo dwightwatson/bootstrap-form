@@ -34,6 +34,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Required fields
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the default suffix appended to the label and the
+    | default form group class added to required fields.
+    |
+    */
+
+    'label_required_mark'  => '*',
+    'group_required_class' => 'required',
+
+    /*
+    |--------------------------------------------------------------------------
     | Error output
     |--------------------------------------------------------------------------
     |

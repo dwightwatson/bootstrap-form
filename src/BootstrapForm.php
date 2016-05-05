@@ -60,6 +60,20 @@ class BootstrapForm
      */
     protected $rightColumnClass;
 
+    /**
+     * Suffix to add to the label string when a field is required
+     *
+     * @var string
+     */
+    protected $labelRequiredMark;
+
+    /**
+     * CSS class to add to the form group when a field is required
+     *
+     * @var string
+     */
+    protected $groupRequiredClass;
+
 
     /**
      * Construct the class.
@@ -68,7 +82,6 @@ class BootstrapForm
      * @param  \Collective\Html\FormBuilder            $form
      * @param  \Illuminate\Contracts\Config\Repository $config
      *
-     * @return void
      */
     public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config)
     {
@@ -109,10 +122,20 @@ class BootstrapForm
             $this->setRightColumnClass($options['right_column_class']);
         }
 
+        if (array_key_exists('label_required_mark', $options)) {
+            $this->setLabelRequiredMark($options['label_required_mark']);
+        }
+
+        if (array_key_exists('group_required_class', $options)) {
+            $this->setLabelRequiredMark($options['group_required_class']);
+        }
+
         array_forget($options, [
             'left_column_class',
             'left_column_offset_class',
-            'right_column_class'
+            'right_column_class',
+            'label_required_mark',
+            'group_required_class',
         ]);
 
         if (array_key_exists('model', $options)) {
@@ -230,13 +253,14 @@ class BootstrapForm
     {
         $options = array_merge(['class' => 'form-control-static'], $options);
 
-        $label          = $this->getLabelTitle($label, $name);
+        $label          = $this->getLabelTitle($label, $name, $options);
         $comment        = $this->getComment($options);
         $inputElement   = '<p' . $this->html->attributes($options) . '>' . e($value) . '</p>';
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $comment . '</div>';
+        $groupOptions   = $this->getGroupOptions($options);
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
 
 
@@ -411,7 +435,7 @@ class BootstrapForm
         $inline = false,
         array $options = []
     ) {
-        $label = $this->getLabelTitle($label, $name);
+        $label = $this->getLabelTitle($label, $name, $options);
 
         $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
 
@@ -445,7 +469,7 @@ class BootstrapForm
         $elements = '';
 
         foreach ($choices as $value => $choiceLabel) {
-            $checked = in_array($value, (array) $checkedValues);
+            $checked = in_array($value, (array)$checkedValues);
 
             $elements .= $this->checkboxElement($name, $choiceLabel, $value, $checked, $inline, $options);
         }
@@ -453,8 +477,9 @@ class BootstrapForm
         $comment        = $this->getComment($options);
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $comment . '</div>';
+        $groupOptions   = $this->getGroupOptions($options);
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
 
 
@@ -502,7 +527,7 @@ class BootstrapForm
         $inline = false,
         array $options = []
     ) {
-        $label = $this->getLabelTitle($label, $name);
+        $label = $this->getLabelTitle($label, $name, $options);
         $Value = $value ?: $label;
 
         $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
@@ -545,8 +570,9 @@ class BootstrapForm
         $comment        = $this->getComment($options);
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $comment . '</div>';
+        $groupOptions   = $this->getGroupOptions($options);
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
 
 
@@ -624,7 +650,7 @@ class BootstrapForm
      */
     public function file($name, $label = null, array $options = [])
     {
-        $label   = $this->getLabelTitle($label, $name);
+        $label   = $this->getLabelTitle($label, $name, $options);
         $comment = $this->getComment($options);
         $options = array_merge(['class' => 'filestyle', 'data-buttonBefore' => 'true'], $options);
 
@@ -633,8 +659,9 @@ class BootstrapForm
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $comment . '</div>';
+        $groupOptions   = $this->getGroupOptions($options);
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
 
 
@@ -651,7 +678,7 @@ class BootstrapForm
      */
     public function input($type, $name, $label = null, $value = null, array $options = [])
     {
-        $label        = $this->getLabelTitle($label, $name);
+        $label        = $this->getLabelTitle($label, $name, $options);
         $comment      = $this->getComment($options);
         $options      = $this->getFieldOptions($options, $name);
         $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name,
@@ -659,8 +686,9 @@ class BootstrapForm
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $comment . '</div>';
+        $groupOptions   = $this->getGroupOptions($options);
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
 
 
@@ -692,15 +720,16 @@ class BootstrapForm
      */
     public function select($name, $label = null, $list = [], $selected = null, array $options = [])
     {
-        $label        = $this->getLabelTitle($label, $name);
+        $label        = $this->getLabelTitle($label, $name, $options);
         $comment      = $this->getComment($options);
         $options      = $this->getFieldOptions($options, $name);
         $inputElement = $this->form->select($name, $list, $selected, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $comment . '</div>';
+        $groupOptions   = $this->getGroupOptions($options);
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
 
 
@@ -713,13 +742,19 @@ class BootstrapForm
      *
      * @return string
      */
-    protected function getLabelTitle($label, $name)
+    protected function getLabelTitle($label, $name, $options)
     {
         if (is_null($label) && Lang::has("forms.{$name}")) {
             return Lang::get("forms.{$name}");
         }
 
-        return $label ?: Str::title($name);
+        $label = $label ?: Str::title($name);
+
+        if (isset($options['required'])) {
+            $label = sprintf('%s %s', $label, $this->getLabelRequiredMark());
+        }
+
+        return $label;
     }
 
 
@@ -729,12 +764,13 @@ class BootstrapForm
      * @param  string $name
      * @param  string $value
      * @param  string $element
+     * @param array   $options
      *
      * @return string
      */
-    protected function getFormGroupWithLabel($name, $value, $element)
+    protected function getFormGroupWithLabel($name, $value, $element, $options = [])
     {
-        $options = $this->getFormGroupOptions($name);
+        $options = $this->getFormGroupOptions($name, $options);
 
         return '<div' . $this->html->attributes($options) . '>' . $this->label($name, $value) . $element . '</div>';
     }
@@ -767,13 +803,21 @@ class BootstrapForm
      */
     protected function getFormGroupOptions($name = null, array $options = [])
     {
-        $class = 'form-group';
+        $class = ['form-group'];
 
         if ($name) {
-            $class .= ' ' . $this->getFieldErrorClass($name);
+            $class[] = $this->getFieldErrorClass($name);
         }
 
-        return array_merge(['class' => $class], $options);
+        if (isset($options['required'])) {
+            $class[] = $this->getGroupRequiredClass();
+
+            array_forget($options, 'required');
+        }
+
+        $class = array_filter($class);
+
+        return array_merge(['class' => join(' ', $class)], $options);
     }
 
 
@@ -839,7 +883,7 @@ class BootstrapForm
      */
     public function getType()
     {
-        return isset( $this->type ) ? $this->type : $this->config->get('bootstrap_form.type');
+        return isset($this->type) ? $this->type : $this->config->get('bootstrap_form.type');
     }
 
 
@@ -940,6 +984,50 @@ class BootstrapForm
 
 
     /**
+     * Get the label suffix appended when a field is required
+     *
+     * @return string
+     */
+    public function getLabelRequiredMark()
+    {
+        return $this->labelRequiredMark ?: $this->config->get('bootstrap_form.label_required_mark');
+    }
+
+
+    /**
+     * Set the label suffix appended when a field is required
+     *
+     * @param string $mark
+     */
+    public function setLabelRequiredMark($mark)
+    {
+        $this->labelRequiredMark = $mark;
+    }
+
+
+    /**
+     * Get the CSS class added to the form group when a field is required
+     *
+     * @return string
+     */
+    public function getGroupRequiredClass()
+    {
+        return $this->groupRequiredClass ?: $this->config->get('bootstrap_form.group_required_class');
+    }
+
+
+    /**
+     * Set the CSS class added to the form group when a field is required
+     *
+     * @param string $cssClass
+     */
+    public function setGroupRequiredClass($cssClass)
+    {
+        $this->groupRequiredClass = $cssClass;
+    }
+
+
+    /**
      * Flatten arrayed field names to work with the validator, including removing "[]",
      * and converting nested arrays like "foo[bar][baz]" to "foo.bar.baz".
      *
@@ -950,7 +1038,7 @@ class BootstrapForm
     public function flattenFieldName($field)
     {
         return preg_replace_callback("/\[(.*)\\]/U", function ($matches) {
-            if ( ! empty( $matches[1] ) || $matches[1] === '0') {
+            if ( ! empty($matches[1]) || $matches[1] === '0') {
                 return "." . $matches[1];
             }
         }, $field);
@@ -1021,12 +1109,23 @@ class BootstrapForm
     {
         $comment = array_pull($options, 'comment');
 
-        if ( ! empty( $comment )) {
+        if ( ! empty($comment)) {
             $comment = str_replace(':comment', $comment, $format);
         } else {
             $comment = '';
         }
 
         return $comment;
+    }
+
+
+    /**
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function getGroupOptions($options = [])
+    {
+        return array_only($options, ['required']);
     }
 }
