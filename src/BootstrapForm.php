@@ -395,7 +395,7 @@ class BootstrapForm
         foreach ($choices as $value => $choiceLabel) {
             $checked = in_array($value, (array) $checkedValues);
 
-            $elements .= $this->checkboxElement($name."[]", $choiceLabel, $value, $checked, $inline, $options);
+            $elements .= $this->checkboxElement($name, $choiceLabel, $value, $checked, $inline, $options);
         }
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];

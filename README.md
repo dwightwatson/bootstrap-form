@@ -159,7 +159,7 @@ View the method signature for configuration options.
 
 ```php
 // A checked checkbox.
-BootForm::checkbox('interests', 'Laravel', 'laravel', true);
+BootForm::checkbox('interests[]', 'Laravel', 'laravel', true);
 ```
 
 Same goes for radio inputs.
@@ -182,7 +182,7 @@ $interests = [
 ];
 
 // Checkbox inputs with Laravel and Rails selected.
-BootForm::checkboxes('interests', $label, $interests, ['laravel', 'rails']);
+BootForm::checkboxes('interests[]', $label, $interests, ['laravel', 'rails']);
 
 $genders = [
     'male'   => 'Male',
