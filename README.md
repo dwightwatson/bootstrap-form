@@ -209,3 +209,7 @@ BootForm::submit('Login');
 // Pretty simple.
 BootForm::close();
 ```
+
+### Help Text
+
+You may pass a `help_text` option to any field to have [Bootstrap Help Text](https://getbootstrap.com/css/#forms-help-text) appended to the rendered form group.

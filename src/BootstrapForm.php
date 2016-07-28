@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Watson\BootstrapForm;
 
@@ -106,8 +106,8 @@ class BootstrapForm
         }
 
         array_forget($options, [
-            'left_column_class', 
-            'left_column_offset_class', 
+            'left_column_class',
+            'left_column_offset_class',
             'right_column_class'
         ]);
 
@@ -217,8 +217,8 @@ class BootstrapForm
         $label = $this->getLabelTitle($label, $name);
         $inputElement = '<p' . $this->html->attributes($options) . '>' . e($value) . '</p>';
 
-        $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : []; 
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
+        $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
@@ -399,7 +399,7 @@ class BootstrapForm
         }
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
@@ -431,7 +431,7 @@ class BootstrapForm
      * @param  string  $label
      * @param  string  $value
      * @param  bool    $checked
-     * @param  bool    $inline   
+     * @param  bool    $inline
      * @param  array   $options
      * @return string
      */
@@ -470,7 +470,7 @@ class BootstrapForm
         }
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
@@ -527,7 +527,7 @@ class BootstrapForm
         $inputElement = $this->form->input('file', $name, null, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
@@ -548,16 +548,16 @@ class BootstrapForm
 
         $options = $this->getFieldOptions($options, $name);
         $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
-        
+
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
-    
+
     /**
      * Create a hidden field.
-     * 
+     *
      * @param  string  $name
      * @param  string  $value
      * @param  array   $options
@@ -586,7 +586,7 @@ class BootstrapForm
         $inputElement = $this->form->select($name, $list, $selected, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
@@ -705,7 +705,7 @@ class BootstrapForm
         return array_merge(['class' => trim($class)], $options);
     }
 
-    /** 
+    /**
      * Get the form type.
      *
      * @return string
@@ -725,7 +725,7 @@ class BootstrapForm
         return $this->getType() === Type::HORIZONTAL;
     }
 
-    /** 
+    /**
      * Set the form type.
      *
      * @param  string  $type
@@ -800,7 +800,7 @@ class BootstrapForm
     }
 
     /**
-     * Flatten arrayed field names to work with the validator, including removing "[]", 
+     * Flatten arrayed field names to work with the validator, including removing "[]",
      * and converting nested arrays like "foo[bar][baz]" to "foo.bar.baz".
      *
      * @param  string  $field
@@ -860,5 +860,25 @@ class BootstrapForm
     protected function getFieldErrorClass($field, $class = 'has-error')
     {
         return $this->getFieldError($field) ? $class : null;
+    }
+
+    /**
+     * Get the help block for a given field
+     *
+     * @param  string  $field
+     * @param  array   $options
+     * @return string
+     */
+    protected function getHelpText($field, array $options = [])
+    {
+        if (isset($options['help_text'])) {
+            $field = $this->flattenFieldName($field);
+            $id = $field . '-help-text';
+            $text = e($options['help_text']);
+
+            return '<span id="' . $id . '" class="help-block">' . $text . '</span>';
+        }
+
+        return '';
     }
 }
