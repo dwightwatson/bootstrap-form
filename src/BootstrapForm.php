@@ -863,7 +863,7 @@ class BootstrapForm
     }
 
     /**
-     * Get the help block for a given field
+     * Get the help text for the given field.
      *
      * @param  string  $field
      * @param  array   $options
@@ -871,12 +871,8 @@ class BootstrapForm
      */
     protected function getHelpText($field, array $options = [])
     {
-        if (isset($options['help_text'])) {
-            $field = $this->flattenFieldName($field);
-            $id = $field . '-help-text';
-            $text = e($options['help_text']);
-
-            return '<span id="' . $id . '" class="help-block">' . $text . '</span>';
+        if (array_key_exists($options['help_text'])) {
+            return '<span class="help-block">' . e($options['help_text']) . '</span>';
         }
 
         return '';
