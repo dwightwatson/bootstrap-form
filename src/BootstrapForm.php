@@ -1100,6 +1100,22 @@ class BootstrapForm
         return $this->getFieldError($field) ? $class : null;
     }
 
+    /**
+     * Get the help text for the given field.
+     *
+     * @param  string  $field
+     * @param  array   $options
+     * @return string
+     */
+    protected function getHelpText($field, array $options = [])
+    {
+        if (array_key_exists('help_text', $options)) {
+            return '<span class="help-block">' . e($options['help_text']) . '</span>';
+        }
+
+        return '';
+    }
+
 
     /**
      * Returns the formatted comment from the options array

@@ -162,7 +162,7 @@ View the method signature for configuration options.
 
 ```php
 // A checked checkbox.
-BootForm::checkbox('interests', 'Laravel', 'laravel', true);
+BootForm::checkbox('interests[]', 'Laravel', 'laravel', true);
 ```
 
 Same goes for radio inputs.
@@ -185,7 +185,7 @@ $interests = [
 ];
 
 // Checkbox inputs with Laravel and Rails selected.
-BootForm::checkboxes('interests', $label, $interests, ['laravel', 'rails']);
+BootForm::checkboxes('interests[]', $label, $interests, ['laravel', 'rails']);
 
 $genders = [
     'male'   => 'Male',
@@ -219,6 +219,10 @@ BootForm::button('Activate', [ 'data-trigger' => 'foo' ]);
 // Pretty simple.
 BootForm::close();
 ```
+
+### Help Text
+
+You may pass a `help_text` option to any field to have [Bootstrap Help Text](https://getbootstrap.com/css/#forms-help-text) appended to the rendered form group.
 
 ### Form group comment
 
