@@ -1130,7 +1130,7 @@ class BootstrapForm
         $comment = array_pull($options, 'comment');
 
         if ( ! empty($comment)) {
-            $comment = str_replace(':comment', $comment, $format);
+            $comment = str_replace(':comment', e($comment), $format);
         } else {
             $comment = '';
         }
