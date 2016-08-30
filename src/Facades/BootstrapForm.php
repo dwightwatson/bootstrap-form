@@ -1,8 +1,18 @@
-<?php namespace Watson\BootstrapForm\Facades;
+<?php 
+
+namespace Watson\BootstrapForm\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 class BootstrapForm extends Facade
 {
-	protected static function getFacadeAccessor() { return 'bootstrap-form'; }
+    /**
+     * Get the registered name of the component.
+     *
+     * @return string
+     */
+    protected static function getFacadeAccessor()
+    {
+        return 'bootstrap_form';
+    }
 }
