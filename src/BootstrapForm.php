@@ -142,22 +142,17 @@ class BootstrapForm
     {
         $model = $options['model'];
 
-        // This code lets us generate the url outside BootstrapForm class
-        // The Bootform will accept any kind of url
-        
-        /*Ex: {!! BootForm::horizontal(['model' => $user
-        , 'url' => route('admin.advertisers.users.create'
-        , ['advertisers' => $advertiser->id]), 'method' => 'POST']) !!}*/
-
         if (isset($options['url'])) {
+            // If we're explicity passed a URL, we'll use that.
             array_forget($options, ['update', 'store']);
-            $options['method'] = isset($options['method']) ? $options['method'] : 'GET' ;
+            $options['method'] = isset($options['method']) ? $options['method'] : 'GET';
+
             return $this->form->model($model, $options);
         }
 
-        // If the form is passed a model, we'll use the update route to update
-        // the model using the PUT method.
         if (!is_null($options['model']) && $options['model']->exists) {
+            // If the form is passed a model, we'll use the update route to update
+            // the model using the PUT method.
             $route = Str::contains($options['update'], '@') ? 'action' : 'route';
 
             $options[$route] = [$options['update'], $options['model']->getRouteKey()];
@@ -521,7 +516,7 @@ class BootstrapForm
 
         return $this->getFormGroup(null, $wrapperElement);
     }
-    
+
     /**
      * Create a Boostrap button.
      *
