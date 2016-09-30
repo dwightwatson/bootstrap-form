@@ -508,6 +508,25 @@ class BootstrapForm
 
         return $this->getFormGroup(null, $wrapperElement);
     }
+    
+    /**
+     * Create a Boostrap button.
+     *
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function button($value = null, array $options = [])
+    {
+        $options = array_merge(['class' => 'btn btn-primary'], $options);
+
+        $inputElement = $this->form->button($value, $options);
+
+        $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>'. $inputElement . '</div>';
+
+        return $this->getFormGroup(null, $wrapperElement);
+    }
 
     /**
      * Create a Boostrap file upload button.
