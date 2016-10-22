@@ -382,6 +382,10 @@ class BootstrapForm
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
         $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
 
+        if (is_bool($label) && $label == false )
+        {
+            return $inline ? $inputElement : '<div class="checkbox">' . $inputElement . '</div>';
+        }
         return $inline ? $labelElement : '<div class="checkbox">' . $labelElement . '</div>';
     }
 
@@ -409,6 +413,10 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
+        if (is_bool($label) && $label == false )
+        {
+            return $this->getFormGroup($name, $wrapperElement);
+        }
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
 
@@ -453,6 +461,10 @@ class BootstrapForm
         $inputElement = $this->form->radio($name, $value, $checked, $options);
         $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
 
+        if (is_bool($label) && $label == false )
+        {
+            return $inline ? $inputElement : '<div class="radio">' . $inputElement . '</div>';
+        }
         return $inline ? $labelElement : '<div class="radio">' . $labelElement . '</div>';
     }
 
@@ -480,6 +492,10 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
+        if (is_bool($label) && $label == false )
+        {
+            return $this->getFormGroup($name, $wrapperElement);
+        }
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
 
