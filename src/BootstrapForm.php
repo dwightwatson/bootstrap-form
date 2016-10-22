@@ -579,6 +579,11 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
+        if (is_bool($label) && $label == false )
+        {
+            return $this->getFormGroup($name, $wrapperElement);
+        }
+
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
 
@@ -628,6 +633,8 @@ class BootstrapForm
      */
     protected function getLabelTitle($label, $name)
     {
+        if (is_bool($label) && $label == false) return false;
+
         if (is_null($label) && Lang::has("forms.{$name}")) {
             return Lang::get("forms.{$name}");
         }
