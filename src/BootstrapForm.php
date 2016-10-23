@@ -377,15 +377,12 @@ class BootstrapForm
     {
         $label = $this->getLabelTitle($label, $name);
 
-        $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
+        if (is_bool($label) && $label == false ) $label = '';
 
+        $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
         $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
 
-        if (is_bool($label) && $label == false )
-        {
-            return $inline ? $inputElement : '<div class="checkbox">' . $inputElement . '</div>';
-        }
         return $inline ? $labelElement : '<div class="checkbox">' . $labelElement . '</div>';
     }
 
@@ -450,6 +447,9 @@ class BootstrapForm
     public function radioElement($name, $label = null, $value = null, $checked = null, $inline = false, array $options = [])
     {
         $label = $this->getLabelTitle($label, $name);
+
+        if (is_bool($label) && $label == false ) $label = '';
+
         $Value = $value ?: $label;
 
         $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
@@ -457,10 +457,6 @@ class BootstrapForm
         $inputElement = $this->form->radio($name, $value, $checked, $options);
         $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
 
-        if (is_bool($label) && $label == false )
-        {
-            return $inline ? $inputElement : '<div class="radio">' . $inputElement . '</div>';
-        }
         return $inline ? $labelElement : '<div class="radio">' . $labelElement . '</div>';
     }
 
