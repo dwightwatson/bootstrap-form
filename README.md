@@ -210,6 +210,15 @@ BootForm::submit('Login');
 BootForm::close();
 ```
 
+### Hide Labels
+
+You may hide an element's label by setting the the value to `false`.
+
+```php
+// An input with no label.
+BootForm::text('username', false);
+```
+
 ### Help Text
 
 You may pass a `help_text` option to any field to have [Bootstrap Help Text](https://getbootstrap.com/css/#forms-help-text) appended to the rendered form group.
