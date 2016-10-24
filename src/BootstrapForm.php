@@ -375,9 +375,7 @@ class BootstrapForm
      */
     public function checkboxElement($name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
     {
-        $label = $this->getLabelTitle($label, $name);
-
-        if (is_bool($label) && $label == false ) $label = '';
+        $label = $label === false ? '' : $this->getLabelTitle($label, $name);
 
         $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
@@ -446,11 +444,9 @@ class BootstrapForm
      */
     public function radioElement($name, $label = null, $value = null, $checked = null, $inline = false, array $options = [])
     {
-        $label = $this->getLabelTitle($label, $name);
+        $label = $label === false ? '' : $this->getLabelTitle($label, $name);
 
-        if (is_bool($label) && $label == false ) $label = '';
-
-        $Value = $value ?: $label;
+        $value = $value ?: $label;
 
         $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
 
@@ -632,7 +628,9 @@ class BootstrapForm
      */
     protected function getLabelTitle($label, $name)
     {
-        if (is_bool($label) && $label == false) return false;
+        if ($label === false) {
+            return '';
+        }
 
         if (is_null($label) && Lang::has("forms.{$name}")) {
             return Lang::get("forms.{$name}");
@@ -680,8 +678,7 @@ class BootstrapForm
      */
     public function getFormGroup($name = null, $label = null, $wrapperElement)
     {
-        if (is_bool($label) && $label == false )
-        {
+        if ($label === false) {
             return $this->getFormGroupWithoutLabel($name, $wrapperElement);
         }
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
