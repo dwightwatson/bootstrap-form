@@ -228,7 +228,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -359,7 +359,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup(null, $wrapperElement);
+        return $this->getFormGroup(null, false, $wrapperElement);
     }
 
     /**
@@ -377,8 +377,9 @@ class BootstrapForm
     {
         $label = $this->getLabelTitle($label, $name);
 
-        $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
+        if (is_bool($label) && $label == false ) $label = '';
 
+        $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
         $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
 
@@ -409,7 +410,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -429,7 +430,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
-        return $this->getFormGroup(null, $wrapperElement);
+        return $this->getFormGroup(null, false, $wrapperElement);
     }
 
     /**
@@ -446,6 +447,9 @@ class BootstrapForm
     public function radioElement($name, $label = null, $value = null, $checked = null, $inline = false, array $options = [])
     {
         $label = $this->getLabelTitle($label, $name);
+
+        if (is_bool($label) && $label == false ) $label = '';
+
         $Value = $value ?: $label;
 
         $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
@@ -480,7 +484,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -514,7 +518,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>'. $inputElement . '</div>';
 
-        return $this->getFormGroup(null, $wrapperElement);
+        return $this->getFormGroup(null, false, $wrapperElement);
     }
 
     /**
@@ -533,7 +537,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>'. $inputElement . '</div>';
 
-        return $this->getFormGroup(null, $wrapperElement);
+        return $this->getFormGroup(null, false, $wrapperElement);
     }
 
     /**
@@ -556,7 +560,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -579,7 +583,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -615,7 +619,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -628,11 +632,27 @@ class BootstrapForm
      */
     protected function getLabelTitle($label, $name)
     {
+        if (is_bool($label) && $label == false) return false;
+
         if (is_null($label) && Lang::has("forms.{$name}")) {
             return Lang::get("forms.{$name}");
         }
 
         return $label ?: Str::title($name);
+    }
+
+    /**
+     * Get a form group comprised of a form element and errors.
+     *
+     * @param  string  $name
+     * @param  string  $element
+     * @return string
+     */
+    protected function getFormGroupWithoutLabel($name, $element)
+    {
+        $options = $this->getFormGroupOptions($name);
+
+        return '<div' . $this->html->attributes($options) . '>' . $element . '</div>';
     }
 
     /**
@@ -651,17 +671,20 @@ class BootstrapForm
     }
 
     /**
-     * Get a form group.
+     * Get a form group with or without a label.
      *
      * @param  string  $name
+     * @param  string  $label
      * @param  string  $element
      * @return string
      */
-    public function getFormGroup($name = null, $element)
+    public function getFormGroup($name = null, $label = null, $wrapperElement)
     {
-        $options = $this->getFormGroupOptions($name);
-
-        return '<div' . $this->html->attributes($options) . '>' . $element . '</div>';
+        if (is_bool($label) && $label == false )
+        {
+            return $this->getFormGroupWithoutLabel($name, $wrapperElement);
+        }
+        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
     }
 
     /**
