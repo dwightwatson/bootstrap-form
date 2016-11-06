@@ -131,7 +131,7 @@ BootForm::horizontal();
 If you want to change the columns for a form for a deviation from the settings in your configuration file, you can also set them through the `$options` array.
 
 ```php
-BootForm::open(['left_column_class' => 'col-md-2', 'left_column_offset_clsas' => 'col-md-offset-2', 'right_column_class' => 'col-md-10']);
+BootForm::open(['left_column_class' => 'col-md-2', 'left_column_offset_class' => 'col-md-offset-2', 'right_column_class' => 'col-md-10']);
 ```
 
 ### Text inputs
