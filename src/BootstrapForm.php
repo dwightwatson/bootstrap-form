@@ -446,7 +446,7 @@ class BootstrapForm
     {
         $label = $label === false ? null : $this->getLabelTitle($label, $name);
 
-        $value = $value ?: $label;
+        $value = !$value && $value != 0 ? $label : $value;
 
         $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
 
