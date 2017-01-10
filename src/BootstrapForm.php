@@ -636,7 +636,7 @@ class BootstrapForm
             return Lang::get("forms.{$name}");
         }
 
-        return $label ?: Str::title($name);
+        return $label ?: str_replace('_', ' ', Str::title($name));
     }
 
     /**
