@@ -317,6 +317,20 @@ class BootstrapForm
         return $this->input('date', $name, $label, $value, $options);
     }
 
+     /**
+     * Create a Bootstrap email time input.
+     *
+     * @param  string  $name
+     * @param  string  $label
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function time($name, $label = null, $value = null, array $options = [])
+    {
+        return $this->input('time', $name, $label, $value, $options);
+    }
+
     /**
      * Create a Bootstrap textarea field input.
      *
