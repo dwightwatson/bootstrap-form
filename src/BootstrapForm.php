@@ -61,6 +61,13 @@ class BootstrapForm
     protected $rightColumnClass;
 
     /**
+     * The errorbag that is used for validation (multiple forms)
+     *
+     * @var string
+     */
+    protected $errorBag = 'default';
+
+    /**
      * Construct the class.
      *
      * @param  \Collective\Html\HtmlBuilder             $html
@@ -113,6 +120,10 @@ class BootstrapForm
 
         if (array_key_exists('model', $options)) {
             return $this->model($options);
+        }
+
+        if (array_key_exists('errorbag', $options)) {
+            $this->setErrorBag($options['errorbag']);
         }
 
         return $this->form->open($options);
@@ -862,6 +873,18 @@ class BootstrapForm
         $this->rightColumnClass = $class;
     }
 
+
+    /**
+     * Set the errorBag used for validation
+     *
+     * @param $errorBag
+     * @return void
+     */
+    protected function setErrorBag($errorBag)
+    {
+        $this->errorBag = $errorBag;
+    }
+    
     /**
      * Flatten arrayed field names to work with the validator, including removing "[]",
      * and converting nested arrays like "foo[bar][baz]" to "foo.bar.baz".
@@ -905,10 +928,10 @@ class BootstrapForm
             $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
             if ($allErrors) {
-                return implode('', $this->getErrors()->get($field, $format));
+                return implode('', $this->getErrors()->{$this->errorBag}->get($field, $format));
             }
 
-            return $this->getErrors()->first($field, $format);
+            return $this->getErrors()->{$this->errorBag}->first($field, $format);
         }
     }
 
