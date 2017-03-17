@@ -122,8 +122,8 @@ class BootstrapForm
             return $this->model($options);
         }
 
-        if (array_key_exists('errorbag', $options)) {
-            $this->setErrorBag($options['errorbag']);
+        if (array_key_exists('error_bag', $options)) {
+            $this->setErrorBag($options['error_bag']);
         }
 
         return $this->form->open($options);
@@ -865,7 +865,7 @@ class BootstrapForm
     /**
      * Set the column class for the right column of a horizontal form.
      *
-     * @param  string  $lcass
+     * @param  string  $class
      * @return void
      */
     public function setRightColumnClass($class)
@@ -873,18 +873,27 @@ class BootstrapForm
         $this->rightColumnClass = $class;
     }
 
+    /**
+     * Get the error bag.
+     *
+     * @return string
+     */
+    protected function getErrorBag()
+    {
+        return $this->errorBag;
+    }
 
     /**
-     * Set the errorBag used for validation
+     * Set the error bag.
      *
-     * @param $errorBag
+     * @param  $errorBag  string
      * @return void
      */
     protected function setErrorBag($errorBag)
     {
         $this->errorBag = $errorBag;
     }
-    
+
     /**
      * Flatten arrayed field names to work with the validator, including removing "[]",
      * and converting nested arrays like "foo[bar][baz]" to "foo.bar.baz".
@@ -927,11 +936,13 @@ class BootstrapForm
         if ($this->getErrors()) {
             $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
+            $errorBag = $this->getErrors()->{$this->getErrorBag()};
+
             if ($allErrors) {
-                return implode('', $this->getErrors()->{$this->errorBag}->get($field, $format));
+                return implode('', $errorBag->get($field, $format));
             }
 
-            return $this->getErrors()->{$this->errorBag}->first($field, $format);
+            return $errorBag->first($field, $format);
         }
     }
 
