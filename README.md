@@ -223,11 +223,14 @@ BootForm::text('username', false);
 
 #### Labels with HTML
 
-To include HTML code inside a label, instead of passing a text just pass a array with key `html` and the text:
+To include HTML code inside a label:
 
 ```php
-// A label with HTML code
+// A label with HTML code using array notation
 BootForm::text('username', ['html' => 'Username <span class="required">*</span>']);
+
+// A label with HTML code using HtmlString object
+BootForm::text('username', new Illuminate\Support\HtmlString('Username <span class="required">*</span>'));
 ```
 
 ### Help Text

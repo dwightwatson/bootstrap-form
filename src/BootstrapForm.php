@@ -6,6 +6,7 @@ use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Session\SessionManager as Session;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Lang;
 
@@ -521,11 +522,15 @@ class BootstrapForm
     public function label($name, $value = null, array $options = [])
     {
         $options = $this->getLabelOptions($options);
-        $escapeHtml = true;
+
+        $escapeHtml = false;
 
         if (is_array($value) and isset($value['html'])) {
-            $escapeHtml = false;
             $value = $value['html'];
+        } elseif ($value instanceof HtmlString) {
+            $value = $value->toHtml();
+        } else {
+            $escapeHtml = true;
         }
 
         return $this->form->label($name, $value, $options, $escapeHtml);
