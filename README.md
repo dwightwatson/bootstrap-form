@@ -210,13 +210,24 @@ BootForm::submit('Login');
 BootForm::close();
 ```
 
-### Hide Labels
+### Labels
+
+#### Hide Labels
 
 You may hide an element's label by setting the the value to `false`.
 
 ```php
 // An input with no label.
 BootForm::text('username', false);
+```
+
+#### Labels with HTML
+
+To include HTML code inside a label, instead of passing a text just pass a array with key `html` and the text:
+
+```php
+// A label with HTML code
+BootForm::text('username', ['html' => 'Username <span class="required">*</span>']);
 ```
 
 ### Help Text
