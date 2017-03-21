@@ -521,8 +521,14 @@ class BootstrapForm
     public function label($name, $value = null, array $options = [])
     {
         $options = $this->getLabelOptions($options);
+        $escapeHtml = true;
 
-        return $this->form->label($name, $value, $options);
+        if (is_array($value) and isset($value['html'])) {
+            $escapeHtml = false;
+            $value = $value['html'];
+        }
+
+        return $this->form->label($name, $value, $options, $escapeHtml);
     }
 
     /**
