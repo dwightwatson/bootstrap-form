@@ -156,7 +156,7 @@ class BootstrapForm
 
         if (isset($options['url'])) {
             // If we're explicity passed a URL, we'll use that.
-            array_forget($options, ['model','update', 'store']);
+            array_forget($options, ['model', 'update', 'store']);
             $options['method'] = isset($options['method']) ? $options['method'] : 'GET';
 
             return $this->form->model($model, $options);
