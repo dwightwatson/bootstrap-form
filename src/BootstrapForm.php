@@ -387,7 +387,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup(null, null, $wrapperElement);
+        return $this->getFormGroup($name, null, $wrapperElement);
     }
 
     /**
