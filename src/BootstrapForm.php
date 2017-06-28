@@ -162,8 +162,8 @@ class BootstrapForm
             return $this->form->model($model, $options);
         }
 
-        // If user only configured the model, default method(POST) and action(same page) will be used.
-        if (!isset($options['update']) && !isset($options['store'])) {
+        // If we're not provided store/update actions then let the form submit to itself.
+        if (!isset($options['store'], $options['update'])) {
             array_forget($options, 'model');
             return $this->form->model($model, $options);
         }
