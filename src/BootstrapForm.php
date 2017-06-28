@@ -162,6 +162,12 @@ class BootstrapForm
             return $this->form->model($model, $options);
         }
 
+        // If user only configured the model, default method(POST) and action(same page) will be used.
+        if (!isset($options['update']) && !isset($options['store'])) {
+            array_forget($options, 'model');
+            return $this->form->model($model, $options);
+        }
+
         if (!is_null($options['model']) && $options['model']->exists) {
             // If the form is passed a model, we'll use the update route to update
             // the model using the PUT method.
