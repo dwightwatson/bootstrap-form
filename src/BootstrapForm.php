@@ -163,7 +163,7 @@ class BootstrapForm
         }
 
         // If we're not provided store/update actions then let the form submit to itself.
-        if (!isset($options['store'], $options['update'])) {
+        if (!isset($options['store']) && !isset($options['update'])) {
             array_forget($options, 'model');
             return $this->form->model($model, $options);
         }
