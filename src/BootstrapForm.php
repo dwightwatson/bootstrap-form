@@ -242,10 +242,11 @@ class BootstrapForm
     {
         $options = array_merge(['class' => 'form-control-static'], $options);
 
-        if (is_array($value) and isset($value['html']))
+        if (is_array($value) and isset($value['html'])) {
             $value = $value['html'];
-        else
+        } else {
             $value = e($value);
+        }
 
         $label = $this->getLabelTitle($label, $name);
         $inputElement = '<p' . $this->html->attributes($options) . '>' . $value . '</p>';
