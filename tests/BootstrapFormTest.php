@@ -1,8 +1,11 @@
 <?php
 
-use Bnb\BootstrapForm\BootstrapForm;
+namespace Tests;
 
-class BootstrapFormTest extends PHPUnit_Framework_TestCase
+use Bnb\BootstrapForm\BootstrapForm;
+use Mockery;
+
+class BootstrapFormTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -21,7 +24,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
 
     protected static function callMethod($obj, $name, array $args)
     {
-        $class  = new \ReflectionClass($obj);
+        $class = new \ReflectionClass($obj);
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 
@@ -33,8 +36,8 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
     {
         $this->htmlBuilderMock = Mockery::mock('Collective\Html\HtmlBuilder');
         $this->formBuidlerMock = Mockery::mock('Collective\Html\FormBuilder');
-        $this->configMock      = Mockery::mock('Illuminate\Contracts\Config\Repository')->shouldDeferMissing();
-        $this->sessionMock     = Mockery::mock('Illuminate\Session\SessionManager')->shouldDeferMissing();
+        $this->configMock = Mockery::mock('Illuminate\Contracts\Config\Repository')->shouldDeferMissing();
+        $this->sessionMock = Mockery::mock('Illuminate\Session\SessionManager')->shouldDeferMissing();
 
         $this->bootstrapForm = new BootstrapForm(
             $this->htmlBuilderMock,
@@ -49,7 +52,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
     public function it_opens_default_form()
     {
         $this->formBuidlerMock->shouldReceive('open')->once()->with([
-            'role'  => 'form',
+            'role' => 'form',
             'class' => 'form-horizontal'
         ])->andReturn('foo');
 
@@ -67,16 +70,16 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_opens_store_model_form()
     {
-        $model         = Mockery::mock('Illuminate\Database\Eloquent\Model');
+        $model = Mockery::mock('Illuminate\Database\Eloquent\Model');
         $model->exists = false;
 
         $this->formBuidlerMock->shouldReceive('model')
             ->once()
             ->with($model, [
-                'role'   => 'form',
-                'route'  => 'bar',
+                'role' => 'form',
+                'route' => 'bar',
                 'method' => 'POST',
-                'class'  => 'form-horizontal',
+                'class' => 'form-horizontal',
             ])
             ->andReturn('foo');
 
@@ -86,8 +89,8 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
             ->andReturn('form-horizontal');
 
         $result = $this->bootstrapForm->open([
-            'model'  => $model,
-            'store'  => 'bar',
+            'model' => $model,
+            'store' => 'bar',
             'update' => 'baz'
         ]);
 
@@ -98,7 +101,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_opens_update_model_form()
     {
-        $model         = Mockery::mock('Illuminate\Database\Eloquent\Model');
+        $model = Mockery::mock('Illuminate\Database\Eloquent\Model');
         $model->exists = true;
 
         $model->shouldReceive('getRouteKey')
@@ -108,10 +111,10 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
         $this->formBuidlerMock->shouldReceive('model')
             ->once()
             ->with($model, [
-                'role'   => 'form',
-                'route'  => ['baz', 1],
+                'role' => 'form',
+                'route' => ['baz', 1],
                 'method' => 'PUT',
-                'class'  => 'form-horizontal',
+                'class' => 'form-horizontal',
             ])
             ->andReturn('foo');
 
@@ -121,8 +124,8 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
             ->andReturn('form-horizontal');
 
         $result = $this->bootstrapForm->open([
-            'model'  => $model,
-            'store'  => 'bar',
+            'model' => $model,
+            'store' => 'bar',
             'update' => 'baz'
         ]);
 
@@ -135,7 +138,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
     {
         $this->formBuidlerMock->shouldReceive('open')
             ->with([
-                'role'  => 'form',
+                'role' => 'form',
                 'class' => '',
             ])
             ->once()
@@ -153,7 +156,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
         $this->formBuidlerMock->shouldReceive('open')
             ->with([
                 'class' => 'form-inline',
-                'role'  => 'form'
+                'role' => 'form'
             ])
             ->once()
             ->andReturn('foo');
@@ -170,7 +173,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
         $this->formBuidlerMock->shouldReceive('open')
             ->with([
                 'class' => 'form-horizontal',
-                'role'  => 'form'
+                'role' => 'form'
             ])
             ->once()
             ->andReturn('foo');
