@@ -255,6 +255,7 @@ class BootstrapForm
 
         $label          = $this->getLabelTitle($label, $name, $options);
         $comment        = $this->getComment($options);
+        $value          = $this->form->getValueAttribute($name, $value);
         $inputElement   = '<p' . $this->html->attributes($options) . '>' . e($value) . '</p>';
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $comment . '</div>';
