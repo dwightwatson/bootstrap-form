@@ -253,10 +253,16 @@ class BootstrapForm
     {
         $options = array_merge(['class' => 'form-control-static'], $options);
 
+        if (is_array($value) and isset($value['html'])) {
+            $value = $value['html'];
+        } else {
+            $value = e($value);
+        }
+
         $label          = $this->getLabelTitle($label, $name, $options);
         $comment        = $this->getComment($options);
         $value          = $this->form->getValueAttribute($name, $value);
-        $inputElement   = '<p' . $this->html->attributes($options) . '>' . e($value) . '</p>';
+        $inputElement   = '<p' . $this->html->attributes($options) . '>' . $value . '</p>';;
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $comment . '</div>';
         $groupOptions   = $this->getGroupOptions($options);
