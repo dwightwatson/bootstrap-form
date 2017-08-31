@@ -23,7 +23,9 @@ class BootstrapFormServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/config/config.php', 'bootstrap_form');
 
         $this->app->singleton('bootstrap_form', function($app) {
-            return new BootstrapForm($app['html'], $app['form'], $app['config']);
+            $form = (new FormBuilder($app['form']))->setSessionStore($app['session.store']);
+
+            return new BootstrapForm($app['html'], $form, $app['config']);
         });
     }
 
