@@ -6,6 +6,7 @@ use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class BootstrapForm
@@ -59,6 +60,13 @@ class BootstrapForm
      * @var string
      */
     protected $rightColumnClass;
+
+    /**
+     * The errorbag that is used for validation (multiple forms)
+     *
+     * @var string
+     */
+    protected $errorBag = 'default';
 
     /**
      * Suffix to add to the label string when a field is required
@@ -140,6 +148,10 @@ class BootstrapForm
 
         if (array_key_exists('model', $options)) {
             return $this->model($options);
+        }
+
+        if (array_key_exists('errorbag', $options)) {
+            $this->setErrorBag($options['errorbag']);
         }
 
         return $this->form->open($options);
@@ -610,8 +622,17 @@ class BootstrapForm
     public function label($name, $value = null, array $options = [])
     {
         $options = $this->getLabelOptions($options);
+        $escapeHtml = false;
 
-        return $this->form->label($name, $value, $options);
+        if (is_array($value) and isset($value['html'])) {
+            $value = $value['html'];
+        } elseif ($value instanceof HtmlString) {
+            $value = $value->toHtml();
+        } else {
+            $escapeHtml = true;
+        }
+
+        return $this->form->label($name, $value, $options, $escapeHtml);
     }
 
 
@@ -766,11 +787,15 @@ class BootstrapForm
      */
     protected function getLabelTitle($label, $name, $options)
     {
+        if ($label === false) {
+            return null;
+        }
+
         if (is_null($label) && Lang::has("forms.{$name}")) {
             return Lang::get("forms.{$name}");
         }
 
-        $label = $label ?: Str::title($name);
+        $label  = $label ?: str_replace('_', ' ', Str::title($name));
 
         if (isset($options['required'])) {
             $label = sprintf('%s %s', $label, $this->getLabelRequiredMark());
@@ -1050,6 +1075,18 @@ class BootstrapForm
 
 
     /**
+     * Set the errorBag used for validation
+     *
+     * @param $errorBag
+     *
+     * @return void
+     */
+    protected function setErrorBag($errorBag)
+    {
+        $this->errorBag = $errorBag;
+    }
+
+    /**
      * Flatten arrayed field names to work with the validator, including removing "[]",
      * and converting nested arrays like "foo[bar][baz]" to "foo.bar.baz".
      *
@@ -1096,10 +1133,10 @@ class BootstrapForm
             $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
             if ($allErrors) {
-                return implode('', $this->getErrors()->get($field, $format));
+                return implode('', $this->getErrors()->{$this->errorBag}->get($field, $format));
             }
 
-            return $this->getErrors()->first($field, $format);
+            return $this->getErrors()->{$this->errorBag}->first($field, $format);
         }
     }
 
