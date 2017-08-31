@@ -85,8 +85,8 @@ class BootstrapForm
      */
     public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config)
     {
-        $this->html   = $html;
-        $this->form   = $form;
+        $this->html = $html;
+        $this->form = $form;
         $this->config = $config;
     }
 
@@ -171,22 +171,33 @@ class BootstrapForm
     protected function model($options)
     {
         $model = $options['model'];
+        if (isset($options['url'])) {
+            // If we're explicity passed a URL, we'll use that.
+            array_forget($options, ['model', 'update', 'store']);
+            $options['method'] = isset($options['method']) ? $options['method'] : 'GET';
 
-        // If the form is passed a model, we'll use the update route to update
-        // the model using the PUT method.
+            return $this->form->model($model, $options);
+        }
+        // If we're not provided store/update actions then let the form submit to itself.
+        if ( ! isset($options['store']) && ! isset($options['update'])) {
+            array_forget($options, 'model');
+
+            return $this->form->model($model, $options);
+        }
         if ( ! is_null($options['model']) && $options['model']->exists) {
-            $route = Str::contains($options['update'], '@') ? 'action' : 'route';
-
-            $options[$route]   = [$options['update'], $options['model']->getRouteKey()];
+            // If the form is passed a model, we'll use the update route to update
+            // the model using the PUT method.
+            $name = is_array($options['update']) ? array_first($options['update']) : $options['update'];
+            $route = Str::contains($name, '@') ? 'action' : 'route';
+            $options[$route] = array_merge((array)$options['update'], [$options['model']->getRouteKey()]);
             $options['method'] = 'PUT';
         } else {
             // Otherwise, we're storing a brand new model using the POST method.
-            $route = Str::contains($options['store'], '@') ? 'action' : 'route';
-
-            $options[$route]   = $options['store'];
+            $name = is_array($options['store']) ? array_first($options['store']) : $options['store'];
+            $route = Str::contains($name, '@') ? 'action' : 'route';
+            $options[$route] = $options['store'];
             $options['method'] = 'POST';
         }
-
         // Forget the routes provided to the input.
         array_forget($options, ['model', 'update', 'store']);
 
@@ -259,13 +270,13 @@ class BootstrapForm
             $value = e($value);
         }
 
-        $label          = $this->getLabelTitle($label, $name, $options);
-        $comment        = $this->getComment($options);
-        $value          = $this->form->getValueAttribute($name, $value);
-        $inputElement   = '<p' . $this->html->attributes($options) . '>' . $value . '</p>';;
+        $label = $this->getLabelTitle($label, $name, $options);
+        $comment = $this->getComment($options);
+        $value = $this->form->getValueAttribute($name, $value);
+        $inputElement = '<p' . $this->html->attributes($options) . '>' . $value . '</p>';;
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $comment . '</div>';
-        $groupOptions   = $this->getGroupOptions($options);
+        $groupOptions = $this->getGroupOptions($options);
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
@@ -481,10 +492,10 @@ class BootstrapForm
             $elements .= $this->checkboxElement($name, $choiceLabel, $value, $checked, $inline, $options);
         }
 
-        $comment        = $this->getComment($options);
+        $comment = $this->getComment($options);
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $comment . '</div>';
-        $groupOptions   = $this->getGroupOptions($options);
+        $groupOptions = $this->getGroupOptions($options);
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
@@ -566,8 +577,8 @@ class BootstrapForm
         $inline = false,
         array $options = []
     ) {
-        $elements     = '';
-        $label        = $this->getLabelTitle($label, $name, $options);
+        $elements = '';
+        $label = $this->getLabelTitle($label, $name, $options);
         $radioOptions = array_merge([], $options);
 
         array_forget($radioOptions, 'required');
@@ -578,10 +589,10 @@ class BootstrapForm
             $elements .= $this->radioElement($name, $choiceLabel, $value, $checked, $inline, $radioOptions);
         }
 
-        $comment        = $this->getComment($options);
+        $comment = $this->getComment($options);
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $comment . '</div>';
-        $groupOptions   = $this->getGroupOptions($options);
+        $groupOptions = $this->getGroupOptions($options);
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
@@ -661,16 +672,16 @@ class BootstrapForm
      */
     public function file($name, $label = null, array $options = [])
     {
-        $label   = $this->getLabelTitle($label, $name, $options);
+        $label = $this->getLabelTitle($label, $name, $options);
         $comment = $this->getComment($options);
         $options = array_merge(['class' => 'filestyle', 'data-buttonBefore' => 'true'], $options);
 
-        $options      = $this->getFieldOptions($options, $name);
+        $options = $this->getFieldOptions($options, $name);
         $inputElement = $this->form->input('file', $name, null, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $comment . '</div>';
-        $groupOptions   = $this->getGroupOptions($options);
+        $groupOptions = $this->getGroupOptions($options);
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
@@ -689,15 +700,15 @@ class BootstrapForm
      */
     public function input($type, $name, $label = null, $value = null, array $options = [])
     {
-        $label        = $this->getLabelTitle($label, $name, $options);
-        $comment      = $this->getComment($options);
-        $options      = $this->getFieldOptions($options, $name);
+        $label = $this->getLabelTitle($label, $name, $options);
+        $comment = $this->getComment($options);
+        $options = $this->getFieldOptions($options, $name);
         $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name,
             $value, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $comment . '</div>';
-        $groupOptions   = $this->getGroupOptions($options);
+        $groupOptions = $this->getGroupOptions($options);
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
@@ -731,14 +742,14 @@ class BootstrapForm
      */
     public function select($name, $label = null, $list = [], $selected = null, array $options = [])
     {
-        $label        = $this->getLabelTitle($label, $name, $options);
-        $comment      = $this->getComment($options);
-        $options      = $this->getFieldOptions($options, $name);
+        $label = $this->getLabelTitle($label, $name, $options);
+        $comment = $this->getComment($options);
+        $options = $this->getFieldOptions($options, $name);
         $inputElement = $this->form->select($name, $list, $selected, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $comment . '</div>';
-        $groupOptions   = $this->getGroupOptions($options);
+        $groupOptions = $this->getGroupOptions($options);
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
     }
@@ -1107,11 +1118,13 @@ class BootstrapForm
         return $this->getFieldError($field) ? $class : null;
     }
 
+
     /**
      * Get the help text for the given field.
      *
-     * @param  string  $field
-     * @param  array   $options
+     * @param  string $field
+     * @param  array  $options
+     *
      * @return string
      */
     protected function getHelpText($field, array $options = [])
