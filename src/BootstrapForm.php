@@ -276,10 +276,12 @@ class BootstrapForm
     {
         $options = array_merge(['class' => 'form-control-static'], $options);
 
-        if (is_array($value) and isset($value['html'])) {
-            $value = $value['html'];
-        } else {
-            $value = e($value);
+        if ( ! is_null($value)) {
+            if (is_array($value) and isset($value['html'])) {
+                $value = $value['html'];
+            } else {
+                $value = e($value);
+            }
         }
 
         $label = $this->getLabelTitle($label, $name, $options);
@@ -795,7 +797,7 @@ class BootstrapForm
             return Lang::get("forms.{$name}");
         }
 
-        $label  = $label ?: str_replace('_', ' ', Str::title($name));
+        $label = $label ?: str_replace('_', ' ', Str::title($name));
 
         if (isset($options['required'])) {
             $label = sprintf('%s %s', $label, $this->getLabelRequiredMark());
@@ -1085,6 +1087,7 @@ class BootstrapForm
     {
         $this->errorBag = $errorBag;
     }
+
 
     /**
      * Flatten arrayed field names to work with the validator, including removing "[]",
