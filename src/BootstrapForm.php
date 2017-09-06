@@ -959,7 +959,7 @@ class BootstrapForm
         if ($this->getErrors()) {
             $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
-            $errorBag = $this->getErrors()->{$this->getErrorBag()};
+            $errorBag = $this->getErrors();
 
             if ($allErrors) {
                 return implode('', $errorBag->get($field, $format));
