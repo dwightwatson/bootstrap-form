@@ -42,6 +42,18 @@ return [
     |
     */
 
-    'show_all_errors' => false
+    'show_all_errors' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default error bag
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the default error bag to retrieve form errors from.
+    | If there is not a default error bag, set it to null.
+    |
+    */
+
+    'error_bag' => 'default'
 
 ];
