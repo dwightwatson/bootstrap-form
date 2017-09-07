@@ -239,24 +239,21 @@ You may pass a `help_text` option to any field to have [Bootstrap Help Text](htt
 
 ### Form input group (suffix and prefix)
 
-Add prefix and/or suffix to any input, you can add text, icon and button
+Add prefix and/or suffix to any input - you can add text, icon and buttons.
 
 ```php
-//Suffix button with 'Call' as label and success class to button
-{!! BootForm::text('tel', 'Phone', null, ['suffix' => BootForm::addon('button', 'Call', ['class' => 'btn-success'])] ) !!}
+// Suffix button with 'Call' as label and success class to button
+{!! BootForm::text('tel', 'Phone', null, ['suffix' => BootForm::addonButton('Call', ['class' => 'btn-success'])] ) !!}
 
-//Prefix button with 'Call' as label and success class to button
-{!! BootForm::text('tel', 'Phone', null, ['prefix' => BootForm::addon('button', 'Call', ['class' => 'btn-success'])] ) !!}
+// Prefix button with 'Call' as label and success class to button
+{!! BootForm::text('tel', 'Phone', null, ['prefix' => BootForm::addonButton('Call', ['class' => 'btn-success'])] ) !!}
 
-//prefix icon (I put second parameter after <i class="fa fa-SECOND_PARAMETER"></i>) with 'dollar' as icon
-{!! BootForm::text('tel', 'Phone', null, ['prefix' => BootForm::addon('icon', 'dollar')] ) !!}
+// Prefix icon (I put second parameter after <i class="fa fa-SECOND_PARAMETER"></i>) with 'dollar' as icon
+{!! BootForm::text('tel', 'Phone', null, ['prefix' => BootForm::addonIcon('dollar')] ) !!}
 
-//Prefix and suffix as text
-{!! BootForm::text('tel', 'Phone', null, ['prefix' => BootForm::addon('text', '1-'), 'suffix' => BootForm::addon('icon', 'phone')] ) !!}
+// Prefix and suffix as text
+{!! BootForm::text('tel', 'Phone', null, ['prefix' => BootForm::addonText('1-'), 'suffix' => BootForm::addonIcon('phone')] ) !!}
 
-//Prefix and suffix with button
-{!! BootForm::text('tel', 'Phone', null, ['suffix' => BootForm::addon('button', 'Boom!', ['class' => 'btn-danger']), 'prefix' => BootForm::addon('button', 'Call', ['class' => 'btn-success'])] ) !!}
+// Prefix and suffix with button
+{!! BootForm::text('tel', 'Phone', null, ['suffix' => BootForm::addonButton('Boom!', ['class' => 'btn-danger']), 'prefix' => BootForm::addonButton('Call', ['class' => 'btn-success'])] ) !!}
 ```
-
-Options
-`'class' => this will be added to the element in group (button, icon, span)`

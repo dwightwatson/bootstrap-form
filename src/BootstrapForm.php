@@ -625,13 +625,21 @@ class BootstrapForm
 
         $optionsField = $this->getFieldOptions(array_except($options, ['suffix', 'prefix']), $name);
 
-        if(isset($options['prefix']) || isset($options['suffix']))
+        if(isset($options['prefix']) || isset($options['suffix'])) {
             $this->config->set('bootstrap_form.right_column_class', $this->config->get('bootstrap_form.right_column_class'). ' input-group');
+        }
 
         $inputElement = '';
-        if(isset($options['prefix'])) $inputElement = $options['prefix'];
+
+        if(isset($options['prefix'])) {
+            $inputElement = $options['prefix'];
+        }
+
         $inputElement .= $type === 'password' ? $this->form->password($name, $optionsField) : $this->form->{$type}($name, $value, $optionsField);
-        if(isset($options['suffix'])) $inputElement .= $options['suffix'];
+
+        if(isset($options['suffix'])) {
+            $inputElement .= $options['suffix'];
+        }
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $optionsField) . '</div>';
@@ -640,40 +648,45 @@ class BootstrapForm
     }
 
     /**
-     * For suffix and prefix
+     * Create an addon button element.
      *
-     * @param string $type
-     * @param string $label
-     * @param  array $options
-     *
+     * @param  string  $label
+     * @param  array  $options
      * @return string
      */
-    public function addon($type, $label, $options = []) {
-        $elm = '';
-        $class = '';
+    public function addonButton($label, $options = [])
+    {
+        $attributes = array_merge(['class' => 'btn', 'type' => 'button'], $options);
 
-        if($type == 'button') {
-            $class = 'input-group-btn';
-            $attr = array_merge(['class' => 'btn', 'type' => 'button'], $options);
-            if(isset($options['class']))
-                $attr['class'] .= ' btn';
-
-            $elm = '<button ' . $this->html->attributes($attr) . ' >'.$label.'</button>';
+        if (isset($options['class'])) {
+            $attributes['class'] .= ' btn';
         }
 
-        if($type == 'text') {
-            $class = 'input-group-addon';
-            $elm = '<span ' . $this->html->attributes($options) . '>'.$label.'</span>';
-        }
+        return '<div class="input-group-btn"><button ' . $this->html->attributes($attributes) . '>'.$label.'</button></div>';
+    }
 
-        if($type == 'icon') {
-            $class = 'input-group-addon';
-            $elm = '<span ' . $this->html->attributes($options) . '><i class="fa fa-'.$label.'"></i></span>';
-        }
-        
-        $wrapperElement = '<div class="'.$class.'">'.$elm.'</div>';
+    /**
+     * Create an addon text element.
+     *
+     * @param  string  $text
+     * @param  array  $options
+     * @return string
+     */
+    public function addonText($text, $options = [])
+    {
+        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '>'.$text.'</span></div>';
+    }
 
-        return $wrapperElement;
+    /**
+     * Create an addon icon element.
+     *
+     * @param  string  $icon
+     * @param  array  $options
+     * @return string
+     */
+    public function addonIcon($icon, $options = [])
+    {
+        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '><i class="fa fa-'.$icon.'"></i></span></div>';
     }
 
     /**
