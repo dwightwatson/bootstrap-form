@@ -670,10 +670,7 @@ class BootstrapForm
             $class = 'input-group-addon';
             $elm = '<span ' . $this->html->attributes($options) . '><i class="fa fa-'.$label.'"></i></span>';
         }
-
-        if(isset($options['wrapper_class']))
-            $class .= $options['wrapper_class'];
-
+        
         $wrapperElement = '<div class="'.$class.'">'.$elm.'</div>';
 
         return $wrapperElement;
