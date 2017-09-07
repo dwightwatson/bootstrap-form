@@ -623,13 +623,60 @@ class BootstrapForm
     {
         $label = $this->getLabelTitle($label, $name);
 
-        $options = $this->getFieldOptions($options, $name);
-        $inputElement = $type === 'password' ? $this->form->password($name, $options) : $this->form->{$type}($name, $value, $options);
+        $optionsField = $this->getFieldOptions(array_except($options, ['suffix', 'prefix']), $name);
+
+        if(isset($options['prefix']) || isset($options['suffix']))
+            $this->config->set('bootstrap_form.right_column_class', $this->config->get('bootstrap_form.right_column_class'). ' input-group');
+
+        $inputElement = '';
+        if(isset($options['prefix'])) $inputElement = $options['prefix'];
+        $inputElement .= $type === 'password' ? $this->form->password($name, $optionsField) : $this->form->{$type}($name, $value, $optionsField);
+        if(isset($options['suffix'])) $inputElement .= $options['suffix'];
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $optionsField) . '</div>';
 
         return $this->getFormGroup($name, $label, $wrapperElement);
+    }
+
+    /**
+     * For suffix and prefix
+     *
+     * @param string $type
+     * @param string $label
+     * @param  array $options
+     *
+     * @return string
+     */
+    public function addon($type, $label, $options = []) {
+        $elm = '';
+        $class = '';
+
+        if($type == 'button') {
+            $class = 'input-group-btn';
+            $attr = array_merge(['class' => 'btn', 'type' => 'button'], $options);
+            if(isset($options['class']))
+                $attr['class'] .= ' btn';
+
+            $elm = '<button ' . $this->html->attributes($attr) . ' >'.$label.'</button>';
+        }
+
+        if($type == 'text') {
+            $class = 'input-group-addon';
+            $elm = '<span ' . $this->html->attributes($options) . '>'.$label.'</span>';
+        }
+
+        if($type == 'icon') {
+            $class = 'input-group-addon';
+            $elm = '<span ' . $this->html->attributes($options) . '><i class="fa fa-'.$label.'"></i></span>';
+        }
+
+        if(isset($options['wrapper_class']))
+            $class .= $options['wrapper_class'];
+
+        $wrapperElement = '<div class="'.$class.'">'.$elm.'</div>';
+
+        return $wrapperElement;
     }
 
     /**
