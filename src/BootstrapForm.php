@@ -641,12 +641,12 @@ class BootstrapForm
             $inputElement .= $options['suffix'];
         }
         
-        $inputElement = $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $optionsField);
+        $inputElement = $inputElement . $this->getHelpText($name, $optionsField);
         
         if (isset($options['prefix']) || isset($options['suffix'])) $inputElement = '<div class="input-group">' . $inputElement . '</div>';
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . '</div>';
 
         return $this->getFormGroup($name, $label, $wrapperElement);
     }
