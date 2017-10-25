@@ -15,10 +15,10 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/config": "5.0.x|5.1.x|5.2.x|5.3.x|5.4.x",
-        "illuminate/session": "5.0.x|5.1.x|5.2.x|5.3.x|5.4.x",
-        "illuminate/support": "5.0.x|5.1.x|5.2.x|5.3.x|5.4.x",
-        "laravelcollective/html": "5.0.x|5.1.x|5.2.x|5.3.x|5.4.x"
+        "illuminate/config": "5.0.x|5.1.x|5.2.x|5.3.x|5.4.x|5.5.x",
+        "illuminate/session": "5.0.x|5.1.x|5.2.x|5.3.x|5.4.x|5.5.x",
+        "illuminate/support": "5.0.x|5.1.x|5.2.x|5.3.x|5.4.x|5.5.x",
+        "laravelcollective/html": "5.0.x|5.1.x|5.2.x|5.3.x|5.4.x|5.5.x"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.7",
@@ -28,6 +28,13 @@
         "psr-4": {
             "Bnb\\BootstrapForm\\": "src/",
             "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bnb\\BootstrapForm\\BootstrapFormServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev"
