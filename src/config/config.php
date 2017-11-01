@@ -49,8 +49,7 @@ return [
     | Icon prefix
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the default icon prefix
-    | Default: Font Awesome <fontawesome.io>
+    | Here you may specify the icon prefix, defaulted to Font Awesome.
     |
     */
 

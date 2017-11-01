@@ -62,7 +62,7 @@ class BootstrapForm
     protected $rightColumnClass;
 
     /**
-     * Icon Prefix.
+     * The icon prefix.
      *
      * @var string
      */
@@ -693,11 +693,8 @@ class BootstrapForm
      */
     public function addonIcon($icon, $options = [])
     {
-        if (array_key_exists('prefix', $options)) {
-            $prefix = $options['prefix'];
-        } else {
-            $prefix = $this->getIconPrefix();
-        }
+        $prefix = array_get($options, 'prefix', $this->getIconPrefix());
+
         return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '><i class="'.$prefix.$icon.'"></i></span></div>';
     }
 
