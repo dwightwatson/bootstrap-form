@@ -62,6 +62,13 @@ class BootstrapForm
     protected $rightColumnClass;
 
     /**
+     * Icon Prefix.
+     *
+     * @var string
+     */
+    protected $iconPrefix;
+
+    /**
      * The errorbag that is used for validation (multiple forms)
      *
      * @var string
@@ -686,7 +693,12 @@ class BootstrapForm
      */
     public function addonIcon($icon, $options = [])
     {
-        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '><i class="fa fa-'.$icon.'"></i></span></div>';
+        if (array_key_exists('prefix', $options)) {
+            $prefix = $options['prefix'];
+        } else {
+            $prefix = $this->getIconPrefix();
+        }
+        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '><i class="'.$prefix.$icon.'"></i></span></div>';
     }
 
     /**
@@ -951,6 +963,16 @@ class BootstrapForm
     public function setRightColumnClass($class)
     {
         $this->rightColumnClass = $class;
+    }
+
+    /**
+     * Get the icon prefix.
+     *
+     * @return string
+     */
+    public function getIconPrefix()
+    {
+        return $this->iconPrefix ?: $this->config->get('bootstrap_form.icon_prefix', 'fa fa-');
     }
 
     /**
