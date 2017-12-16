@@ -632,10 +632,6 @@ class BootstrapForm
 
         $optionsField = $this->getFieldOptions(array_except($options, ['suffix', 'prefix']), $name);
 
-        if(isset($options['prefix']) || isset($options['suffix'])) {
-            $this->config->set('bootstrap_form.right_column_class', $this->config->get('bootstrap_form.right_column_class'). ' input-group');
-        }
-
         $inputElement = '';
 
         if(isset($options['prefix'])) {
@@ -646,6 +642,10 @@ class BootstrapForm
 
         if(isset($options['suffix'])) {
             $inputElement .= $options['suffix'];
+        }
+
+        if(isset($options['prefix']) || isset($options['suffix'])) {
+            $inputElement = '<div class="input-group">' . $inputElement . '</div>';
         }
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
