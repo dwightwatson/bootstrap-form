@@ -1073,4 +1073,12 @@ class BootstrapForm
 
         return '';
     }
+    
+    public function showErrors()
+    {
+        $errors = $this->getErrors();
+        if(count($errors) > 0){        
+            return str_replace('{errors}', '<li>'.implode('<li>',$errors->all()), $this->config->get('bootstrap_form.error_heading'));
+        }
+    }    
 }

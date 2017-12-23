@@ -53,5 +53,16 @@ return [
     |
     */
 
-    'icon_prefix' => 'fa fa-'
+    'icon_prefix' => 'fa fa-',
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Error Heading
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the html output of use when outputting errors using
+    | BootForm::showErrors()
+    |
+    */
+    'error_heading' => '<div class="alert alert-danger"><strong>Whoops!</strong> There were some problems with your input.<br/>{errors}</div>'
 ];
