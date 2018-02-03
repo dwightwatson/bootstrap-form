@@ -9,9 +9,12 @@ use Illuminate\Session\SessionManager as Session;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Traits\Macroable;
 
 class BootstrapForm
 {
+    use Macroable;
+    
     /**
      * Illuminate HtmlBuilder instance.
      *
