@@ -543,7 +543,7 @@ class BootstrapForm
      */
     public function label($name, $value = null, array $options = [])
     {
-        $options = $this->getLabelOptions($options);
+        $options = $this->getLabelOptions($options, $name);
 
         $escapeHtml = false;
 
@@ -832,7 +832,7 @@ class BootstrapForm
      */
     protected function getFieldOptions(array $options = [], $name = null)
     {
-        $options['class'] = trim('form-control ' . $this->getFieldOptionsClass($options));
+        $options['class'] = trim('form-control ' . $this->getFieldOptionsClass($options) . $this->getFieldErrorClass($name));
 
         // If we've been provided the input name and the ID has not been set in the options,
         // we'll use the name as the ID to hook it up with the label.
@@ -861,9 +861,9 @@ class BootstrapForm
      * @param  array  $options
      * @return array
      */
-    protected function getLabelOptions(array $options = [])
+    protected function getLabelOptions(array $options = [], $name = null)
     {
-        $class = 'control-label';
+        $class = trim('control-label ' . $this->getFieldErrorClass($name, 'text-danger'));
         if ($this->isHorizontal()) {
             $class .= ' ' . $this->getLeftColumnClass();
         }
@@ -1031,7 +1031,7 @@ class BootstrapForm
      * @param  string  $format
      * @return mixed
      */
-    protected function getFieldError($field, $format = '<span class="help-block">:message</span>')
+    protected function getFieldError($field, $format = '<span class="help-block text-danger">:message</span>')
     {
         $field = $this->flattenFieldName($field);
 
@@ -1041,7 +1041,7 @@ class BootstrapForm
             $errorBag = $this->getErrors()->{$this->getErrorBag()};
 
             if ($allErrors) {
-                return implode('', $errorBag->get($field, $format));
+                return implode(' ', $errorBag->get($field, $format));
             }
 
             return $errorBag->first($field, $format);
@@ -1056,7 +1056,7 @@ class BootstrapForm
      * @param  string  $class
      * @return string
      */
-    protected function getFieldErrorClass($field, $class = 'has-error')
+    protected function getFieldErrorClass($field, $class = 'has-error is-invalid')
     {
         return $this->getFieldError($field) ? $class : null;
     }
@@ -1076,4 +1076,12 @@ class BootstrapForm
 
         return '';
     }
+    
+    public function showErrors()
+    {
+        $errors = $this->getErrors();
+        if(count($errors) > 0){        
+            return str_replace('{errors}', '<li>'.implode('<li>',$errors->all()), $this->config->get('bootstrap_form.error_heading'));
+        }
+    }    
 }
