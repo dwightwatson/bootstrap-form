@@ -623,6 +623,10 @@ class BootstrapForm
      */
     public function label($name, $value = null, array $options = [])
     {
+        if ($value === false) {
+            return '';
+        }
+
         $options = $this->getLabelOptions($options);
         $escapeHtml = false;
 
