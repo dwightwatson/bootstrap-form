@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Bnb\BootstrapForm;
 
@@ -6,12 +6,14 @@ use Illuminate\Support\ServiceProvider;
 
 class BootstrapFormServiceProvider extends ServiceProvider
 {
+
     /**
      * Indicates if loading of the provider is deferred.
      *
      * @var bool
      */
     protected $defer = true;
+
 
     /**
      * Register the service provider.
@@ -20,14 +22,15 @@ class BootstrapFormServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/config.php', 'bootstrap_form');
+        $this->mergeConfigFrom(__DIR__ . '/config/config.php', 'bootstrap_form');
 
-        $this->app->singleton('bootstrap_form', function($app) {
+        $this->app->singleton('bootstrap_form', function ($app) {
             $form = (new FormBuilder($app['form']))->setSessionStore($app['session.store']);
 
             return new BootstrapForm($app['html'], $form, $app['config']);
         });
     }
+
 
     /**
      * Boot the service provider.
@@ -37,9 +40,10 @@ class BootstrapFormServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/config/config.php' => config_path('bootstrap_form.php')
+            __DIR__ . '/config/config.php' => config_path('bootstrap_form.php')
         ], 'config');
     }
+
 
     /**
      * Get the services provided by the provider.

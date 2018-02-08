@@ -41,7 +41,9 @@ First, require the package using Composer.
 composer require bnbwebexpertise/laravel-bootstrap-form
 ```
 
-Now, add these service providers to your `config/app.php` file (don't add the `HtmlServiceProvider` if you already have it).
+For Laravel 5.5 and newer the package is auto-loaded. For older versions, you must configure the providers as described below.
+
+Add these service providers to your `config/app.php` file (don't add the `HtmlServiceProvider` if you already have it).
 
 ```php
 Collective\Html\HtmlServiceProvider::class,
