@@ -467,7 +467,7 @@ class BootstrapForm
         $inline = false,
         array $options = []
     ) {
-        $label = $this->getLabelTitle($label, $name, $options);
+        $label = $this->getLabelTitle($label, $name, $options) ?: '';
 
         $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
 
@@ -559,8 +559,7 @@ class BootstrapForm
         $inline = false,
         array $options = []
     ) {
-        $label = $this->getLabelTitle($label, $name, $options);
-        $Value = $value ?: $label;
+        $label = $this->getLabelTitle($label, $name, $options) ?: '';
 
         $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
 
@@ -794,7 +793,7 @@ class BootstrapForm
     protected function getLabelTitle($label, $name, $options)
     {
         if ($label === false) {
-            return null;
+            return false;
         }
 
         if (is_null($label) && Lang::has("forms.{$name}")) {
