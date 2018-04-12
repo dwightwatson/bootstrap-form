@@ -60,7 +60,7 @@ return [
     | Error class
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the error class
+    | Here you may specify the error class.
     |
     */
 
