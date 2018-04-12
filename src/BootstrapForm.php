@@ -72,6 +72,13 @@ class BootstrapForm
     protected $iconPrefix;
 
     /**
+     * The error class.
+     *
+     * @var string
+     */
+    protected $errorClass;
+
+    /**
      * The errorbag that is used for validation (multiple forms)
      *
      * @var string
@@ -975,6 +982,16 @@ class BootstrapForm
         return $this->iconPrefix ?: $this->config->get('bootstrap_form.icon_prefix', 'fa fa-');
     }
 
+     /**
+     * Get the error class.
+     *
+     * @return string
+     */
+    public function getErrorClass()
+    {
+        return $this->errorClass ?: $this->config->get('bootstrap_form.error_class', 'has_error');
+    }
+
     /**
      * Get the error bag.
      *
@@ -1056,9 +1073,9 @@ class BootstrapForm
      * @param  string  $class
      * @return string
      */
-    protected function getFieldErrorClass($field, $class = 'has-error')
+    protected function getFieldErrorClass($field)
     {
-        return $this->getFieldError($field) ? $class : null;
+        return $this->getFieldError($field) ? $this->getErrorClass() : null;
     }
 
     /**
