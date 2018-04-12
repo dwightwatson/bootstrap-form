@@ -64,5 +64,5 @@ return [
     |
     */
 
-    'error_class' => 'has_error'
+    'error_class' => 'has-error'
 ];

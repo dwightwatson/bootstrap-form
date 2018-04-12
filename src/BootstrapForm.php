@@ -14,7 +14,7 @@ use Illuminate\Support\Traits\Macroable;
 class BootstrapForm
 {
     use Macroable;
-    
+
     /**
      * Illuminate HtmlBuilder instance.
      *
@@ -979,7 +979,7 @@ class BootstrapForm
      */
     public function getIconPrefix()
     {
-        return $this->iconPrefix ?: $this->config->get('bootstrap_form.icon_prefix', 'fa fa-');
+        return $this->iconPrefix ?: $this->config->get('bootstrap_form.icon_prefix');
     }
 
      /**
@@ -989,7 +989,7 @@ class BootstrapForm
      */
     public function getErrorClass()
     {
-        return $this->errorClass ?: $this->config->get('bootstrap_form.error_class', 'has_error');
+        return $this->errorClass ?: $this->config->get('bootstrap_form.error_class');
     }
 
     /**
