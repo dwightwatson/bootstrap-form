@@ -25,5 +25,15 @@
             "Watson\\BootstrapForm\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Watson\\BootstrapForm\\BootstrapFormServiceProvider"
+            ],
+            "aliases": {
+                "BootForm": "Watson\\BootstrapForm\\Facades\\BootstrapForm"
+            }
+        }
+    },
     "minimum-stability": "dev"
 }

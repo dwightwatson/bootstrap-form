@@ -236,3 +236,24 @@ BootForm::text('username', new Illuminate\Support\HtmlString('Username <span cla
 ### Help Text
 
 You may pass a `help_text` option to any field to have [Bootstrap Help Text](https://getbootstrap.com/css/#forms-help-text) appended to the rendered form group.
+
+### Form input group (suffix and prefix)
+
+Add prefix and/or suffix to any input - you can add text, icon and buttons.
+
+```php
+// Suffix button with 'Call' as label and success class to button
+{!! BootForm::text('tel', 'Phone', null, ['suffix' => BootForm::addonButton('Call', ['class' => 'btn-success'])] ) !!}
+
+// Prefix button with 'Call' as label and success class to button
+{!! BootForm::text('tel', 'Phone', null, ['prefix' => BootForm::addonButton('Call', ['class' => 'btn-success'])] ) !!}
+
+// Prefix icon (I put second parameter after <i class="fa fa-SECOND_PARAMETER"></i>) with 'dollar' as icon
+{!! BootForm::text('tel', 'Phone', null, ['prefix' => BootForm::addonIcon('dollar')] ) !!}
+
+// Prefix and suffix as text
+{!! BootForm::text('tel', 'Phone', null, ['prefix' => BootForm::addonText('1-'), 'suffix' => BootForm::addonIcon('phone')] ) !!}
+
+// Prefix and suffix with button
+{!! BootForm::text('tel', 'Phone', null, ['suffix' => BootForm::addonButton('Boom!', ['class' => 'btn-danger']), 'prefix' => BootForm::addonButton('Call', ['class' => 'btn-success'])] ) !!}
+```
