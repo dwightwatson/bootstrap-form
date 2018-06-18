@@ -83,7 +83,7 @@ class BootstrapForm
      *
      * @var string
      */
-    protected $errorBag = 'default';
+    protected $errorBag;
 
     /**
      * Construct the class.
@@ -98,6 +98,7 @@ class BootstrapForm
         $this->html = $html;
         $this->form = $form;
         $this->config = $config;
+        $this->errorBag = $config->get('bootstrap_form.error_bag', 'default');
     }
 
     /**
@@ -1055,8 +1056,8 @@ class BootstrapForm
         if ($this->getErrors()) {
             $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
-            $errorBag = $this->getErrors()->{$this->getErrorBag()};
-
+            $errorBag = $this->getErrorBag() ? $this->getErrors()->{$this->getErrorBag()} : $this->getErrors();
+            
             if ($allErrors) {
                 return implode('', $errorBag->get($field, $format));
             }
