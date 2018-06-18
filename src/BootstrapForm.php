@@ -72,18 +72,19 @@ class BootstrapForm
     protected $iconPrefix;
 
     /**
+     * The errorbag that is used for validation (multiple forms).
+     *
+     * @var string
+     */
+    protected $errorBag;
+
+    /**
      * The error class.
      *
      * @var string
      */
     protected $errorClass;
 
-    /**
-     * The errorbag that is used for validation (multiple forms)
-     *
-     * @var string
-     */
-    protected $errorBag = 'default';
 
     /**
      * Construct the class.
@@ -999,7 +1000,7 @@ class BootstrapForm
      */
     protected function getErrorBag()
     {
-        return $this->errorBag;
+        return $this->errorBag ?: $this->config->get('bootstrap_form.error_bag');
     }
 
     /**
@@ -1055,7 +1056,11 @@ class BootstrapForm
         if ($this->getErrors()) {
             $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
-            $errorBag = $this->getErrors()->{$this->getErrorBag()};
+            if ($this->getErrorBag()) {
+                $errorBag = $this->getErrors()->{$this->getErrorBag()};
+            } else {
+                $errorBag = $this->getErrors();
+            }
 
             if ($allErrors) {
                 return implode('', $errorBag->get($field, $format));
