@@ -88,6 +88,16 @@ By default this package will append an asterisk `*` to the label of required fie
 BootFormm:open([ 'label_required_mark' => '(required)', 'group_required_class' => 'field-required' ])
 ```
 
+### Default values
+
+You can force default values by passing the values to the `open` method :
+
+```
+BootFormm:open([ 'values' => ['foo' => 'bar'] ])
+```
+
+These values take precedence over the model values, but not the provided or the old/request ones.
+
 ## Usage
 
 When used in a blade template enclose the helper methods inside an unescaped block: `{!! !!}`

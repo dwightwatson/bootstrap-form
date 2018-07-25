@@ -8,51 +8,47 @@
 
 namespace Bnb\BootstrapForm;
 
-use Illuminate\Support\Collection;
-
 class FormBuilder extends \Collective\Html\FormBuilder
 {
-    public function __construct(\Collective\Html\FormBuilder $form) {
+
+    /**
+     * Default values that prevail over models one (lower priority than old and request)
+     *
+     * @var array
+     */
+    protected $defaultValues = [];
+
+
+    /**
+     * FormBuilder constructor.
+     *
+     * @param \Collective\Html\FormBuilder $form
+     */
+    public function __construct($form)
+    {
         parent::__construct($form->html, $form->url, $form->view, $form->csrfToken, $form->request);
     }
 
 
-    /**
-     * Create a placeholder select element option.
-     *
-     * @param $display
-     * @param $selected
-     *
-     * @return \Illuminate\Support\HtmlString
-     */
-    protected function placeholderOption($display, $selected)
+    public function getValueAttribute($name, $value = null)
     {
-        $selected = $this->getSelectedValue(null, $selected);
-
-        $options = [
-            'selected' => $selected,
-            'value' => ''
-        ];
-
-        return $this->toHtmlString('<option' . $this->html->attributes($options) . '>' . e($display) . '</option>');
-    }
-
-    /**
-     * Determine if the value is selected.
-     *
-     * @param  string $value
-     * @param  string $selected
-     *
-     * @return null|string
-     */
-    protected function getSelectedValue($value, $selected)
-    {
-        if (is_array($selected)) {
-            return in_array($value, $selected, true) || in_array((string) $value, $selected, true) ? 'selected' : null;
-        } elseif ($selected instanceof Collection) {
-            return $selected->contains($value) ? 'selected' : null;
+        if ($value === null && isset($this->defaultValues['name'])) {
+            $value = $this->defaultValues['name'];
         }
 
-        return ((string) $value == (string) $selected) ? 'selected' : null;
+        return parent::getValueAttribute($name, $value);
+    }
+
+
+    /**
+     * Set the default values that prevail over model ones (useful for filter)
+     *
+     * @param array $values
+     *
+     * @return void
+     */
+    public function setDefaultValues(array $values)
+    {
+        $this->defaultValues = $values;
     }
 }

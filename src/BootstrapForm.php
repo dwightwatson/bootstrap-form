@@ -20,9 +20,9 @@ class BootstrapForm
     protected $html;
 
     /**
-     * Illuminate FormBuilder instance.
+     * Custom FormBuilder instance.
      *
-     * @var \Collective\Html\FormBuilder
+     * @var \Bnb\BootstrapForm\FormBuilder
      */
     protected $form;
 
@@ -152,6 +152,11 @@ class BootstrapForm
 
         if (array_key_exists('errorbag', $options)) {
             $this->setErrorBag($options['errorbag']);
+        }
+
+        if (array_key_exists('values', $options)) {
+            $this->form->setDefaultValues($options['values']);
+            unset($options['values']);
         }
 
         return $this->form->open($options);
@@ -1089,6 +1094,18 @@ class BootstrapForm
     protected function setErrorBag($errorBag)
     {
         $this->errorBag = $errorBag;
+    }
+
+    /**
+     * Set the errorBag used for validation
+     *
+     * @param $errorBag
+     *
+     * @return void
+     */
+    protected function setDefaultValues($values)
+    {
+        $this->form->setDefaultValues($values);
     }
 
 
