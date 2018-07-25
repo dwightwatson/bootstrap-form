@@ -32,8 +32,8 @@ class FormBuilder extends \Collective\Html\FormBuilder
 
     public function getValueAttribute($name, $value = null)
     {
-        if ($value === null && isset($this->defaultValues['name'])) {
-            $value = $this->defaultValues['name'];
+        if ($value === null && isset($this->defaultValues[$name])) {
+            $value = $this->defaultValues[$name];
         }
 
         return parent::getValueAttribute($name, $value);
