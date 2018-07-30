@@ -85,7 +85,7 @@ By default this package will only display the first validation error for each fi
 By default this package will append an asterisk `*` to the label of required fields. It will also add the `required` CSS class to the form group. You may override these values in the configuration file or by passing the values to the `open` method : 
 
 ```
-BootFormm:open([ 'label_required_mark' => '(required)', 'group_required_class' => 'field-required' ])
+BootForm::open([ 'label_required_mark' => '(required)', 'group_required_class' => 'field-required' ])
 ```
 
 ### Default values
@@ -93,7 +93,7 @@ BootFormm:open([ 'label_required_mark' => '(required)', 'group_required_class' =
 You can force default values by passing the values to the `open` method :
 
 ```
-BootFormm:open([ 'values' => ['foo' => 'bar'] ])
+BootForm::open([ 'values' => ['foo' => 'bar'] ])
 ```
 
 These values take precedence over the model values, but not the provided or the old/request ones.
