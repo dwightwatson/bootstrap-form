@@ -4,6 +4,7 @@ namespace Watson\BootstrapForm;
 
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
+use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Session\SessionManager as Session;
 use Illuminate\Support\HtmlString;
@@ -99,6 +100,11 @@ class BootstrapForm
         $this->html = $html;
         $this->form = $form;
         $this->config = $config;
+    }
+
+    protected function toHtmlString($html)
+    {
+        return new HtmlString($html);
     }
 
     /**
@@ -777,7 +783,7 @@ class BootstrapForm
     {
         $options = $this->getFormGroupOptions($name);
 
-        return '<div' . $this->html->attributes($options) . '>' . $element . '</div>';
+        return $this->toHtmlString('<div' . $this->html->attributes($options) . '>' . $element . '</div>');
     }
 
     /**
@@ -792,7 +798,7 @@ class BootstrapForm
     {
         $options = $this->getFormGroupOptions($name);
 
-        return '<div' . $this->html->attributes($options) . '>' . $this->label($name, $value) . $element . '</div>';
+        return $this->toHtmlString('<div' . $this->html->attributes($options) . '>' . $this->label($name, $value) . $element . '</div>');
     }
 
     /**
@@ -1093,7 +1099,7 @@ class BootstrapForm
     protected function getHelpText($field, array $options = [])
     {
         if (array_key_exists('help_text', $options)) {
-            return '<span class="help-block">' . e($options['help_text']) . '</span>';
+            return $this->toHtmlString('<span class="help-block">' . e($options['help_text']) . '</span>');
         }
 
         return '';
