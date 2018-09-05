@@ -102,11 +102,6 @@ class BootstrapForm
         $this->config = $config;
     }
 
-    protected function toHtmlString($html)
-    {
-        return new HtmlString($html);
-    }
-
     /**
      * Open a form while passing a model and the routes for storing or updating
      * the model. This will set the correct route along with the correct
@@ -751,6 +746,18 @@ class BootstrapForm
         return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
+
+    /**
+     * Wrap the content in Laravel's HTML string class.
+     *
+     * @param  string  $html
+     * @return \Illuminate\Support\HtmlString
+     */
+    protected function toHtmlString($html)
+    {
+        return new HtmlString($html);
+    }
+
     /**
      * Get the label title for a form field, first by using the provided one
      * or titleizing the field name.
@@ -777,7 +784,7 @@ class BootstrapForm
      *
      * @param  string  $name
      * @param  string  $element
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     protected function getFormGroupWithoutLabel($name, $element)
     {
@@ -792,7 +799,7 @@ class BootstrapForm
      * @param  string  $name
      * @param  string  $value
      * @param  string  $element
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     protected function getFormGroupWithLabel($name, $value, $element)
     {
@@ -1094,7 +1101,7 @@ class BootstrapForm
      *
      * @param  string  $field
      * @param  array   $options
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     protected function getHelpText($field, array $options = [])
     {
