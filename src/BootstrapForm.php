@@ -2,15 +2,14 @@
 
 namespace Watson\BootstrapForm;
 
+use Illuminate\Support\Str;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
 use Illuminate\Support\HtmlString;
-use Illuminate\Contracts\Config\Repository as Config;
-use Illuminate\Session\SessionManager as Session;
-use Illuminate\Support\HtmlString;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Session\SessionManager as Session;
+use Illuminate\Contracts\Config\Repository as Config;
 
 class BootstrapForm
 {
