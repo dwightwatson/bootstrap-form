@@ -55,6 +55,8 @@ return [
     |
     */
 
-    'show_all_errors' => false
+    'show_all_errors' => false,
+
+    'builder_class' => 'Bnb\BootstrapForm\BootstrapForm'
 
 ];
