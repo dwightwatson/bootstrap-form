@@ -736,8 +736,18 @@ class BootstrapForm
     {
         $label = $this->getLabelTitle($label, $name);
 
+        $inputElement = isset($options['prefix']) ? $options['prefix'] : '';
+
         $options = $this->getFieldOptions($options, $name);
-        $inputElement = $this->form->select($name, $list, $selected, $options);
+        $inputElement .= $this->form->select($name, $list, $selected, $options);
+
+        if (isset($options['suffix'])) {
+            $inputElement .= $options['suffix'];
+        }
+
+        if (isset($options['prefix']) || isset($options['suffix'])) {
+            $inputElement = '<div class="input-group">' . $inputElement . '</div>';
+        }
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
