@@ -741,11 +741,11 @@ class BootstrapForm
         $options = $this->getFieldOptions($options, $name);
         $inputElement .= $this->form->select($name, $list, $selected, $options);
 
-        if(isset($options['suffix'])) {
+        if (isset($options['suffix'])) {
             $inputElement .= $options['suffix'];
         }
 
-        if(isset($options['prefix']) || isset($options['suffix'])) {
+        if (isset($options['prefix']) || isset($options['suffix'])) {
             $inputElement = '<div class="input-group">' . $inputElement . '</div>';
         }
 
