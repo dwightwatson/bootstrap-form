@@ -32,7 +32,7 @@ class BootstrapFormTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->htmlBuilderMock = Mockery::mock('Collective\Html\HtmlBuilder');
         $this->formBuidlerMock = Mockery::mock('Collective\Html\FormBuilder');

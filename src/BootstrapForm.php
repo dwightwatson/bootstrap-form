@@ -5,6 +5,7 @@ namespace Bnb\BootstrapForm;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
 use Illuminate\Contracts\Config\Repository as Config;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -138,7 +139,7 @@ class BootstrapForm
             $this->setLabelRequiredMark($options['group_required_class']);
         }
 
-        array_forget($options, [
+        Arr::forget($options, [
             'left_column_class',
             'left_column_offset_class',
             'right_column_class',
@@ -190,33 +191,33 @@ class BootstrapForm
         $model = $options['model'];
         if (isset($options['url'])) {
             // If we're explicity passed a URL, we'll use that.
-            array_forget($options, ['model', 'update', 'store']);
+            Arr::forget($options, ['model', 'update', 'store']);
             $options['method'] = isset($options['method']) ? $options['method'] : 'GET';
 
             return $this->form->model($model, $options);
         }
         // If we're not provided store/update actions then let the form submit to itself.
         if ( ! isset($options['store']) && ! isset($options['update'])) {
-            array_forget($options, 'model');
+            Arr::forget($options, 'model');
 
             return $this->form->model($model, $options);
         }
         if ( ! is_null($options['model']) && $options['model']->exists) {
             // If the form is passed a model, we'll use the update route to update
             // the model using the PUT method.
-            $name = is_array($options['update']) ? array_first($options['update']) : $options['update'];
+            $name = is_array($options['update']) ? Arr::first($options['update']) : $options['update'];
             $route = Str::contains($name, '@') ? 'action' : 'route';
             $options[$route] = array_merge((array)$options['update'], [$options['model']->getRouteKey()]);
             $options['method'] = 'PUT';
         } else {
             // Otherwise, we're storing a brand new model using the POST method.
-            $name = is_array($options['store']) ? array_first($options['store']) : $options['store'];
+            $name = is_array($options['store']) ? Arr::first($options['store']) : $options['store'];
             $route = Str::contains($name, '@') ? 'action' : 'route';
             $options[$route] = $options['store'];
             $options['method'] = 'POST';
         }
         // Forget the routes provided to the input.
-        array_forget($options, ['model', 'update', 'store']);
+        Arr::forget($options, ['model', 'update', 'store']);
 
         return $this->form->model($model, $options);
     }
@@ -599,7 +600,7 @@ class BootstrapForm
         $label = $this->getLabelTitle($label, $name, $options);
         $radioOptions = array_merge([], $options);
 
-        array_forget($radioOptions, 'required');
+        Arr::forget($radioOptions, 'required');
 
         foreach ($choices as $value => $choiceLabel) {
             $checked = $value === $checkedValue;
@@ -869,7 +870,7 @@ class BootstrapForm
         if (isset($options['required'])) {
             $class[] = $this->getGroupRequiredClass();
 
-            array_forget($options, 'required');
+            Arr::forget($options, 'required');
         }
 
         $class = array_filter($class);
@@ -910,7 +911,7 @@ class BootstrapForm
      */
     protected function getFieldOptionsClass(array $options = [])
     {
-        return array_get($options, 'class');
+        return Arr::get($options, 'class');
     }
 
 
@@ -1207,7 +1208,7 @@ class BootstrapForm
      */
     protected function getComment(&$options, $format = '<p class="help-block">:comment</p>')
     {
-        $comment = array_pull($options, 'comment');
+        $comment = Arr::pull($options, 'comment');
 
         if ( ! empty($comment)) {
             $comment = str_replace(':comment', e($comment), $format);
