@@ -1,11 +1,13 @@
-BootstrapForm, forms for Laravel 5
+Bootstrap 4 forms for Laravel 5
 ==================================
 
-This is a package for simply creating Bootstrap 3 styled form groups in Laravel 5. It extends the normal form builder to provide you with horizontal form groups completed with labels, error messages and appropriate class usage.
+This is a package for simply creating Bootstrap 4 styled form groups in Laravel 5. It extends the normal form builder to provide you with horizontal form groups completed with labels, error messages and appropriate class usage.
+
+For Bootstrap 3, use [version 1.x](https://github.com/bnbwebexpertise/laravel-bootstrap-form/tree/1) : `composer require bnbwebexpertise/laravel-bootstrap-form:^1`
 
 ## Introduction
 
-Simply use the `BootstrapForm` facade in the place of the `Form` facade when you want to generate a Bootstrap 3 form group.
+Simply use the `BootstrapForm` facade in the place of the `Form` facade when you want to generate a Bootstrap 4 form group.
 
 ```php
 BootForm::text('username');
@@ -257,7 +259,7 @@ BootForm::text('username', new Illuminate\Support\HtmlString('Username <span cla
 
 ### Help Text
 
-You may pass a `help_text` option to any field to have [Bootstrap Help Text](https://getbootstrap.com/css/#forms-help-text) appended to the rendered form group.
+You may pass a `help_text` option to any field to have [Bootstrap Help Text](https://getbootstrap.com/docs/4.0/components/forms/#help-text) appended to the rendered form group.
 
 ### Form group comment
 

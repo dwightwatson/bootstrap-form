@@ -77,19 +77,37 @@ class BootstrapForm
     protected $labelRequiredMark;
 
     /**
+     * Suffix of .{valid|invalid}-[mode] class added to (in)valid notes
+     *
+     * @var string
+     */
+    protected $invalidMode;
+
+    /**
      * CSS class to add to the form group when a field is required
      *
      * @var string
      */
     protected $groupRequiredClass;
 
+    /**
+     * The request is a post back
+     * @var bool
+     */
+    protected $isPostBack;
+
+    /**
+     * @var array
+     */
+    private $fieldsError;
+
 
     /**
      * Construct the class.
      *
-     * @param  \Collective\Html\HtmlBuilder            $html
-     * @param  \Collective\Html\FormBuilder            $form
-     * @param  \Illuminate\Contracts\Config\Repository $config
+     * @param \Collective\Html\HtmlBuilder            $html
+     * @param \Collective\Html\FormBuilder            $form
+     * @param \Illuminate\Contracts\Config\Repository $config
      *
      */
     public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config)
@@ -97,6 +115,7 @@ class BootstrapForm
         $this->html = $html;
         $this->form = $form;
         $this->config = $config;
+        $this->isPostBack = $this->form->getSessionStore()->has('errors');
     }
 
 
@@ -105,12 +124,14 @@ class BootstrapForm
      * the model. This will set the correct route along with the correct
      * method.
      *
-     * @param  array $options
+     * @param array $options
      *
      * @return string
      */
     public function open(array $options = [])
     {
+        $this->fieldsError = [];
+
         // Set the HTML5 role.
         $options['role'] = 'form';
 
@@ -137,6 +158,10 @@ class BootstrapForm
 
         if (array_key_exists('group_required_class', $options)) {
             $this->setLabelRequiredMark($options['group_required_class']);
+        }
+
+        if (array_key_exists('invalid_mode', $options)) {
+            $this->setInvalidMode($options['invalid_mode'] === 'tooltip' ? 'tooltip' : 'feedback');
         }
 
         Arr::forget($options, [
@@ -182,7 +207,7 @@ class BootstrapForm
     /**
      * Open a form configured for model binding.
      *
-     * @param  array $options
+     * @param array $options
      *
      * @return string
      */
@@ -226,7 +251,7 @@ class BootstrapForm
     /**
      * Open a vertical (standard) Bootstrap form.
      *
-     * @param  array $options
+     * @param array $options
      *
      * @return string
      */
@@ -241,7 +266,7 @@ class BootstrapForm
     /**
      * Open an inline Bootstrap form.
      *
-     * @param  array $options
+     * @param array $options
      *
      * @return string
      */
@@ -256,7 +281,7 @@ class BootstrapForm
     /**
      * Open a horizontal Bootstrap form.
      *
-     * @param  array $options
+     * @param array $options
      *
      * @return string
      */
@@ -271,10 +296,10 @@ class BootstrapForm
     /**
      * Create a Bootstrap static field.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -305,10 +330,10 @@ class BootstrapForm
     /**
      * Create a Bootstrap text field input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -321,10 +346,10 @@ class BootstrapForm
     /**
      * Create a Bootstrap email field input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -337,10 +362,10 @@ class BootstrapForm
     /**
      * Create a Bootstrap URL field input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -353,10 +378,10 @@ class BootstrapForm
     /**
      * Create a Bootstrap tel field input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -369,10 +394,10 @@ class BootstrapForm
     /**
      * Create a Bootstrap number field input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -385,10 +410,10 @@ class BootstrapForm
     /**
      * Create a Bootstrap date field input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -401,10 +426,10 @@ class BootstrapForm
     /**
      * Create a Bootstrap textarea field input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -417,9 +442,9 @@ class BootstrapForm
     /**
      * Create a Bootstrap password field input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param array  $options
      *
      * @return string
      */
@@ -432,11 +457,11 @@ class BootstrapForm
     /**
      * Create a Bootstrap checkbox input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  bool   $checked
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param bool   $checked
+     * @param array  $options
      *
      * @return string
      */
@@ -456,12 +481,12 @@ class BootstrapForm
     /**
      * Create a single Bootstrap checkbox element.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  bool   $checked
-     * @param  bool   $inline
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param bool   $checked
+     * @param bool   $inline
+     * @param array  $options
      *
      * @return string
      */
@@ -473,26 +498,37 @@ class BootstrapForm
         $inline = false,
         array $options = []
     ) {
+        $wrapperClass = $inline ? 'form-check form-check-inline' : 'form-check';
+        $labelOptions = ['class' => 'form-check-label'];
         $label = $this->getLabelTitle($label, $name, $options) ?: '';
 
-        $labelOptions = $inline ? ['class' => 'checkbox-inline'] : [];
+        if ( ! isset($options['class'])) {
+            $options['class'] = 'form-check-input';
+
+            if ($label === null) {
+                $options['class'] .= ' position-static';
+            }
+        }
+
+        $options['class'] = trim($options['class'] . ' ' . $this->getFieldErrorClass($name));
+        $label = ($label !== null ? '<label ' . $this->html->attributes($labelOptions) . '>' . $label . '</label>' : '');
 
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
-        $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
+        $labelElement = $inputElement . $label . $this->getFieldError($name);
 
-        return $inline ? $labelElement : '<div class="checkbox">' . $labelElement . '</div>';
+        return $inline ? $labelElement : '<div class="' . $wrapperClass . '">' . $labelElement . '</div>';
     }
 
 
     /**
      * Create a collection of Bootstrap checkboxes.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  array  $choices
-     * @param  array  $checkedValues
-     * @param  bool   $inline
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param array  $choices
+     * @param array  $checkedValues
+     * @param bool   $inline
+     * @param array  $options
      *
      * @return string
      */
@@ -524,11 +560,11 @@ class BootstrapForm
     /**
      * Create a Bootstrap radio input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  bool   $checked
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param bool   $checked
+     * @param array  $options
      *
      * @return string
      */
@@ -548,12 +584,12 @@ class BootstrapForm
     /**
      * Create a single Bootstrap radio input.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  bool   $checked
-     * @param  bool   $inline
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param bool   $checked
+     * @param bool   $inline
+     * @param array  $options
      *
      * @return string
      */
@@ -565,26 +601,38 @@ class BootstrapForm
         $inline = false,
         array $options = []
     ) {
+        $wrapperClass = $inline ? 'form-check form-check-inline' : 'form-check';
         $label = $this->getLabelTitle($label, $name, $options) ?: '';
+        $displayError = ! Arr::exists($options, 'no-error');
 
-        $labelOptions = $inline ? ['class' => 'radio-inline'] : [];
+        $options = Arr::except($options, 'no-error');
+
+        $options['class'] = 'form-check-input' . (isset($options['class']) ? (' ' . $options['class']) : '');
+
+        if ($label === null) {
+            $options['class'] .= ' position-static';
+        }
+
+        $options['class'] = $options['class'] . ($displayError ? (' ' . $this->getFieldErrorClass($name)) : '');
+        $labelOptions = ['class' => 'form-check-label', 'for' => $this->form->getIdAttribute($name, $options)];
+        $label = ($label !== null ? '<label ' . $this->html->attributes($labelOptions) . '>' . $label . '</label>' : '');
 
         $inputElement = $this->form->radio($name, $value, $checked, $options);
-        $labelElement = '<label ' . $this->html->attributes($labelOptions) . '>' . $inputElement . $label . '</label>';
+        $labelElement = $inputElement . $label . ($displayError ? $this->getFieldError($name) : '');
 
-        return $inline ? $labelElement : '<div class="radio">' . $labelElement . '</div>';
+        return $inline ? $labelElement : '<div class="' . $wrapperClass . '">' . $labelElement . '</div>';
     }
 
 
     /**
      * Create a collection of Bootstrap radio inputs.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  array  $choices
-     * @param  string $checkedValue
-     * @param  bool   $inline
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param array  $choices
+     * @param string $checkedValue
+     * @param bool   $inline
+     * @param array  $options
      *
      * @return string
      */
@@ -598,7 +646,7 @@ class BootstrapForm
     ) {
         $elements = '';
         $label = $this->getLabelTitle($label, $name, $options);
-        $radioOptions = array_merge([], $options);
+        $radioOptions = array_merge(['no-error' => true], $options);
 
         Arr::forget($radioOptions, 'required');
 
@@ -610,7 +658,7 @@ class BootstrapForm
 
         $comment = $this->getComment($options);
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $comment . '</div>';
+        $wrapperElement = $elements . $this->getFieldError($name) . $comment;
         $groupOptions = $this->getGroupOptions($options);
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
@@ -620,9 +668,9 @@ class BootstrapForm
     /**
      * Create a Bootstrap label.
      *
-     * @param  string $name
-     * @param  string $value
-     * @param  array  $options
+     * @param string $name
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -650,8 +698,8 @@ class BootstrapForm
     /**
      * Create a Boostrap submit button.
      *
-     * @param  string $value
-     * @param  array  $options
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -673,8 +721,8 @@ class BootstrapForm
     /**
      * Create a Boostrap submit button.
      *
-     * @param  string $value
-     * @param  array  $options
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -696,9 +744,9 @@ class BootstrapForm
     /**
      * Create a Boostrap file upload button.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param array  $options
      *
      * @return string
      */
@@ -722,11 +770,11 @@ class BootstrapForm
     /**
      * Create the input group for an element with the correct classes for errors.
      *
-     * @param  string $type
-     * @param  string $name
-     * @param  string $label
-     * @param  string $value
-     * @param  array  $options
+     * @param string $type
+     * @param string $name
+     * @param string $label
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -749,9 +797,9 @@ class BootstrapForm
     /**
      * Create a hidden field.
      *
-     * @param  string $name
-     * @param  string $value
-     * @param  array  $options
+     * @param string $name
+     * @param string $value
+     * @param array  $options
      *
      * @return string
      */
@@ -764,11 +812,11 @@ class BootstrapForm
     /**
      * Create a select box field.
      *
-     * @param  string $name
-     * @param  string $label
-     * @param  array  $list
-     * @param  string $selected
-     * @param  array  $options
+     * @param string $name
+     * @param string $label
+     * @param array  $list
+     * @param string $selected
+     * @param array  $options
      *
      * @return string
      */
@@ -791,8 +839,8 @@ class BootstrapForm
      * Get the label title for a form field, first by using the provided one
      * or titleizing the field name.
      *
-     * @param  string $label
-     * @param  string $name
+     * @param string $label
+     * @param string $name
      *
      * @return string
      */
@@ -819,10 +867,10 @@ class BootstrapForm
     /**
      * Get a form group comprised of a label, form element and errors.
      *
-     * @param  string $name
-     * @param  string $value
-     * @param  string $element
-     * @param array   $options
+     * @param string $name
+     * @param string $value
+     * @param string $element
+     * @param array  $options
      *
      * @return string
      */
@@ -837,12 +885,12 @@ class BootstrapForm
     /**
      * Get a form group.
      *
-     * @param  string $name
-     * @param  string $element
+     * @param string $name
+     * @param string $element
      *
      * @return string
      */
-    public function getFormGroup($name = null, $element)
+    public function getFormGroup($name, $element)
     {
         $options = $this->getFormGroupOptions($name);
 
@@ -854,8 +902,8 @@ class BootstrapForm
      * Merge the options provided for a form group with the default options
      * required for Bootstrap styling.
      *
-     * @param  string $name
-     * @param  array  $options
+     * @param string $name
+     * @param array  $options
      *
      * @return array
      */
@@ -864,7 +912,7 @@ class BootstrapForm
         $class = ['form-group'];
 
         if ($name) {
-            $class[] = $this->getFieldErrorClass($name);
+            $class[] = $this->getFormGroupErrorClass($name);
         }
 
         if (isset($options['required'])) {
@@ -883,14 +931,15 @@ class BootstrapForm
      * Merge the options provided for a field with the default options
      * required for Bootstrap styling.
      *
-     * @param  array  $options
-     * @param  string $name
+     * @param array  $options
+     * @param string $name
      *
      * @return array
      */
     protected function getFieldOptions(array $options = [], $name = null)
     {
         $options['class'] = trim('form-control ' . $this->getFieldOptionsClass($options));
+        $options['class'] = trim($options['class'] . ' ' . $this->getFieldErrorClass($name));
 
         // If we've been provided the input name and the ID has not been set in the options,
         // we'll use the name as the ID to hook it up with the label.
@@ -905,7 +954,7 @@ class BootstrapForm
     /**
      * Returns the class property from the options, or the empty string
      *
-     * @param   array $options
+     * @param array $options
      *
      * @return  string
      */
@@ -919,7 +968,7 @@ class BootstrapForm
      * Merge the options provided for a label with the default options
      * required for Bootstrap styling.
      *
-     * @param  array $options
+     * @param array $options
      *
      * @return array
      */
@@ -959,7 +1008,7 @@ class BootstrapForm
     /**
      * Set the form type.
      *
-     * @param  string $type
+     * @param string $type
      *
      * @return void
      */
@@ -983,7 +1032,7 @@ class BootstrapForm
     /**
      * Set the column class for the left column of a horizontal form.
      *
-     * @param  string $class
+     * @param string $class
      *
      * @return void
      */
@@ -1007,7 +1056,7 @@ class BootstrapForm
     /**
      * Set the column class for the left column offset of a horizontal form.
      *
-     * @param  string $class
+     * @param string $class
      *
      * @return void
      */
@@ -1031,7 +1080,7 @@ class BootstrapForm
     /**
      * Set the column class for the right column of a horizontal form.
      *
-     * @param  string $lcass
+     * @param string $lcass
      *
      * @return void
      */
@@ -1060,6 +1109,28 @@ class BootstrapForm
     public function setLabelRequiredMark($mark)
     {
         $this->labelRequiredMark = $mark;
+    }
+
+
+    /**
+     * Get the invalid note mode (feedback or tooltip)
+     *
+     * @return string
+     */
+    public function getInvalidMode(): string
+    {
+        return $this->invalidMode ?: 'feedback';
+    }
+
+
+    /**
+     * Set the invalid note mode (feedback or tooltip)
+     *
+     * @param string $mode
+     */
+    public function setInvalidMode($mode)
+    {
+        $this->invalidMode = $mode;
     }
 
 
@@ -1097,6 +1168,7 @@ class BootstrapForm
         $this->errorBag = $errorBag;
     }
 
+
     /**
      * Set the errorBag used for validation
      *
@@ -1114,7 +1186,7 @@ class BootstrapForm
      * Flatten arrayed field names to work with the validator, including removing "[]",
      * and converting nested arrays like "foo[bar][baz]" to "foo.bar.baz".
      *
-     * @param  string $field
+     * @param string $field
      *
      * @return string
      */
@@ -1144,24 +1216,55 @@ class BootstrapForm
      * Get the first error for a given field, using the provided
      * format, defaulting to the normal Bootstrap 3 format.
      *
-     * @param  string $field
-     * @param  string $format
+     * @param string $field
+     * @param string $format
      *
      * @return mixed
      */
-    protected function getFieldError($field, $format = '<span class="help-block">:message</span>')
+    protected function getFieldError($field, $format = null)
     {
+        if ($format === null) {
+            $format = sprintf('<div class="invalid-%s">:message</div>', $this->getInvalidMode());
+        }
+
         $field = $this->flattenFieldName($field);
+
+        if (isset($this->fieldsError[$field])) {
+            return $this->fieldsError[$field];
+        }
 
         if ($this->getErrors()) {
             $allErrors = $this->config->get('bootstrap_form.show_all_errors');
 
             if ($allErrors) {
-                return implode('', $this->getErrors()->{$this->errorBag}->get($field, $format));
+                return $this->fieldsError[$field] = implode('', $this->getErrors()->{$this->errorBag}->get($field, $format));
             }
 
-            return $this->getErrors()->{$this->errorBag}->first($field, $format);
+            return $this->fieldsError[$field] = $this->getErrors()->{$this->errorBag}->first($field, $format);
         }
+
+        return $this->fieldsError[$field] = null;
+    }
+
+
+    /**
+     * Return the error class to add onto the input field
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function getFieldErrorClass($name)
+    {
+        if ( ! empty($this->getFieldError($name))) {
+            return 'is-invalid';
+        }
+
+        if ($this->isPostBack) {
+            return 'is-valid';
+        }
+
+        return '';
     }
 
 
@@ -1169,12 +1272,12 @@ class BootstrapForm
      * Return the error class if the given field has associated
      * errors, defaulting to the normal Bootstrap 3 error class.
      *
-     * @param  string $field
-     * @param  string $class
+     * @param string $field
+     * @param string $class
      *
      * @return string
      */
-    protected function getFieldErrorClass($field, $class = 'has-error')
+    protected function getFormGroupErrorClass($field, $class = 'has-error')
     {
         return $this->getFieldError($field) ? $class : null;
     }
@@ -1183,15 +1286,15 @@ class BootstrapForm
     /**
      * Get the help text for the given field.
      *
-     * @param  string $field
-     * @param  array  $options
+     * @param string $field
+     * @param array  $options
      *
      * @return string
      */
     protected function getHelpText($field, array $options = [])
     {
         if (array_key_exists('help_text', $options)) {
-            return '<span class="help-block">' . e($options['help_text']) . '</span>';
+            return '<span class="form-text text-muted">' . e($options['help_text']) . '</span>';
         }
 
         return '';
@@ -1206,7 +1309,7 @@ class BootstrapForm
      *
      * @return mixed|string
      */
-    protected function getComment(&$options, $format = '<p class="help-block">:comment</p>')
+    protected function getComment(&$options, $format = '<p class="form-text text-muted">:comment</p>')
     {
         $comment = Arr::pull($options, 'comment');
 

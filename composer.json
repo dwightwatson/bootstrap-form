@@ -35,6 +35,10 @@
     }
   },
   "extra": {
+    "branch-alias": {
+      "dev-master": "2.x-dev",
+      "1-dev": "1.x-dev"
+    },
     "laravel": {
       "providers": [
         "Bnb\\BootstrapForm\\BootstrapFormServiceProvider"
