@@ -516,7 +516,7 @@ class BootstrapForm
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
         $labelElement = $inputElement . $label . $this->getFieldError($name);
 
-        return $inline ? $labelElement : '<div class="' . $wrapperClass . '">' . $labelElement . '</div>';
+        return '<div class="' . $wrapperClass . '">' . $labelElement . '</div>';
     }
 
 
@@ -620,7 +620,7 @@ class BootstrapForm
         $inputElement = $this->form->radio($name, $value, $checked, $options);
         $labelElement = $inputElement . $label . ($displayError ? $this->getFieldError($name) : '');
 
-        return $inline ? $labelElement : '<div class="' . $wrapperClass . '">' . $labelElement . '</div>';
+        return '<div class="' . $wrapperClass . '">' . $labelElement . '</div>';
     }
 
 
