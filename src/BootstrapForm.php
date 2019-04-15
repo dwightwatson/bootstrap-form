@@ -549,8 +549,14 @@ class BootstrapForm
         }
 
         $comment = $this->getComment($options);
-        $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $comment . '</div>';
+
+        if ($inline) {
+            $wrapperElement = $elements . $this->getFieldError($name) . $comment;
+        } else {
+            $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
+            $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $comment . '</div>';
+        }
+
         $groupOptions = $this->getGroupOptions($options);
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
@@ -657,8 +663,14 @@ class BootstrapForm
         }
 
         $comment = $this->getComment($options);
-        $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
-        $wrapperElement = $elements . $this->getFieldError($name) . $comment;
+
+        if ($inline) {
+            $wrapperElement = $elements . $this->getFieldError($name) . $comment;
+        } else {
+            $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
+            $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $comment . '</div>';
+        }
+
         $groupOptions = $this->getGroupOptions($options);
 
         return $this->getFormGroupWithLabel($name, $label, $wrapperElement, $groupOptions);
