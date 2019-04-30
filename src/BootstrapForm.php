@@ -499,8 +499,8 @@ class BootstrapForm
         array $options = []
     ) {
         $wrapperClass = $inline ? 'form-check form-check-inline' : 'form-check';
-        $labelOptions = ['class' => 'form-check-label'];
         $label = $this->getLabelTitle($label, $name, $options) ?: '';
+        $labelOptions = ['class' => 'form-check-label'];
 
         if ( ! isset($options['class'])) {
             $options['class'] = 'form-check-input';
@@ -511,8 +511,8 @@ class BootstrapForm
         }
 
         $options['class'] = trim($options['class'] . ' ' . $this->getFieldErrorClass($name));
-        $label = ($label !== null ? '<label ' . $this->html->attributes($labelOptions) . '>' . $label . '</label>' : '');
 
+        $label = ($label !== null ? $this->form->label($name, $label, $labelOptions) : '');
         $inputElement = $this->form->checkbox($name, $value, $checked, $options);
         $labelElement = $inputElement . $label . $this->getFieldError($name);
 
@@ -609,8 +609,8 @@ class BootstrapForm
     ) {
         $wrapperClass = $inline ? 'form-check form-check-inline' : 'form-check';
         $label = $this->getLabelTitle($label, $name, $options) ?: '';
+        $labelOptions = ['class' => 'form-check-label'];
         $displayError = ! Arr::exists($options, 'no-error');
-
         $options = Arr::except($options, 'no-error');
 
         $options['class'] = 'form-check-input' . (isset($options['class']) ? (' ' . $options['class']) : '');
@@ -620,9 +620,8 @@ class BootstrapForm
         }
 
         $options['class'] = $options['class'] . ($displayError ? (' ' . $this->getFieldErrorClass($name)) : '');
-        $labelOptions = ['class' => 'form-check-label', 'for' => $this->form->getIdAttribute($name, $options)];
-        $label = ($label !== null ? '<label ' . $this->html->attributes($labelOptions) . '>' . $label . '</label>' : '');
 
+        $label = ($label !== null ? $this->form->label(Arr::get($options, 'id') ?: $name, $label, $labelOptions) : '');
         $inputElement = $this->form->radio($name, $value, $checked, $options);
         $labelElement = $inputElement . $label . ($displayError ? $this->getFieldError($name) : '');
 
@@ -653,13 +652,14 @@ class BootstrapForm
         $elements = '';
         $label = $this->getLabelTitle($label, $name, $options);
         $radioOptions = array_merge(['no-error' => true], $options);
+        $index = 0;
 
         Arr::forget($radioOptions, 'required');
 
         foreach ($choices as $value => $choiceLabel) {
             $checked = $value === $checkedValue;
 
-            $elements .= $this->radioElement($name, $choiceLabel, $value, $checked, $inline, $radioOptions);
+            $elements .= $this->radioElement($name, $choiceLabel, $value, $checked, $inline, $radioOptions + ['id' => $name . ++$index]);
         }
 
         $comment = $this->getComment($options);
