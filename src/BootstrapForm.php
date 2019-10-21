@@ -2,6 +2,7 @@
 
 namespace Watson\BootstrapForm;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
@@ -131,7 +132,7 @@ class BootstrapForm
             $this->setRightColumnClass($options['right_column_class']);
         }
 
-        array_forget($options, [
+        Arr::forget($options, [
             'left_column_class',
             'left_column_offset_class',
             'right_column_class'
@@ -174,7 +175,7 @@ class BootstrapForm
 
         if (isset($options['url'])) {
             // If we're explicity passed a URL, we'll use that.
-            array_forget($options, ['model', 'update', 'store']);
+            Arr::forget($options, ['model', 'update', 'store']);
             $options['method'] = isset($options['method']) ? $options['method'] : 'GET';
 
             return $this->form->model($model, $options);
@@ -182,21 +183,21 @@ class BootstrapForm
 
         // If we're not provided store/update actions then let the form submit to itself.
         if (!isset($options['store']) && !isset($options['update'])) {
-            array_forget($options, 'model');
+            Arr::forget($options, 'model');
             return $this->form->model($model, $options);
         }
 
         if (!is_null($options['model']) && $options['model']->exists) {
             // If the form is passed a model, we'll use the update route to update
             // the model using the PUT method.
-            $name = is_array($options['update']) ? array_first($options['update']) : $options['update'];
+            $name = is_array($options['update']) ? Arr::first($options['update']) : $options['update'];
             $route = Str::contains($name, '@') ? 'action' : 'route';
 
             $options[$route] = array_merge((array) $options['update'], [$options['model']->getRouteKey()]);
             $options['method'] = 'PUT';
         } else {
             // Otherwise, we're storing a brand new model using the POST method.
-            $name = is_array($options['store']) ? array_first($options['store']) : $options['store'];
+            $name = is_array($options['store']) ? Arr::first($options['store']) : $options['store'];
             $route = Str::contains($name, '@') ? 'action' : 'route';
 
             $options[$route] = $options['store'];
@@ -204,7 +205,7 @@ class BootstrapForm
         }
 
         // Forget the routes provided to the input.
-        array_forget($options, ['model', 'update', 'store']);
+        Arr::forget($options, ['model', 'update', 'store']);
 
         return $this->form->model($model, $options);
     }
@@ -641,7 +642,7 @@ class BootstrapForm
     {
         $label = $this->getLabelTitle($label, $name);
 
-        $optionsField = $this->getFieldOptions(array_except($options, ['suffix', 'prefix']), $name);
+        $optionsField = $this->getFieldOptions(Arr::except($options, ['suffix', 'prefix']), $name);
 
         $inputElement = '';
 
@@ -704,7 +705,7 @@ class BootstrapForm
      */
     public function addonIcon($icon, $options = [])
     {
-        $prefix = array_get($options, 'prefix', $this->getIconPrefix());
+        $prefix = Arr::get($options, 'prefix', $this->getIconPrefix());
 
         return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '><i class="'.$prefix.$icon.'"></i></span></div>';
     }
@@ -881,7 +882,7 @@ class BootstrapForm
      */
     protected function getFieldOptionsClass(array $options = [])
     {
-        return array_get($options, 'class');
+        return Arr::get($options, 'class');
     }
 
     /**
