@@ -220,7 +220,8 @@ class BootstrapForm
     {
         $this->setType(Type::VERTICAL);
 
-        return $this->open($options);    }
+        return $this->open($options);
+    }
 
     /**
      * Open an inline Bootstrap form.
@@ -360,8 +361,8 @@ class BootstrapForm
         return $this->input('date', $name, $label, $value, $options);
     }
 
-     /**
-     * Create a Bootstrap email time input.
+    /**
+     * Create a Bootstrap time field input.
      *
      * @param  string  $name
      * @param  string  $label
@@ -581,7 +582,7 @@ class BootstrapForm
         $inputElement = $this->form->submit($value, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>'. $inputElement . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
         return $this->getFormGroup(null, null, $wrapperElement);
     }
@@ -600,7 +601,7 @@ class BootstrapForm
         $inputElement = $this->form->button($value, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
-        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>'. $inputElement . '</div>';
+        $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
         return $this->getFormGroup(null, null, $wrapperElement);
     }
@@ -646,17 +647,17 @@ class BootstrapForm
 
         $inputElement = '';
 
-         if(isset($options['prefix'])) {
+        if (isset($options['prefix'])) {
             $inputElement = $options['prefix'];
         }
 
         $inputElement .= $type === 'password' ? $this->form->password($name, $optionsField) : $this->form->{$type}($name, $value, $optionsField);
 
-         if(isset($options['suffix'])) {
+        if (isset($options['suffix'])) {
             $inputElement .= $options['suffix'];
         }
 
-         if(isset($options['prefix']) || isset($options['suffix'])) {
+        if (isset($options['prefix']) || isset($options['suffix'])) {
             $inputElement = '<div class="input-group">' . $inputElement . '</div>';
         }
 
@@ -681,7 +682,7 @@ class BootstrapForm
             $attributes['class'] .= ' btn';
         }
 
-        return '<div class="input-group-btn"><button ' . $this->html->attributes($attributes) . '>'.$label.'</button></div>';
+        return '<div class="input-group-btn"><button ' . $this->html->attributes($attributes) . '>' . $label . '</button></div>';
     }
 
     /**
@@ -693,7 +694,7 @@ class BootstrapForm
      */
     public function addonText($text, $options = [])
     {
-        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '>'.$text.'</span></div>';
+        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '>' . $text . '</span></div>';
     }
 
     /**
@@ -707,7 +708,7 @@ class BootstrapForm
     {
         $prefix = Arr::get($options, 'prefix', $this->getIconPrefix());
 
-        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '><i class="'.$prefix.$icon.'"></i></span></div>';
+        return '<div class="input-group-addon"><span ' . $this->html->attributes($options) . '><i class="' . $prefix . $icon . '"></i></span></div>';
     }
 
     /**
@@ -1006,7 +1007,7 @@ class BootstrapForm
         return $this->iconPrefix ?: $this->config->get('bootstrap_form.icon_prefix');
     }
 
-     /**
+    /**
      * Get the error class.
      *
      * @return string
@@ -1029,7 +1030,7 @@ class BootstrapForm
     /**
      * Set the error bag.
      *
-     * @param  $errorBag  string
+     * @param  string  $errorBag
      * @return void
      */
     protected function setErrorBag($errorBag)
