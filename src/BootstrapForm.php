@@ -868,7 +868,7 @@ class BootstrapForm
 
         $label = $label ?: str_replace('_', ' ', Str::title($name));
 
-        if (isset($options['required'])) {
+        if (isset($options['required']) && $options['required']) {
             $label = sprintf('%s %s', $label, $this->getLabelRequiredMark());
         }
 
@@ -927,7 +927,7 @@ class BootstrapForm
             $class[] = $this->getFormGroupErrorClass($name);
         }
 
-        if (isset($options['required'])) {
+        if (isset($options['required']) && $options['required']) {
             $class[] = $this->getGroupRequiredClass();
 
             Arr::forget($options, 'required');
