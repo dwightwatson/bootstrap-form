@@ -113,6 +113,14 @@ $user = new User;
 BootForm::open()
 ```
 
+#### Routing with parameters
+
+If the route takes parametersyou can pass them by replacing the route or action name string bwith an array. The first entry is the string for route name, followed by the parameters as you'd pass them to the `route` function.
+
+```php
+BootForm::open(['update' => ['posts.comments.create', $post]])
+```
+
 ### Form variations
 
 There are a few helpers for opening the different kinds of Bootstrap forms. By default, `open()` will use the the form style that you have set in the configuration file. These helpers take the same input as the `open()` method.
