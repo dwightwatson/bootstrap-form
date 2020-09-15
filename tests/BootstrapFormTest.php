@@ -2,7 +2,9 @@
 
 use Watson\BootstrapForm\BootstrapForm;
 
-class BootstrapFormTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class BootstrapFormTest extends TestCase
 {
     protected $bootstrapForm;
 
@@ -14,7 +16,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
 
     protected $sessionMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->htmlBuilderMock = Mockery::mock('Collective\Html\HtmlBuilder');
         $this->formBuidlerMock = Mockery::mock('Collective\Html\FormBuilder');
@@ -192,7 +194,7 @@ class BootstrapFormTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('foo.bar', $result);
     }
-    
+
     /** @test */
     public function in_allows_zero_in_field_name()
     {
