@@ -1,12 +1,10 @@
-BootstrapForm, forms for Laravel 5
-==================================
+# BootstrapForm, forms for Laravel 5
 
-[![Circle CI](https://circleci.com/gh/dwightwatson/bootstrap-form/tree/master.svg?style=shield)](https://circleci.com/gh/dwightwatson/bootstrap-form/tree/master)
+![phpunit](https://github.com/dwightwatson/bootstrap-form/workflows/phpunit/badge.svg)
 [![Total Downloads](https://poser.pugx.org/watson/bootstrap-form/downloads.svg)](https://packagist.org/packages/watson/bootstrap-form)
 [![Latest Stable Version](https://poser.pugx.org/watson/bootstrap-form/v/stable.svg)](https://packagist.org/packages/watson/bootstrap-form)
 [![Latest Unstable Version](https://poser.pugx.org/watson/bootstrap-form/v/unstable.svg)](https://packagist.org/packages/watson/bootstrap-form)
 [![License](https://poser.pugx.org/watson/bootstrap-form/license.svg)](https://packagist.org/packages/watson/bootstrap-form)
-
 
 This is a package for simply creating Bootstrap 3 styled form groups in Laravel 5. It extends the normal form builder to provide you with horizontal form groups completed with labels, error messages and appropriate class usage.
 
@@ -24,17 +22,18 @@ And you'll get back the following:
 <div class="form-group">
     <label for="username" class="control-label col-md-2">Username</label>
     <div class="col-md-10">
-        <input type="text" name="username" class="form-control">
+        <input type="text" name="username" class="form-control" />
     </div>
 </div>
 ```
 
 Of course, if there are errors for that field it will even populate them.
+
 ```html
 <div class="form-group has-error">
     <label for="username" class="control-label col-md-2">Username</label>
     <div class="col-md-10">
-        <input type="text" name="username" class="form-control">
+        <input type="text" name="username" class="form-control" />
         <span class="help-block">The username field is required.</span>
     </div>
 </div>
