@@ -696,135 +696,104 @@ class BootstrapForm
 
     /**
      * Get the form type.
-     *
-     * @return string
      */
-    public function getType()
+    public function getType(): ?string
     {
         return isset($this->type) ? $this->type : $this->config->get('bootstrap_form.type');
     }
 
     /**
      * Determine if the form is of a horizontal type.
-     *
-     * @return bool
      */
-    public function isHorizontal()
+    public function isHorizontal(): bool
     {
         return $this->getType() === Type::HORIZONTAL;
     }
 
     /**
      * Set the form type.
-     *
-     * @param  string  $type
-     * @return void
      */
-    public function setType($type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
     /**
      * Get the column class for the left column of a horizontal form.
-     *
-     * @return string
      */
-    public function getLeftColumnClass()
+    public function getLeftColumnClass(): ?string
     {
         return $this->leftColumnClass ?: $this->config->get('bootstrap_form.left_column_class');
     }
 
     /**
      * Set the column class for the left column of a horizontal form.
-     *
-     * @param  string  $class
-     * @return void
      */
-    public function setLeftColumnClass($class)
+    public function setLeftColumnClass(string $class): void
     {
         $this->leftColumnClass = $class;
     }
 
     /**
      * Get the column class for the left column offset of a horizontal form.
-     *
-     * @return string
      */
-    public function getLeftColumnOffsetClass()
+    public function getLeftColumnOffsetClass(): ?string
     {
         return $this->leftColumnOffsetClass ?: $this->config->get('bootstrap_form.left_column_offset_class');
     }
 
     /**
      * Set the column class for the left column offset of a horizontal form.
-     *
-     * @param  string  $class
-     * @return void
      */
-    public function setLeftColumnOffsetClass($class)
+    public function setLeftColumnOffsetClass(string $class): void
     {
         $this->leftColumnOffsetClass = $class;
     }
 
     /**
      * Get the column class for the right column of a horizontal form.
-     *
-     * @return string
      */
-    public function getRightColumnClass()
+    public function getRightColumnClass(): ?string
     {
         return $this->rightColumnClass ?: $this->config->get('bootstrap_form.right_column_class');
     }
 
     /**
      * Set the column class for the right column of a horizontal form.
-     *
-     * @param  string  $class
-     * @return void
      */
-    public function setRightColumnClass($class)
+    public function setRightColumnClass(string $class): void
     {
         $this->rightColumnClass = $class;
     }
 
     /**
      * Get the icon prefix.
-     *
-     * @return string
      */
-    public function getIconPrefix()
+    public function getIconPrefix(): ?string
     {
         return $this->iconPrefix ?: $this->config->get('bootstrap_form.icon_prefix');
     }
 
     /**
      * Get the error class.
-     *
-     * @return string
      */
-    public function getErrorClass()
+    public function getErrorClass(): ?string
     {
         return $this->errorClass ?: $this->config->get('bootstrap_form.error_class');
     }
 
     /**
      * Get the error bag.
-     *
-     * @return string
      */
-    protected function getErrorBag()
+    protected function getErrorBag(): ?string
     {
         return $this->errorBag ?: $this->config->get('bootstrap_form.error_bag');
     }
 
     /**
      * Set the error bag.
-     *
-     * @param  string  $errorBag
-     * @return void
      */
-    protected function setErrorBag($errorBag)
+    protected function setErrorBag(string $errorBag): void
     {
         $this->errorBag = $errorBag;
     }
@@ -832,11 +801,8 @@ class BootstrapForm
     /**
      * Flatten arrayed field names to work with the validator, including removing "[]",
      * and converting nested arrays like "foo[bar][baz]" to "foo.bar.baz".
-     *
-     * @param  string  $field
-     * @return string
      */
-    public function flattenFieldName($field)
+    public function flattenFieldName(string $field): string
     {
         return preg_replace_callback("/\[(.*)\\]/U", function ($matches) {
             if (!empty($matches[1]) || $matches[1] === '0') {
