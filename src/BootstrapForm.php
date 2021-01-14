@@ -17,89 +17,66 @@ class BootstrapForm
     use Macroable;
 
     /**
-     * Illuminate HtmlBuilder instance.
-     *
-     * @var \Collective\Html\HtmlBuilder
-     */
-    protected $html;
-
-    /**
-     * Illuminate FormBuilder instance.
-     *
-     * @var \Collective\Html\FormBuilder
-     */
-    protected $form;
-
-    /**
-     * Illuminate Repository instance.
-     *
-     * @var \Illuminate\Config\Repository
-     */
-    protected $config;
-
-    /**
      * Bootstrap form type class.
-     *
-     * @var string
      */
-    protected $type;
+    protected ?string $type = null;
 
     /**
      * Bootstrap form left column class.
-     *
-     * @var string
      */
-    protected $leftColumnClass;
+    protected ?string $leftColumnClass = null;
 
     /**
      * Bootstrap form left column offset class.
-     *
-     * @var string
      */
-    protected $leftColumnOffsetClass;
+    protected ?string $leftColumnOffsetClass = null;
 
     /**
      * Bootstrap form right column class.
-     *
-     * @var string
      */
-    protected $rightColumnClass;
+    protected ?string $rightColumnClass = null;
 
     /**
      * The icon prefix.
-     *
-     * @var string
      */
-    protected $iconPrefix;
+    protected string $iconPrefix;
 
     /**
      * The errorbag that is used for validation (multiple forms).
-     *
-     * @var string
      */
-    protected $errorBag;
+    protected ?string $errorBag = null;
 
     /**
      * The error class.
-     *
-     * @var string
      */
-    protected $errorClass;
+    protected string $errorClass;
 
 
     /**
      * Construct the class.
      *
-     * @param  \Collective\Html\HtmlBuilder             $html
-     * @param  \Collective\Html\FormBuilder             $form
-     * @param  \Illuminate\Contracts\Config\Repository  $config
      * @return void
      */
-    public function __construct(HtmlBuilder $html, FormBuilder $form, Config $config)
-    {
-        $this->html = $html;
-        $this->form = $form;
-        $this->config = $config;
+    public function __construct(
+        /**
+         * Illuminate HtmlBuilder instance.
+         *
+         * @var \Collective\Html\HtmlBuilder
+         */
+        protected HtmlBuilder $html,
+        /**
+         * Illuminate FormBuilder instance.
+         *
+         * @var \Collective\Html\FormBuilder
+         */
+        protected FormBuilder $form,
+        /**
+         * Illuminate Repository instance.
+         *
+         * @var \Illuminate\Config\Repository
+         */
+        protected Config $config
+    ) {
     }
 
     /**
@@ -274,7 +251,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($name, $label, $wrapperElement);
+        return $this->getFormGroup($wrapperElement, $name, $label);
     }
 
     /**
@@ -412,14 +389,14 @@ class BootstrapForm
      * @param  array    $options
      * @return string
      */
-    public function checkbox($name, $label = null, $value = 1, $checked = null, array $options = [])
+    public function checkbox($name, $label = null, $value = '1', $checked = null, array $options = [])
     {
         $inputElement = $this->checkboxElement($name, $label, $value, $checked, false, $options);
 
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($name, null, $wrapperElement);
+        return $this->getFormGroup($wrapperElement, $name, null);
     }
 
     /**
@@ -433,7 +410,7 @@ class BootstrapForm
      * @param  array    $options
      * @return string
      */
-    public function checkboxElement($name, $label = null, $value = 1, $checked = null, $inline = false, array $options = [])
+    public function checkboxElement($name, $label = null, $value = '1', $checked = null, $inline = false, array $options = [])
     {
         $label = $label === false ? null : $this->getLabelTitle($label, $name);
 
@@ -468,7 +445,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($name, $label, $wrapperElement);
+        return $this->getFormGroup($wrapperElement, $name, $label);
     }
 
     /**
@@ -488,7 +465,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
-        return $this->getFormGroup(null, $label, $wrapperElement);
+        return $this->getFormGroup($wrapperElement, null, $label);
     }
 
     /**
@@ -540,7 +517,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($name, $label, $wrapperElement);
+        return $this->getFormGroup($wrapperElement, $name, $label);
     }
 
     /**
@@ -584,7 +561,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
-        return $this->getFormGroup(null, null, $wrapperElement);
+        return $this->getFormGroup($wrapperElement, null, null);
     }
 
     /**
@@ -603,7 +580,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
-        return $this->getFormGroup(null, null, $wrapperElement);
+        return $this->getFormGroup($wrapperElement, null, null);
     }
 
     /**
@@ -626,7 +603,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($name, $label, $wrapperElement);
+        return $this->getFormGroup($wrapperElement, $name, $label);
     }
 
     /**
@@ -664,7 +641,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $optionsField) . '</div>';
 
-        return $this->getFormGroup($name, $label, $wrapperElement);
+        return $this->getFormGroup($wrapperElement, $name, $label);
     }
 
     /**
@@ -754,7 +731,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($name, $label, $wrapperElement);
+        return $this->getFormGroup($wrapperElement, $name, $label);
     }
 
 
@@ -822,12 +799,12 @@ class BootstrapForm
     /**
      * Get a form group with or without a label.
      *
+     * @param  string  $wrapperElement
      * @param  string  $name
      * @param  string  $label
-     * @param  string  $element
      * @return string
      */
-    public function getFormGroup($name = null, $label = null, $wrapperElement)
+    public function getFormGroup($wrapperElement, $name = null, $label = null)
     {
         if (is_null($label)) {
             return $this->getFormGroupWithoutLabel($name, $wrapperElement);
@@ -1098,11 +1075,12 @@ class BootstrapForm
      * Return the error class if the given field has associated
      * errors, defaulting to the normal Bootstrap 3 error class.
      *
-     * @param  string  $field
-     * @param  string  $class
-     * @return string
+     * @param string  $field
+     * @param string  $class
+     *
+     * @return null|string
      */
-    protected function getFieldErrorClass($field)
+    protected function getFieldErrorClass($field): ?string
     {
         return $this->getFieldError($field) ? $this->getErrorClass() : null;
     }
@@ -1110,11 +1088,12 @@ class BootstrapForm
     /**
      * Get the help text for the given field.
      *
-     * @param  string  $field
-     * @param  array   $options
-     * @return \Illuminate\Support\HtmlString
+     * @param string  $field
+     * @param array   $options
+     *
+     * @return HtmlString|string
      */
-    protected function getHelpText($field, array $options = [])
+    protected function getHelpText($field, array $options = []): string|HtmlString
     {
         if (array_key_exists('help_text', $options)) {
             return $this->toHtmlString('<span class="help-block">' . e($options['help_text']) . '</span>');
