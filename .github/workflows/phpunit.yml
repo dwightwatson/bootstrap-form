@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [7.3, 7.4, 8.0]
+        php: [8.0]
         dependency-version: [prefer-lowest, prefer-stable]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.dependency-version }}
@@ -24,9 +24,7 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Install dependencies
-        run: |
-          composer require --no-interaction --no-update
-          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+        run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
       - name: Execute tests
         run: vendor/bin/phpunit
