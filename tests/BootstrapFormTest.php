@@ -2,6 +2,9 @@
 
 use Watson\BootstrapForm\BootstrapForm;
 
+use Collective\Html\FormBuilder;
+use Collective\Html\HtmlBuilder;
+use Illuminate\Contracts\Config\Repository;
 use PHPUnit\Framework\TestCase;
 
 class BootstrapFormTest extends TestCase
@@ -14,20 +17,16 @@ class BootstrapFormTest extends TestCase
 
     protected $configMock;
 
-    protected $sessionMock;
-
     public function setUp(): void
     {
-        $this->htmlBuilderMock = Mockery::mock('Collective\Html\HtmlBuilder');
-        $this->formBuidlerMock = Mockery::mock('Collective\Html\FormBuilder');
-        $this->configMock = Mockery::mock('Illuminate\Contracts\Config\Repository')->shouldDeferMissing();
-        $this->sessionMock = Mockery::mock('Illuminate\Session\SessionManager')->shouldDeferMissing();
+        $this->htmlBuilderMock = Mockery::mock(HtmlBuilder::class);
+        $this->formBuidlerMock = Mockery::mock(FormBuilder::class);
+        $this->configMock = Mockery::mock(Repository::class)->shouldDeferMissing();
 
         $this->bootstrapForm = new BootstrapForm(
             $this->htmlBuilderMock,
             $this->formBuidlerMock,
             $this->configMock,
-            $this->sessionMock
         );
     }
 
