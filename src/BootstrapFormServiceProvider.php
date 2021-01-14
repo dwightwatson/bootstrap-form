@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Watson\BootstrapForm;
 
@@ -8,10 +8,8 @@ class BootstrapFormServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
      */
-    protected $defer = true;
+    protected bool $defer = true;
 
     /**
      * Register the service provider.
@@ -22,9 +20,7 @@ class BootstrapFormServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/config/config.php', 'bootstrap_form');
 
-        $this->app->singleton('bootstrap_form', function($app) {
-            return new BootstrapForm($app['html'], $app['form'], $app['config']);
-        });
+        $this->app->singleton('bootstrap_form', fn ($app) => new BootstrapForm($app['html'], $app['form'], $app['config']));
     }
 
     /**
