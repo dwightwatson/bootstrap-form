@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "illuminate/config": "~7.0 | ~8.0",
         "illuminate/session": "~7.0 | ~8.0",
         "illuminate/support": "~7.0 | ~8.0",
