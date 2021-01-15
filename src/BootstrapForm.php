@@ -603,7 +603,7 @@ class BootstrapForm
     /**
      * Get a form group with or without a label.
      */
-    public function getFormGroup(?string $name, ?string $label, ?string $wrapper): string
+    public function getFormGroup(?string $name = null, ?string $label = null, ?string $wrapper = null): string
     {
         if (is_null($label)) {
             return $this->getFormGroupWithoutLabel($name, $wrapper);
