@@ -5,6 +5,7 @@ use Watson\BootstrapForm\BootstrapForm;
 use Collective\Html\FormBuilder;
 use Collective\Html\HtmlBuilder;
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Eloquent\Database\Model;
 use PHPUnit\Framework\TestCase;
 
 class BootstrapFormTest extends TestCase
@@ -51,7 +52,7 @@ class BootstrapFormTest extends TestCase
     /** @test */
     public function it_opens_store_model_form()
     {
-        $model = Mockery::mock('Illuminate\Database\Eloquent\Model');
+        $model = Mockery::mock(Model::class);
         $model->exists = false;
 
         $this->formBuidlerMock->shouldReceive('model')
@@ -81,7 +82,7 @@ class BootstrapFormTest extends TestCase
     /** @test */
     public function it_opens_update_model_form()
     {
-        $model = Mockery::mock('Illuminate\Database\Eloquent\Model');
+        $model = Mockery::mock(Model::class);
         $model->exists = true;
 
         $model->shouldReceive('getRouteKey')
