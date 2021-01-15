@@ -212,7 +212,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($wrapperElement, $name, $label);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -297,7 +297,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($wrapperElement, $name, null);
+        return $this->getFormGroup($name, null, $wrapperElement);
     }
 
     /**
@@ -330,7 +330,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($wrapperElement, $name, $label);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -343,7 +343,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
-        return $this->getFormGroup($wrapperElement, null, $label);
+        return $this->getFormGroup(null, $label, $wrapperElement);
     }
 
     /**
@@ -379,7 +379,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $elements . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($wrapperElement, $name, $label);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -414,7 +414,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
-        return $this->getFormGroup($wrapperElement, null, null);
+        return $this->getFormGroup(null, null, $wrapperElement);
     }
 
     /**
@@ -429,7 +429,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => implode(' ', [$this->getLeftColumnOffsetClass(), $this->getRightColumnClass()])] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . '</div>';
 
-        return $this->getFormGroup($wrapperElement, null, null);
+        return $this->getFormGroup(null, null, $wrapperElement);
     }
 
     /**
@@ -447,7 +447,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($wrapperElement, $name, $label);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -478,7 +478,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $optionsField) . '</div>';
 
-        return $this->getFormGroup($wrapperElement, $name, $label);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
     /**
@@ -544,7 +544,7 @@ class BootstrapForm
         $wrapperOptions = $this->isHorizontal() ? ['class' => $this->getRightColumnClass()] : [];
         $wrapperElement = '<div' . $this->html->attributes($wrapperOptions) . '>' . $inputElement . $this->getFieldError($name) . $this->getHelpText($name, $options) . '</div>';
 
-        return $this->getFormGroup($wrapperElement, $name, $label);
+        return $this->getFormGroup($name, $label, $wrapperElement);
     }
 
 
@@ -582,12 +582,8 @@ class BootstrapForm
 
     /**
      * Get a form group comprised of a form element and errors.
-     *
-     * @param  string  $name
-     * @param  string  $element
-     * @return \Illuminate\Support\HtmlString
      */
-    protected function getFormGroupWithoutLabel($name, $element)
+    protected function getFormGroupWithoutLabel(?string $name, ?string $element): HtmlString
     {
         $options = $this->getFormGroupOptions($name);
 
@@ -596,13 +592,8 @@ class BootstrapForm
 
     /**
      * Get a form group comprised of a label, form element and errors.
-     *
-     * @param  string  $name
-     * @param  string  $value
-     * @param  string  $element
-     * @return \Illuminate\Support\HtmlString
      */
-    protected function getFormGroupWithLabel($name, $value, $element)
+    protected function getFormGroupWithLabel(?string $name, ?string $value, ?string $element): HtmlString
     {
         $options = $this->getFormGroupOptions($name);
 
@@ -611,18 +602,14 @@ class BootstrapForm
 
     /**
      * Get a form group with or without a label.
-     *
-     * @param  string  $wrapperElement
-     * @param  string  $name
-     * @param  string  $label
-     * @return string
      */
-    public function getFormGroup($wrapperElement, $name = null, $label = null)
+    public function getFormGroup(?string $name = null, ?string $label = null, ?string $wrapper = null): string
     {
         if (is_null($label)) {
-            return $this->getFormGroupWithoutLabel($name, $wrapperElement);
+            return $this->getFormGroupWithoutLabel($name, $wrapper);
         }
-        return $this->getFormGroupWithLabel($name, $label, $wrapperElement);
+
+        return $this->getFormGroupWithLabel($name, $label, $wrapper);
     }
 
     /**
