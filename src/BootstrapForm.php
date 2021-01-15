@@ -9,7 +9,6 @@ use Collective\Html\HtmlBuilder;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Session\SessionManager as Session;
 use Illuminate\Contracts\Config\Repository as Config;
 
 class BootstrapForm
