@@ -827,7 +827,7 @@ class BootstrapForm
      * @param  string  $element
      * @return string
      */
-    public function getFormGroup($name = null, $label = null, $wrapperElement)
+    public function getFormGroup($name = null, $label = null, $wrapperElement = null)
     {
         if (is_null($label)) {
             return $this->getFormGroupWithoutLabel($name, $wrapperElement);
