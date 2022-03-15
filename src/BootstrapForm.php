@@ -48,7 +48,7 @@ class BootstrapForm
     /**
      * The error class.
      */
-    protected string $errorClass;
+    protected ?string $errorClass = null;
 
 
     /**
