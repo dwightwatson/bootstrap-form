@@ -569,7 +569,7 @@ class BootstrapForm
      */
     protected function getLabelTitle($label, $name)
     {
-        if ($label === false) {
+        if (!$label) {
             return null;
         }
 
